@@ -5,7 +5,7 @@ function Login()
 {
   const login=()=>{
     window.location.replace(
-      `https://api.intra.42.fr/oauth/authorize?client_id=${process.env.FT_CLIENT_ID}&redirect_uri=http%3A%2F%2Flocalhost%3A6000%2Fredirecturi&response_type=code`
+      `https://api.intra.42.fr/oauth/authorize?client_id=${process.env.FT_CLIENT_ID}&redirect_uri=http%3A%2F%2Flocalhost%3A6001%2Fredirecturi&response_type=code`
       );
   };
 
