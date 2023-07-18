@@ -14,7 +14,7 @@ function GetToken()
       "client_id": process.env.FT_CLIENT_ID,
       "client_secret": process.env.FT_CLIENT_SECRET,
       "code": codeRes,
-      "redirect_uri": "http://localhost:6001/redirecturi",
+      "redirect_uri": "http://localhost:6002/redirecturi",
     })
     .then((tokenRes) => {
       console.log(tokenRes);

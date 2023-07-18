@@ -24,7 +24,7 @@ function Get()
         console.log(error);
         router.push("/login");
     });
-  }, [res, router]);
+  }, [router]);
 
   return (
     <>

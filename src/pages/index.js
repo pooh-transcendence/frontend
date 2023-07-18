@@ -29,6 +29,7 @@ function Test()
       <br/>
       <Link href="/get">Get</Link>
       <br/>
+      <Link href="/piscine">Piciners rank</Link>
       <br/>
       <pre>{ft_oauth}</pre>
     </>
