@@ -9,11 +9,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [14.x, 16.x, 18.x]
-
+    
     steps:
     - uses: actions/checkout@v3
 
@@ -23,7 +19,4 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - name: Build
-      run: |
-        cd src
-        npm install
-        grunt
+      run: docker build dockerfile
