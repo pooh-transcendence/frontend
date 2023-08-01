@@ -1,0 +1,554 @@
+.bg1,
+.frame3 {
+  position: absolute;
+  border-radius: var(--br-3xs);
+}
+.frame3 {
+  height: 100%;
+  width: 100%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border: 3px solid var(--color-dimgray);
+  box-sizing: border-box;
+}
+.bg1 {
+  height: 58.15%;
+  width: 94.4%;
+  top: 38.15%;
+  right: 2.8%;
+  bottom: 3.69%;
+  left: 2.8%;
+  background-color: var(--color-gray);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+}
+.matchcardChild,
+.winnercrownIcon {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  max-width: 100%;
+  overflow: hidden;
+  max-height: 100%;
+}
+.winnercrownIcon {
+  height: 45%;
+  width: 4%;
+  top: 20.96%;
+  right: 71.44%;
+  bottom: 34.04%;
+  left: 24.56%;
+  opacity: 0.65;
+}
+.pngegg4Icon12 {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+}
+.vs750 {
+  position: relative;
+  font-size: var(--font-size-sm);
+}
+.user2,
+.username2Parent {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: center;
+  gap: var(--gap-3xs);
+}
+.user2 {
+  position: absolute;
+  top: 0;
+  left: 331px;
+  width: 220px;
+  align-items: center;
+  justify-content: flex-start;
+}
+.i,
+.username1 {
+  display: inline-block;
+  height: 37px;
+}
+.i {
+  position: absolute;
+  top: calc(50% - 18.5px);
+  left: calc(50% - 40px);
+  text-align: center;
+  width: 69px;
+}
+.username1 {
+  position: relative;
+  font-weight: 700;
+  width: 220px;
+  flex-shrink: 0;
+}
+.matchresult,
+.user1 {
+  position: absolute;
+  top: calc(50% - 18.5px);
+}
+.user1 {
+  left: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--gap-3xs);
+  text-align: right;
+}
+.matchresult {
+  left: calc(50% - 420px);
+  width: 604px;
+  height: 37px;
+  font-size: var(--font-size-9xl);
+}
+.ballSpeedModerate12,
+.div {
+  position: absolute;
+  text-align: right;
+}
+.div {
+  top: 37px;
+  left: 785px;
+  font-size: var(--font-size-sm);
+}
+.ballSpeedModerate12 {
+  top: 14px;
+  left: 747px;
+}
+.matchcardItem {
+  position: absolute;
+  top: 63px;
+  left: 0;
+  width: 900px;
+  height: 2px;
+}
+.custom {
+  position: absolute;
+  top: 0;
+  left: 3px;
+}
+.matchcard {
+  position: relative;
+  width: 900px;
+  height: 65px;
+}
+.winnercrownIcon1 {
+  position: absolute;
+  height: 45%;
+  width: 4%;
+  top: 20.96%;
+  right: 52%;
+  bottom: 34.04%;
+  left: 44%;
+  max-width: 100%;
+  overflow: hidden;
+  max-height: 100%;
+  opacity: 0.65;
+}
+.username21 {
+  position: relative;
+  font-weight: 700;
+}
+.username11 {
+  position: relative;
+  display: inline-block;
+  width: 220px;
+  height: 37px;
+  flex-shrink: 0;
+}
+.matchcardChild5 {
+  position: absolute;
+  top: 64px;
+  left: 0;
+  width: 900px;
+  height: 0;
+}
+.matchcardcontainer {
+  position: absolute;
+  top: calc(50% - 69px);
+  left: calc(50% - 450px);
+  height: 360px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--gap-3xs);
+}
+.title {
+  position: absolute;
+  height: 100%;
+  width: 81.21%;
+  top: 0;
+  left: 18.79%;
+  display: inline-block;
+}
+.vectorIcon1 {
+  position: absolute;
+  height: 82.49%;
+  width: 13.47%;
+  top: 16.05%;
+  right: 86.53%;
+  bottom: 1.47%;
+  left: 0;
+  max-width: 100%;
+  overflow: hidden;
+  max-height: 100%;
+}
+.matchhistory,
+.titlecard {
+  position: absolute;
+  height: 100%;
+  width: 99.76%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0.24%;
+}
+.matchhistory {
+  height: 4%;
+  width: 15.8%;
+  top: 32.92%;
+  right: 79.6%;
+  bottom: 63.08%;
+  left: 4.6%;
+  font-size: var(--font-size-xl);
+}
+.graphChild,
+.graphItem {
+  top: 0;
+  border-radius: var(--br-3xs);
+  height: 7px;
+  overflow: hidden;
+}
+.graphChild {
+  position: absolute;
+  left: 0;
+  background-color: var(--color-blueviolet);
+  width: 400px;
+  opacity: 0.2;
+}
+.graphItem {
+  background-color: var(--color-slateblue);
+  width: 298px;
+}
+.graph,
+.graphItem,
+.winrate750 {
+  position: absolute;
+  left: 0;
+}
+.graph {
+  height: 16.13%;
+  width: 100%;
+  top: 0;
+  right: 0;
+  bottom: 83.87%;
+}
+.winrate750 {
+  width: 24.59%;
+  top: 25.81%;
+  line-height: 150%;
+  display: inline-block;
+}
+.winrategraph {
+  position: absolute;
+  height: 25.41%;
+  width: 100%;
+  top: 74.59%;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+.b,
+.games {
+  position: absolute;
+  line-height: 150%;
+}
+.b {
+  height: 81.33%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  display: inline-block;
+}
+.games {
+  top: 60%;
+  left: 24.78%;
+  font-size: var(--font-size-xl);
+}
+.gamestats {
+  position: relative;
+  width: 113px;
+  height: 75px;
+}
+.games1 {
+  position: absolute;
+  top: 60%;
+  left: 31.86%;
+  font-size: var(--font-size-xl);
+  line-height: 150%;
+}
+.gamestats1 {
+  position: relative;
+  width: 113px;
+  height: 75px;
+  color: var(--color-midnightblue);
+}
+.games2 {
+  position: absolute;
+  top: 60%;
+  left: 30.09%;
+  font-size: var(--font-size-xl);
+  line-height: 150%;
+}
+.gamestats2 {
+  position: relative;
+  width: 113px;
+  height: 75px;
+  color: var(--color-brown);
+}
+.myinfo,
+.stats {
+  position: absolute;
+}
+.stats {
+  height: 61.48%;
+  width: 100%;
+  top: 0;
+  right: 0;
+  bottom: 38.52%;
+  left: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap-12xl);
+  text-align: center;
+  font-size: var(--font-size-21xl);
+}
+.myinfo {
+  height: 68.93%;
+  width: 77.07%;
+  top: 31.07%;
+  right: 0.19%;
+  bottom: 0;
+  left: 22.74%;
+}
+.userinfoAndUserstatsChild {
+  position: absolute;
+  height: 6.03%;
+  width: 76.36%;
+  top: 25.24%;
+  right: 0.13%;
+  bottom: 68.74%;
+  left: 23.51%;
+  max-width: 100%;
+  overflow: hidden;
+  max-height: 100%;
+}
+.editbuttonIcon,
+.testnickname {
+  position: relative;
+}
+.editbuttonIcon {
+  width: 20px;
+  height: 20px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.nicknamecomponents {
+  position: absolute;
+  top: 4px;
+  left: 120px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-end;
+  font-size: var(--font-size-13xl);
+}
+.pngegg3Icon24 {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  max-width: 100%;
+  overflow: hidden;
+  max-height: 100%;
+  object-fit: cover;
+}
+.profilepictureModify {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100px;
+  height: 100px;
+}
+.frameChild,
+.userinfoAndUserstats {
+  position: relative;
+  width: 519px;
+  height: 177px;
+  z-index: 2;
+}
+.frameChild {
+  width: 2px;
+  height: 152px;
+  z-index: 1;
+}
+.nicknphoto {
+  position: absolute;
+  top: 0;
+  left: 1px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap-3xs);
+}
+.mypageuserlistusercardChild {
+  position: absolute;
+  top: 39.75px;
+  left: 0.25px;
+  width: 240.75px;
+  height: 1.5px;
+}
+.mypageuserlistusercard {
+  position: relative;
+  width: 247px;
+  height: 45px;
+}
+.mypageuserlistusercardInner {
+  position: absolute;
+  top: 40.5px;
+  left: 1px;
+  width: 240px;
+  height: 0;
+}
+.mypageuserlistusercardParent {
+  position: absolute;
+  top: 63px;
+  left: 0;
+  height: 126px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--gap-6xs);
+}
+.result {
+  position: absolute;
+  top: 39px;
+  left: 1px;
+  font-size: var(--font-size-mini);
+  display: inline-block;
+  width: 75px;
+  height: 14px;
+}
+.searchChild {
+  position: absolute;
+  height: 35.56%;
+  width: 99.06%;
+  top: 72.22%;
+  right: 0.84%;
+  bottom: -7.78%;
+  left: 0.1%;
+  max-width: 100%;
+  overflow: hidden;
+  max-height: 100%;
+}
+.searchFill0Wght500Grad0OpsIcon {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.search1 {
+  position: relative;
+  display: inline-block;
+  font-weight: 700;
+  width: 142px;
+  height: 19px;
+  flex-shrink: 0;
+}
+.searchFill0Wght500Grad0OpsParent {
+  position: absolute;
+  top: 0;
+  left: 7px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--gap-9xs);
+}
+.search {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 247px;
+  height: 30px;
+}
+.mypageuserlist {
+  position: relative;
+  width: 247px;
+  height: 189px;
+  overflow: hidden;
+  flex-shrink: 0;
+  z-index: 0;
+  font-size: var(--font-size-base);
+}
+.userinfoAndUserstatsParent {
+  position: absolute;
+  top: 24px;
+  left: 28px;
+  width: 944px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 60px;
+  font-size: var(--font-size-mini);
+}
+.cancelbuttonIcon {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  overflow: hidden;
+}
+.mypage {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(240.36deg, #f5f5f5, #fafbff);
+}
+.mypageframe {
+  position: relative;
+  width: 1000px;
+  height: 650px;
+  max-width: 100%;
+  max-height: 100%;
+  overflow: auto;
+  text-align: left;
+  font-size: var(--font-size-base);
+  color: var(--color-dimgray);
+  font-family: var(--font-inria-sans);
+}
