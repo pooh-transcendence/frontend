@@ -1,0 +1,643 @@
+.bg {
+    position: absolute;
+    height: 112.74%;
+    width: 108.57%;
+    top: -5.01%;
+    right: -4.16%;
+    bottom: -7.72%;
+    left: -4.41%;
+    background: linear-gradient(240.36deg, #f5f5f5, #fafbff);
+  }
+  .samplelogoIcon,
+  .sidebutton2Icon,
+  .sidebutton2Icon1 {
+    position: absolute;
+    max-width: 100%;
+    overflow: hidden;
+    max-height: 100%;
+  }
+  .samplelogoIcon {
+    height: 8.54%;
+    width: 20.1%;
+    top: 0;
+    right: 72.35%;
+    bottom: 91.46%;
+    left: 7.55%;
+    object-fit: cover;
+  }
+  .sidebutton2Icon,
+  .sidebutton2Icon1 {
+    height: 9.49%;
+    width: 5.94%;
+    right: 94.06%;
+    left: 0;
+  }
+  .sidebutton2Icon {
+    top: 17.48%;
+    bottom: 73.04%;
+    border-radius: var(--br-3xs) 0 0 0;
+    cursor: pointer;
+  }
+  .sidebutton2Icon1 {
+    top: 26.56%;
+    bottom: 63.96%;
+    border-radius: var(--br-3xs) 0 0 var(--br-3xs);
+  }
+  .chatsection,
+  .frame1 {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+  }
+  .frame1 {
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    border-radius: var(--br-3xs);
+    border: 3px solid var(--color-dimgray);
+    box-sizing: border-box;
+  }
+  .chatsection {
+    height: 88.08%;
+    width: 25.45%;
+    top: 11.92%;
+    left: 74.55%;
+  }
+  .pngegg1Icon {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    z-index: 0;
+  }
+  .nickname {
+    position: relative;
+    display: inline-block;
+    width: 178px;
+    height: 46px;
+    flex-shrink: 0;
+    z-index: 1;
+  }
+  .userprofile,
+  .userprofileChild {
+    position: absolute;
+    box-sizing: border-box;
+  }
+  .userprofileChild {
+    margin: 0 !important;
+    height: 6.52%;
+    width: 101.32%;
+    top: 107.47%;
+    right: -0.22%;
+    bottom: -13.99%;
+    left: -1.1%;
+    border-top: 3px solid var(--color-dimgray);
+    z-index: 2;
+  }
+  .userprofile {
+    height: 6.23%;
+    width: 19.34%;
+    top: 1.08%;
+    right: 3.14%;
+    bottom: 92.68%;
+    left: 77.52%;
+    display: flex;
+    flex-direction: row;
+    padding: 0 1px;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+  }
+  .backbuttonIcon {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    width: 40px;
+    height: 40px;
+  }
+  .frame,
+  .mainframe {
+    position: absolute;
+    height: 88.7%;
+    width: 92.11%;
+    top: 4.45%;
+    right: 3.83%;
+    bottom: 6.85%;
+    left: 4.06%;
+
+  }
+  .mainframe {
+    height: 78.13%;
+    width: 62.5%;
+    top: 15.02%;
+    right: 28.2%;
+    left: 9.3%;
+  }
+  .bgIcon,
+  .mainFramechannel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1280px;
+    height: 832px;
+  }
+  .bgIcon {
+    left: -4px;
+    border-radius: var(--br-3xs);
+    width: 753px;
+    height: 611px;
+  }
+  .public {
+    position: relative;
+    display: inline-block;
+    width: 54px;
+    height: 27px;
+    flex-shrink: 0;
+  }
+  .publicFill0Wght300Grad0OpsIcon {
+    position: relative;
+    width: 32px;
+    height: 32px;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .publicbutton {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  .listbuttonsChild,
+  .protected {
+    position: relative;
+    width: 1.5px;
+    height: 16.5px;
+  }
+  .protected {
+    display: inline-block;
+    width: 86px;
+    height: 27px;
+    flex-shrink: 0;
+  }
+  .listbuttons,
+  .protectedbutton {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  .protectedbutton {
+    justify-content: flex-start;
+    color: #9747ff;
+  }
+  .listbuttons {
+    position: absolute;
+    top: 5px;
+    left: 395px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 9px;
+  }
+  .listframe,
+  .title {
+    position: absolute;
+    top: 3px;
+    left: 0;
+    width: 745px;
+    height: 603px;
+  }
+  .title {
+    height: 100%;
+    width: 100%;
+    top: 0;
+    display: inline-block;
+  }
+  .titlecard,
+  .vectorIcon {
+    position: absolute;
+    height: 4.13%;
+    width: 33.15%;
+    top: 0;
+    right: 60.27%;
+    bottom: 95.87%;
+    left: 6.58%;
+  }
+  .vectorIcon {
+    height: 3.8%;
+    width: 3.09%;
+    top: 0.47%;
+    right: 94.77%;
+    bottom: 95.74%;
+    left: 2.15%;
+    border-radius: var(--br-3xs);
+    max-width: 100%;
+    overflow: hidden;
+    max-height: 100%;
+  }
+  .channelcardChild,
+  .pngegg2Icon {
+    position: absolute;
+    top: 37px;
+    left: 43px;
+    width: 654px;
+    height: 2px;
+  }
+  .pngegg2Icon {
+    height: 78.05%;
+    width: 4.59%;
+    top: 0;
+    right: 95.41%;
+    bottom: 21.95%;
+    left: 0;
+    max-width: 100%;
+    overflow: hidden;
+    max-height: 100%;
+    object-fit: cover;
+  }
+  .owner {
+    position: absolute;
+    top: 15px;
+    left: 495px;
+    display: inline-block;
+    width: 149px;
+    height: 21px;
+  }
+  .name {
+    position: relative;
+  }
+  .winrateParent {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: center;
+    gap: var(--gap-10xs);
+    font-size: var(--font-size-smi);
+  }
+  .lockIcon {
+    position: relative;
+    width: 16px;
+    height: 16px;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .nameParent {
+    position: absolute;
+    top: 1px;
+    left: 51px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: center;
+    gap: var(--gap-xs);
+    text-align: left;
+    font-size: var(--font-size-5xl);
+  }
+  .enterbuttonIcon {
+    position: absolute;
+    height: 78.05%;
+    width: 4.59%;
+    top: 9.76%;
+    right: 1%;
+    bottom: 12.2%;
+    left: 94.4%;
+    max-width: 100%;
+    overflow: hidden;
+    max-height: 100%;
+  }
+  .channelcard {
+    position: relative;
+    width: 697px;
+    height: 41px;
+  }
+  .matchs {
+    position: absolute;
+    height: 45.16%;
+    width: 93.56%;
+    top: 11.06%;
+    right: 2.68%;
+    bottom: 43.78%;
+    left: 3.76%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 13px;
+    text-align: right;
+    font-size: var(--font-size-smi);
+  }
+  .channellist,
+  .channellist1 {
+    position: absolute;
+    top: 19px;
+    left: 27px;
+    width: 745px;
+    height: 606px;
+  }
+  .channellist {
+    top: 125px;
+    left: 119px;
+    width: 800px;
+    height: 650px;
+    font-size: var(--font-size-xl);
+  }
+  .chatinputChild {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border-radius: var(--br-3xs);
+    background-color: var(--color-ghostwhite);
+  }
+  .sendFill0Wght400Grad0Opsz4Icon {
+    position: absolute;
+    top: 23px;
+    left: 260px;
+    width: 24px;
+    height: 24px;
+    overflow: hidden;
+  }
+  .testWriting {
+    margin: 0;
+  }
+  .testWritingAaaaaaaaaaaaaaaaaContainer {
+    position: absolute;
+    top: 12px;
+    left: 24px;
+    display: -webkit-inline-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 39;
+    -webkit-box-orient: vertical;
+    width: 221px;
+  }
+  .chatinput {
+    position: absolute;
+    height: 10.77%;
+    width: 100%;
+    top: 89.23%;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+  .yourName {
+    position: relative;
+    letter-spacing: 0.05em;
+  }
+  .yourNameWrapper {
+    display: flex;
+    flex-direction: row;
+    padding: 0 0 0 var(--padding-5xl);
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+  .frameChild {
+    border-radius: 64.18px 0 0 0;
+    width: 25px;
+    height: 18px;
+  }
+  .frameChild,
+  .frameInner,
+  .frameItem {
+    position: relative;
+    background-color: var(--color-whitesmoke);
+    border: 1px solid var(--color-whitesmoke);
+    box-sizing: border-box;
+  }
+  .frameItem {
+    flex: 1;
+    width: 25.39px;
+  }
+  .frameInner {
+    border-radius: 64.18px 0 0 0;
+    width: 25px;
+    height: 19px;
+  }
+  .rectangleParent {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+  .text {
+    flex: 1;
+    position: relative;
+    line-height: 108.85%;
+    transform: rotate(180deg);
+    transform-origin: 0 0;
+  }
+  .rectangleDiv,
+  .textWrapper {
+    background-color: var(--color-whitesmoke);
+    border: 1px solid var(--color-whitesmoke);
+  }
+  .textWrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    padding: var(--padding-3xs) 0;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+  .rectangleDiv {
+    position: relative;
+    border-radius: 64.18px 0 0 0;
+    box-sizing: border-box;
+    width: 26px;
+    height: 17px;
+  }
+  .rectangleIcon {
+    flex: 1;
+    position: relative;
+    max-height: 100%;
+    width: 26px;
+  }
+  .unionIcon {
+    position: relative;
+    width: 34.61px;
+    height: 20px;
+  }
+  .bubbleLeft,
+  .rectangleGroup {
+    display: flex;
+    justify-content: center;
+    transform: rotate(180deg);
+    transform-origin: 0 0;
+  }
+  .rectangleGroup {
+    align-self: stretch;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  .bubbleLeft {
+    width: 230px;
+    flex-direction: row;
+    align-items: center;
+    font-size: var(--font-size-mini);
+    color: var(--color-dimgray);
+  }
+  .chatBubble {
+    width: 270px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: var(--gap-12xs);
+  }
+  .frameChild1 {
+    border-radius: 64.18px 0 0 0;
+    width: 25px;
+    height: 18px;
+  }
+  .frameChild1,
+  .frameChild2,
+  .frameChild3 {
+    position: relative;
+    background-color: var(--color-slateblue);
+    border: 1px solid var(--color-slateblue);
+    box-sizing: border-box;
+  }
+  .frameChild2 {
+    flex: 1;
+    width: 25.39px;
+  }
+  .frameChild3 {
+    border-radius: 64.18px 0 0 0;
+    width: 25px;
+    height: 19px;
+  }
+  .text1 {
+    flex: 1;
+    position: relative;
+    line-height: 108.85%;
+  }
+  .frameChild4,
+  .textContainer {
+    background-color: var(--color-slateblue);
+    border: 1px solid var(--color-slateblue);
+  }
+  .textContainer {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    padding: var(--padding-3xs) 0;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+  .frameChild4 {
+    position: relative;
+    border-radius: 64.18px 0 0 0;
+    box-sizing: border-box;
+    width: 26px;
+    height: 17px;
+  }
+  .bubbleLeft1 {
+    width: 230px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+  .chatBubble1,
+  .testchat {
+    display: flex;
+    flex-direction: column;
+  }
+  .chatBubble1 {
+    width: 230px;
+    height: 40px;
+    align-items: flex-start;
+    justify-content: flex-end;
+    font-size: var(--font-size-mini);
+    color: var(--color-gray-100);
+  }
+  .testchat {
+    position: absolute;
+    top: 59px;
+    left: calc(50% - 135px);
+    align-items: flex-end;
+    justify-content: flex-start;
+    gap: 5px;
+    font-size: var(--font-size-xs);
+    color: var(--color-gray-200);
+  }
+  .chattitleChild {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border-radius: var(--br-3xs) var(--br-3xs) 0 0;
+    background-color: var(--color-ghostwhite);
+  }
+  .chatname {
+    position: absolute;
+    height: 48%;
+    width: 65%;
+    top: 38%;
+    left: 17.14%;
+    display: inline-block;
+  }
+  .backbuttonIcon1 {
+    position: absolute;
+    top: 17px;
+    left: 16px;
+    width: 23px;
+    height: 23px;
+  }
+  .personAddFill0Wght400Grad0Icon,
+  .settingsFill0Wght400Grad0OIcon {
+    position: absolute;
+    top: 16px;
+    left: 224px;
+    width: 25px;
+    height: 25px;
+    overflow: hidden;
+  }
+  .personAddFill0Wght400Grad0Icon {
+    height: 56%;
+    width: 9.33%;
+    top: 28%;
+    right: 4.67%;
+    bottom: 16%;
+    left: 86%;
+    max-width: 100%;
+    max-height: 100%;
+  }
+  .chattitle {
+    position: absolute;
+    height: 7.69%;
+    width: 100%;
+    top: 0;
+    right: 0;
+    bottom: 92.31%;
+    left: 0;
+    color: var(--color-dimgray);
+  }
+  .chat {
+    position: absolute;
+    top: 125px;
+    left: 931px;
+    width: 300px;
+    height: 650px;
+    font-size: var(--font-size-base);
+    color: #000;
+  }
+  .channellobby {
+    position: relative;
+    background-color: #fff;
+    width: 100%;
+    height: 832px;
+    overflow: hidden;
+    text-align: left;
+    font-size: 32px;
+    color: var(--color-dimgray);
+    font-family: var(--font-inria-sans);
+  }
+  

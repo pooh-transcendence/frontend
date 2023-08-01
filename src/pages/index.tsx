@@ -1,41 +1,33 @@
-import React, { useState, useEffect } from "react";
-import Link from 'next/link';
-import { AppProps } from 'next/app';
+import type { NextPage } from "next";
 
-interface Props extends AppProps {}
-
-function App({ Component, pageProps }: Props) {
-  const [ft_oauth, set_oauth] = useState<string | null>(null);
-  const [ft_acc_token, set_acc_token] = useState<string | null>(null);
-  const [ft_token_type, set_token_type] = useState<string | null>(null);
-  const [ft_token_until, set_token_until] = useState<string | null>(null);
-
-  useEffect(() => {
-    set_oauth(localStorage.getItem("42_oauth"));
-    set_acc_token(localStorage.getItem("42_acc_token"));
-    set_token_type(localStorage.getItem("42_token_type"));
-    set_token_until(localStorage.getItem("42_token_until"));
-  }, []);
-
+const Home: NextPage = () => {
   return (
-    <>
-        {ft_acc_token}
-        <br />
-        {ft_token_type}
-        <br />
-        {ft_token_until}
-        <br />
-        <Link href="/login">Login</Link>
-        <br />
-        <Link href="/logout">Logout</Link>
-        <br />
-        <Link href="/get">Get</Link>
-        <br />
-        <Link href="/piscine">Piscine rank</Link>
-        <br />
-        <pre>{ft_oauth}</pre>
-    </>
+    <div className="bg-slate-400 py-20 px-10 grid gap-10 min-h-screen">
+        <div className="bg-white p-10 rounded-3xl shadow-xl">
+            <span className="font-bold text-2xl">Select Item</span>
+            <div className="flex justify-between my-2">
+                <span className="text-gray-500">Gray Chair</span>
+                <span className="font-bold">$19</span>
+            </div>
+            <div className="flex justify-between">
+                <span className="text-gray-500">Gray Chair</span>
+                <span className="font-bold">$19</span>
+            </div>
+            <div className="flex justify-between mt-2 pt-2 border-t-2 border-dashed font-bold">
+                <span>Total</span>
+                <span>$38</span>
+            </div>
+            <button
+              className="flex justify-center w-2/4 mt-5 mx-auto bg-blue-500
+              rounded-2xl p-3 text-white
+              hover:bg-blue-400  active:bg-teal-500  disabled:bg-blue-200"
+              type="button"
+            >
+              Checkout
+            </button>
+        </div>
+    </div>
   );
-}
+};
 
-export default App;
+export default Home;
