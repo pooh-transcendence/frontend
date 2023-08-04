@@ -37,8 +37,5 @@ module.exports = {
       smi: "0.81rem",
     },
   },
-  corePlugins: {
-    preflight: false,
-  },
   plugins: [],
 }
