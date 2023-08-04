@@ -1,8 +1,9 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inria_Sans } from 'next/font/google'
+import React from 'react'
 
-const inria = Inria_Sans({ subsets: ['latin'], weight: ['300', '400', '700'], style: ["normal", "italic"]})
+const Inria = Inria_Sans({subsets: ["latin", "latin-ext"], weight:["300", "400", "700"], style:["normal", "italic"]});
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -16,7 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inria.className}>{children}</body>
+      <body className={Inria.className}>{children}</body>
     </html>
   )
 }
