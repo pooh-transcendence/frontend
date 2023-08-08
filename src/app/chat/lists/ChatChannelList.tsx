@@ -1,8 +1,8 @@
 // 'use client'
 
 import React, { useState } from "react";
-import { ChatBottomBar } from "./ChatBottomBar";
-import { ChatTitle } from "./ChatTitle";
+import { ChatBottomBar } from "../frame/ChatBottomBar";
+import { ChatTitle } from "../frame/ChatTitle";
 
 interface ChannelListProps {
     channelName: string,
@@ -45,7 +45,6 @@ export const ChatChannelList = (): JSX.Element => {
                 <ChatTitle title="" type="channelList" />
             </div>
             {/* ContentsSection */}
-            <div className="w-[300px] h-[650px] left-0 top-0 absolute rounded-[10px] border border-neutral-600" />
             <div className="w-[260px] py-2 left-[20px] top-[58px] absolute flex-col justify-start items-start gap-[7px] inline-flex">
                 <ChannelListComponent channelName="testSans" channelOwner="toj" channelPeopleCnt={123}/>
             </div>

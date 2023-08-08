@@ -1,5 +1,5 @@
 import React from "react";
-import { UserListComponent } from "./ChatUserListComp"
+import { UserListComponent } from "./lists/ChatUserListComp";
 
 // TODO: scroll
 

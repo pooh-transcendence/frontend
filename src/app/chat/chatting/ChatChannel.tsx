@@ -1,14 +1,13 @@
 'use client'
 
 import React, { useState, useEffect } from "react";
-import { ChatTitle } from './ChatTitle' 
+import { ChatTitle } from '../frame/ChatTitle' 
 import { ChatBubble } from './ChatBubble'
-import { socket } from './api/socket';
+import { socket } from "@/app/api/socket";
 
 interface Props{
     title: string,
 }
-
 
 export const ChatChannel = ({
     title,
@@ -16,10 +15,6 @@ export const ChatChannel = ({
     
     const [msgQuery, setMsgQuery]=useState<string[][]>([]);
     useEffect(() => {        
-        socket.on('connect', ()=>{
-            console.log("connected");
-            console.log(socket);
-        });
         socket.on("userMessage", (data)=>{
             console.log(data);
             setMsgQuery([...msgQuery, ["recv", data[0].nickname, data[0].message]]);
@@ -45,7 +40,8 @@ export const ChatChannel = ({
             res.push(<ChatBubble 
                     side={type==="recv" ? "left":"right"}
                     nickname={nickname}
-                    messageText={message} />);
+                    messageText={message}
+                    key={i} />);
         }
         return res;
     }
@@ -55,7 +51,7 @@ export const ChatChannel = ({
         console.log(socket);
         // testQuery.push(["send", "", text]);
         setMsgQuery([...msgQuery, ["send", "", text]]);
-        socket.emit("message", {userId : 3, message: text});
+        socket.emit("message", {userId : 2, message: text});
         setText("");
     }
     return (
