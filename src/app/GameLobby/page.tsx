@@ -1,3 +1,5 @@
+"use client"
+
 import type { NextPage } from "next";
 import { useState, useCallback } from "react";
 import MyPageFrame from "@/components/my-page-frame";
