@@ -1,97 +1,41 @@
+'use client';
+
 import type { NextPage } from "next";
-import { useCallback } from "react";
-import styles from "../index.module.css";
-import UserImage from "@/components/userImage";
 
-import Image from "next/image";
+import LeftSideButtons from "../GameLobby/button/leftSideButtons";
+import MyPageButton from "./button/myPageButton";
+import ChannelRoomList from "./channelRoom/channelRoomList";
 
+import CreateListFrame from "./frame/createListFrame";
+import FriendList from "./friendList/friendList";
 
 const ChannelLobby: NextPage = () => {
-  const onSideButton2Click = useCallback(() => {
-  }, []);
+
   return (
-    <>    
-        <div className="w-[50rem] h-[40.625rem] left-[7.44rem] top-[7.81rem] relative">
-        <div className="w-[800px] h-[650px] left-[7.44rem] top-[7.81rem] right-[22.56rem]rounded-[10px] border border-neutral-600" />
-        <div className="w-[745px] h-[606px] left-[27px] top-[19px]">
-            <div className="w-[745px] h-[603px] left-0 top-[3px] justify-center items-center inline-flex" />
-            <div className="w-[247px] h-[25px] left-[63.44em] top-0 text-neutral-600 text-xl font-normal">channel list</div>
-            <div className="w-[697px] h-[530px] left-[27px] top-[56px] flex-col justify-start items-start gap-[13px] inline-flex">
-                <div className="flex-col justify-center items-center gap-[5px] flex">
-                    <div className="text-center text-neutral-600 text-base font-normal">public</div>
-                </div>
-                <UserImage></UserImage>
-                <UserImage></UserImage>
-                <UserImage></UserImage>
-                <UserImage></UserImage>
-                <UserImage></UserImage>
-                <UserImage></UserImage>
-                <UserImage></UserImage>
-                <div className="flex-col justify-center items-center gap-[5px] flex">
-                    <div className="text-center text-neutral-600 text-base font-normal">protected</div>
-                </div>
-                <div className="w-[697px] h-[41px] relative">
-                <Image src="/userImage.png" alt="Logo" width={25} height={25} />
-                    <div className="w-[149px] h-[21px] left-[495px] top-[15px] text-right text-neutral-600 text-[13px] font-normal">ownername</div>
-                    <div className="left-[51px] top-[1px] justify-center items-end gap-3 inline-flex">
-                        <div className="text-neutral-600 text-2xl font-normal">sfesfe</div>
-                        <div className="justify-center items-end gap-[3px] flex">
-                            <div className="text-neutral-600 text-[13px] font-normal">1</div>
-                            <div className="text-neutral-600 text-[13px] font-normal">person</div>
-                        </div>
-                        <div className="w-4 h-4 relative" />
-                    </div>
-                    <div className="w-8 h-8 left-[658px] top-[4px]" />
-                </div>
-                <div className="w-[697px] h-[41px] relative">
-                <Image src="/userImage.png" alt="Logo" width={25} height={25} />
-                    <div className="w-[149px] h-[21px] left-[495px] top-[15px] text-right text-neutral-600 text-[13px] font-normal">owner</div>
-                    <div className="left-[51px] top-[1px] justify-center items-end gap-3 inline-flex">
-                        <div className="text-neutral-600 text-2xl font-normal">title</div>
-                        <div className="justify-center items-end gap-[3px] flex">
-                            <div className="text-neutral-600 text-[13px] font-normal">3</div>
-                            <div className="text-neutral-600 text-[13px] font-normal">people</div>
-                        </div>
-                        <div className="w-4 h-4 relative" />
-                    </div>
-                    <div className="w-8 h-8 left-[658px] top-[4px] " />
-                </div>
-                <div className="w-[697px] h-[41px] relative">
-                <Image src="/userImage.png" alt="Logo" width={25} height={25} />
-                    <div className="w-[149px] h-[21px] left-[495px] top-[15px] text-right text-neutral-600 text-[13px] font-normal">owner</div>
-                    <div className="left-[51px] top-[1px] absolute justify-center items-end gap-3 inline-flex">
-                        <div className="text-neutral-600 text-2xl font-normal">title</div>
-                        <div className="justify-center items-end gap-[3px] flex">
-                            <div className="text-neutral-600 text-[13px] font-normal">3</div>
-                            <div className="text-neutral-600 text-[13px] font-normal">people</div>
-                        </div>
-                        <div className="w-4 h-4 relative" />
-                    </div>
-                    <div className="w-8 h-8 left-[658px] top-[4px] absolute" />
-                </div>
-                <div className="w-[697px] h-[41px] relative">
-                <Image src="/userImage.png" alt="Logo" width={25} height={25} />
-                    <div className="w-[149px] h-[21px] left-[495px] top-[15px] absolute text-right text-neutral-600 text-[13px] font-normal">testtes</div>
-                    <div className="left-[51px] top-[1px] absolute justify-center items-end gap-3 inline-flex">
-                        <div className="text-neutral-600 text-2xl font-normal">title</div>
-                        <div className="justify-center items-end gap-[3px] flex">
-                            <div className="text-neutral-600 text-[13px] font-normal">3</div>
-                            <div className="text-neutral-600 text-[13px] font-normal">people</div>
-                        </div>
-                        <div className="w-4 h-4 relative" />
-                    </div>
-                    <div className="w-8 h-8 left-[658px] top-[4px] absolute" />
-                </div>
+    <>
+      <div className="relative bg-white w-full h-[52rem] overflow-hidden text-left text-[2rem] text-dimgray font-inria-sans">
+        <div className="absolute top-[0rem] left-[0rem] w-[80rem] h-[52rem]">
+          <div className="absolute h-[88.7%] w-[92.11%] top-[4.45%] right-[3.83%] bottom-[6.85%] left-[4.06%]">
+            <div className="absolute h-[112.74%] w-[108.57%] top-[-5.01%] right-[-4.16%] bottom-[-7.72%] left-[-4.41%] [background:linear-gradient(240.36deg,_#f5f5f5,_#fafbff)]" />
+            <div className="absolute h-[88.08%] w-[25.45%] top-[11.92%] right-[0%] bottom-[0%] left-[74.55%]">
+              <div className="absolute h-full w-full top-[0%] right-[0%] bottom-[0%] left-[0%] rounded-3xs box-border border-[3px] border-solid border-dimgray" />
             </div>
-            <div className="w-[88px] h-8 left-[633px] top-[9px] absolute justify-start items-center gap-0.5 inline-flex">
-                <div className="w-[54px] h-[27px] text-neutral-600 text-xl font-normal">create<br/></div>
-                <div className="w-8 h-8 relative" />
-            </div>
-            
+            <LeftSideButtons />
+            <MyPageButton />
+          </div>
+          <div className="absolute h-[78.13%] w-[62.5%] top-[15.02%] right-[28.2%] bottom-[6.85%] left-[9.3%]">
+            <div className="absolute h-full w-full top-[0%] right-[0%] bottom-[0%] left-[0%] rounded-3xs box-border border-[3px] border-solid border-dimgray" />
+          </div>
         </div>
-        
-    </div>
-    
+        <div className="absolute top-[7.81rem] left-[7.44rem] w-[50rem] h-[40.63rem] text-[1.25rem]">
+          <div className="absolute h-full w-full top-[0%] right-[0%] bottom-[0%] left-[0%] rounded-3xs box-border border-[3px] border-solid border-dimgray" />
+          <div className="absolute top-[1.19rem] left-[1.69rem] w-[46.56rem] h-[37.88rem]">
+            <ChannelRoomList />
+            <CreateListFrame />
+          </div>
+        </div>
+        <FriendList />
+      </div>
     </>
   );
 };

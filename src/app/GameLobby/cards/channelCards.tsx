@@ -28,15 +28,18 @@ export default function ChannelCards() {
             <div className="absolute top-[0.06rem] left-[3.19rem] flex flex-row flex-wrap items-end justify-center gap-[0.75rem] text-left text-[1.5rem]">
                 <div className="relative">tjo</div>
                 <div className="flex flex-row items-end justify-center gap-[0.19rem] text-[0.81rem]">
-                <div className="relative">winrate</div>
-                <div className="relative">58.7%</div>
+                    <div className="relative">winrate</div>
+                    <div className="relative">58.7%</div>
                 </div>
             </div>
-            <img
-                  className="absolute h-[78.05%] w-[4.59%] top-[9.76%] right-[1%] bottom-[12.2%] left-[94.4%] max-w-full overflow-hidden max-h-full"
-                  alt=""
-                  src="/enterbutton.svg"
+
+            <button>
+                <img
+                    className="absolute h-[78.05%] w-[4.59%] top-[9.76%] right-[1%] bottom-[12.2%] left-[94.4%] max-w-full overflow-hidden max-h-full"
+                    alt=""
+                    src="/enterbutton.svg"
                 />
+            </button>
         </div>
         </>
     );

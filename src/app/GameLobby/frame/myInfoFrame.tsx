@@ -48,10 +48,12 @@ export default function MyInfoFrame() {
             <i className="absolute top-[0rem] left-[0.06rem] inline-block w-[11.44rem] h-[1rem]">
               create custom game
             </i>
-            <i className="absolute top-[0.69rem] left-[3.75rem] text-[1.5rem] font-bold text-right text-slateblue">
-              <span>1 vs 1</span>
-              <span className="text-dimgray"> Matching</span>
-            </i>
+            <button>
+              <i className="flex-row absolute top-[0.69rem] text-[1.5rem] w-[14rem] font-bold text-right text-slateblue">
+                <span>1 vs 1</span>
+                <span className="text-dimgray"> Matching</span>
+              </i>
+            </button>
           </div>
           <div className="absolute h-[7.54%] w-[28.13%] top-[9.23%] right-[9.25%] bottom-[83.23%] left-[62.63%]">
             <img
@@ -62,10 +64,13 @@ export default function MyInfoFrame() {
             <i className="absolute top-[0rem] left-[0.06rem] inline-block w-[11.44rem] h-[1rem]">
               play with online user
             </i>
-            <i className="absolute top-[0.69rem] left-[1.31rem] text-[1.5rem] font-bold text-right text-slateblue">
-              <span>Random</span>
-              <span className="text-dimgray"> Matching</span>
-            </i>
+            
+            <button>
+              <i className="flex-row absolute top-[0.69rem] text-[1.5rem] w-[14rem] font-bold text-right text-slateblue">
+                <span>Random</span>
+                <span className="text-dimgray"> Matching</span>
+              </i>
+            </button>
           </div>
         </div>
     </>
