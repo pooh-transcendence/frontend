@@ -6,7 +6,7 @@ import MyPageFrame from "@/components/my-page-frame";
 import PortalPopup from "@/components/portal-popup";
 
 
-export default function LeftSideButton() {
+export default function LeftSideButtons() {
     const [isMyPageFrameOpen, setMyPageFrameOpen] = useState(false);
 
     const onSideButton21Click = useCallback(() => {
@@ -41,6 +41,15 @@ export default function LeftSideButton() {
             src="/sidebutton21.svg"
             onClick={onSideButton21Click}
         />
+        {isMyPageFrameOpen && (
+            <PortalPopup
+                overlayColor="rgba(113, 113, 113, 0.3)"
+                placement="Centered"
+                onOutsideClick={closeMyPageFrame}
+            >
+                <MyPageFrame onClose={closeMyPageFrame} />
+            </PortalPopup>
+        )}
     </>
     );
 }

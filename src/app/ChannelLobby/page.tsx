@@ -1,97 +1,497 @@
+'use client';
+
 import type { NextPage } from "next";
-import { useCallback } from "react";
-import styles from "../index.module.css";
-import UserImage from "@/components/userImage";
+import { useState, useCallback } from "react";
 
-import Image from "next/image";
+import PortalPopup from "@/components/portal-popup";
+import MyPageFrame from "@/components/my-page-frame";
 
+import MyPageLobby from "../MyPageLobby/page";
+import LeftSideButtons from "../GameLobby/button/leftSideButtons";
+import MyPageButton from "./button/myPageButton";
+import ChannelRoomList from "./channelRoom/channelRoomList";
 
 const ChannelLobby: NextPage = () => {
+  const [isMyPageFrameOpen, setMyPageFrameOpen] = useState(false);
+
   const onSideButton2Click = useCallback(() => {
+    // Please sync "gameLobby" to the project
   }, []);
+
+  const openMyPageFrame = useCallback(() => {
+    setMyPageFrameOpen(true);
+  }, []);
+
+  const closeMyPageFrame = useCallback(() => {
+    setMyPageFrameOpen(false);
+  }, []);
+
   return (
-    <>    
-        <div className="w-[50rem] h-[40.625rem] left-[7.44rem] top-[7.81rem] relative">
-        <div className="w-[800px] h-[650px] left-[7.44rem] top-[7.81rem] right-[22.56rem]rounded-[10px] border border-neutral-600" />
-        <div className="w-[745px] h-[606px] left-[27px] top-[19px]">
-            <div className="w-[745px] h-[603px] left-0 top-[3px] justify-center items-center inline-flex" />
-            <div className="w-[247px] h-[25px] left-[63.44em] top-0 text-neutral-600 text-xl font-normal">channel list</div>
-            <div className="w-[697px] h-[530px] left-[27px] top-[56px] flex-col justify-start items-start gap-[13px] inline-flex">
-                <div className="flex-col justify-center items-center gap-[5px] flex">
-                    <div className="text-center text-neutral-600 text-base font-normal">public</div>
-                </div>
-                <UserImage></UserImage>
-                <UserImage></UserImage>
-                <UserImage></UserImage>
-                <UserImage></UserImage>
-                <UserImage></UserImage>
-                <UserImage></UserImage>
-                <UserImage></UserImage>
-                <div className="flex-col justify-center items-center gap-[5px] flex">
-                    <div className="text-center text-neutral-600 text-base font-normal">protected</div>
-                </div>
-                <div className="w-[697px] h-[41px] relative">
-                <Image src="/userImage.png" alt="Logo" width={25} height={25} />
-                    <div className="w-[149px] h-[21px] left-[495px] top-[15px] text-right text-neutral-600 text-[13px] font-normal">ownername</div>
-                    <div className="left-[51px] top-[1px] justify-center items-end gap-3 inline-flex">
-                        <div className="text-neutral-600 text-2xl font-normal">sfesfe</div>
-                        <div className="justify-center items-end gap-[3px] flex">
-                            <div className="text-neutral-600 text-[13px] font-normal">1</div>
-                            <div className="text-neutral-600 text-[13px] font-normal">person</div>
-                        </div>
-                        <div className="w-4 h-4 relative" />
-                    </div>
-                    <div className="w-8 h-8 left-[658px] top-[4px]" />
-                </div>
-                <div className="w-[697px] h-[41px] relative">
-                <Image src="/userImage.png" alt="Logo" width={25} height={25} />
-                    <div className="w-[149px] h-[21px] left-[495px] top-[15px] text-right text-neutral-600 text-[13px] font-normal">owner</div>
-                    <div className="left-[51px] top-[1px] justify-center items-end gap-3 inline-flex">
-                        <div className="text-neutral-600 text-2xl font-normal">title</div>
-                        <div className="justify-center items-end gap-[3px] flex">
-                            <div className="text-neutral-600 text-[13px] font-normal">3</div>
-                            <div className="text-neutral-600 text-[13px] font-normal">people</div>
-                        </div>
-                        <div className="w-4 h-4 relative" />
-                    </div>
-                    <div className="w-8 h-8 left-[658px] top-[4px] " />
-                </div>
-                <div className="w-[697px] h-[41px] relative">
-                <Image src="/userImage.png" alt="Logo" width={25} height={25} />
-                    <div className="w-[149px] h-[21px] left-[495px] top-[15px] text-right text-neutral-600 text-[13px] font-normal">owner</div>
-                    <div className="left-[51px] top-[1px] absolute justify-center items-end gap-3 inline-flex">
-                        <div className="text-neutral-600 text-2xl font-normal">title</div>
-                        <div className="justify-center items-end gap-[3px] flex">
-                            <div className="text-neutral-600 text-[13px] font-normal">3</div>
-                            <div className="text-neutral-600 text-[13px] font-normal">people</div>
-                        </div>
-                        <div className="w-4 h-4 relative" />
-                    </div>
-                    <div className="w-8 h-8 left-[658px] top-[4px] absolute" />
-                </div>
-                <div className="w-[697px] h-[41px] relative">
-                <Image src="/userImage.png" alt="Logo" width={25} height={25} />
-                    <div className="w-[149px] h-[21px] left-[495px] top-[15px] absolute text-right text-neutral-600 text-[13px] font-normal">testtes</div>
-                    <div className="left-[51px] top-[1px] absolute justify-center items-end gap-3 inline-flex">
-                        <div className="text-neutral-600 text-2xl font-normal">title</div>
-                        <div className="justify-center items-end gap-[3px] flex">
-                            <div className="text-neutral-600 text-[13px] font-normal">3</div>
-                            <div className="text-neutral-600 text-[13px] font-normal">people</div>
-                        </div>
-                        <div className="w-4 h-4 relative" />
-                    </div>
-                    <div className="w-8 h-8 left-[658px] top-[4px] absolute" />
-                </div>
+    <>
+      <div className="relative bg-white shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] w-full h-[52rem] overflow-hidden text-left text-[2rem] text-dimgray font-inria-sans">
+        <div className="absolute top-[0rem] left-[0rem] w-[80rem] h-[52rem]">
+          <div className="absolute h-[88.7%] w-[92.11%] top-[4.45%] right-[3.83%] bottom-[6.85%] left-[4.06%]">
+            <div className="absolute h-[112.74%] w-[108.57%] top-[-5.01%] right-[-4.16%] bottom-[-7.72%] left-[-4.41%] [background:linear-gradient(240.36deg,_#f5f5f5,_#fafbff)]" />
+            <LeftSideButtons />
+            <div className="absolute h-[88.08%] w-[25.45%] top-[11.92%] right-[0%] bottom-[0%] left-[74.55%]">
+              <div className="absolute h-full w-full top-[0%] right-[0%] bottom-[0%] left-[0%] rounded-3xs box-border border-[3px] border-solid border-dimgray" />
             </div>
-            <div className="w-[88px] h-8 left-[633px] top-[9px] absolute justify-start items-center gap-0.5 inline-flex">
-                <div className="w-[54px] h-[27px] text-neutral-600 text-xl font-normal">create<br/></div>
-                <div className="w-8 h-8 relative" />
-            </div>
-            
+            <MyPageButton />
+          </div>
+          <div className="absolute h-[78.13%] w-[62.5%] top-[15.02%] right-[28.2%] bottom-[6.85%] left-[9.3%]">
+            <div className="absolute h-full w-full top-[0%] right-[0%] bottom-[0%] left-[0%] rounded-3xs box-border border-[3px] border-solid border-dimgray" />
+          </div>
         </div>
-        
-    </div>
-    
+        <div className="absolute top-[7.81rem] left-[7.44rem] w-[50rem] h-[40.63rem] text-[1.25rem]">
+          <div className="absolute h-full w-full top-[0%] right-[0%] bottom-[0%] left-[0%] rounded-3xs box-border border-[3px] border-solid border-dimgray" />
+          <div className="absolute top-[1.19rem] left-[1.69rem] w-[46.56rem] h-[37.88rem]">
+            <ChannelRoomList />
+            <div className="absolute top-[0.56rem] left-[39.56rem] flex flex-row items-center justify-start gap-[0.13rem]">
+              <div className="relative inline-block w-[3.38rem] h-[1.69rem] shrink-0">
+                <p className="m-0">create</p>
+              </div>
+              <img
+                className="relative w-[2rem] h-[2rem] overflow-hidden shrink-0"
+                alt=""
+                src="/chat-add-on-fill0-wght300-grad0-opsz48-1.svg"
+              />
+            </div>
+          </div>
+        </div>
+        <div className="absolute top-[7.81rem] left-[58.19rem] w-[18.75rem] h-[40.63rem] text-[1rem]">
+          <div className="absolute h-[7.85%] w-full top-[92.15%] right-[0%] bottom-[0%] left-[0%] text-[0.94rem]">
+            <div className="absolute h-[98.04%] w-full top-[0%] right-[0%] bottom-[1.96%] left-[0%] rounded-3xs bg-ghostwhite" />
+            <div className="absolute top-[calc(50%_-_14.5px)] left-[calc(50%_-_126px)] flex flex-row items-center justify-center gap-[1.63rem]">
+              <div className="w-[6.25rem] flex flex-row items-center justify-center gap-[0.38rem]">
+                <div className="relative">friends</div>
+                <img
+                  className="relative w-[1.75rem] h-[1.75rem] overflow-hidden shrink-0"
+                  alt=""
+                  src="/group-fill0-wght500-grad0-opsz48-1.svg"
+                />
+              </div>
+              <img
+                className="relative w-[0.09rem] h-[1.28rem]"
+                alt=""
+                src="/line-6.svg"
+              />
+              <div className="w-[6.25rem] flex flex-row items-center justify-center gap-[0.25rem]">
+                <div className="relative">channels</div>
+                <img
+                  className="relative w-[1.75rem] h-[1.75rem] overflow-hidden shrink-0"
+                  alt=""
+                  src="/forum-fill0-wght500-grad0-opsz48-1.svg"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="absolute h-[7.69%] w-full top-[0%] right-[0%] bottom-[92.31%] left-[0%]">
+            <div className="absolute h-full w-full top-[0%] right-[0%] bottom-[0%] left-[0%]">
+              <div className="absolute h-full w-full top-[0%] right-[0%] bottom-[0%] left-[0%] rounded-t-3xs rounded-b-none bg-ghostwhite" />
+              <div className="absolute h-[48%] w-[65%] top-[38%] left-[17.14%] inline-block">
+                friends
+              </div>
+              <img
+                className="absolute h-[56%] w-[9.33%] top-[28%] right-[4.33%] bottom-[16%] left-[86.33%] max-w-full overflow-hidden max-h-full"
+                alt=""
+                src="/group-add-fill0-wght500-grad0-opsz48-1.svg"
+              />
+              <div className="absolute h-[32%] w-[40.67%] top-[50%] right-[18%] bottom-[18%] left-[41.33%] overflow-hidden flex flex-row py-[0rem] px-[0.38rem] box-border items-center justify-end gap-[0.19rem] text-[0.69rem]">
+                <img
+                  className="relative w-[1.13rem] h-[1.13rem] overflow-hidden shrink-0 z-[0]"
+                  alt=""
+                  src="/sync-fill0-wght500-grad0-opsz48-1.svg"
+                />
+                <div className="absolute my-0 mx-[!important] top-[0.09rem] left-[0.06rem] z-[1]">
+                  update in 5 seconds
+                </div>
+              </div>
+            </div>
+            <img
+              className="absolute h-[56%] w-[9.33%] top-[30%] right-[86.33%] bottom-[14%] left-[4.33%] max-w-full overflow-hidden max-h-full"
+              alt=""
+              src="/group-fill0-wght500-grad0-opsz48-11.svg"
+            />
+          </div>
+          <div className="absolute h-full w-full top-[0%] right-[0%] bottom-[0%] left-[0%] rounded-3xs box-border border-[3px] border-solid border-dimgray" />
+          <div className="absolute h-[82.46%] top-[8.92%] bottom-[8.62%] left-[calc(50%_-_130px)] overflow-y-auto flex flex-col py-[0.5rem] px-[0rem] box-border items-start justify-start gap-[0.44rem]">
+            <div className="relative inline-block w-[4.35rem] h-[1.31rem] shrink-0">
+              friends
+            </div>
+            <div className="flex flex-col items-center justify-center text-center text-[0.75rem]">
+              <div className="relative">online</div>
+            </div>
+            <div className="relative w-[16.25rem] h-[2.81rem]">
+              <div className="absolute top-[0rem] left-[0.06rem] flex flex-row items-center justify-center gap-[0.63rem]">
+                <img
+                  className="relative w-[2rem] h-[2rem] object-cover"
+                  alt=""
+                  src="/pngegg-4@2x.png"
+                />
+                <div className="relative">sans</div>
+                <img
+                  className="relative w-[0.75rem] h-[0.75rem] overflow-hidden shrink-0"
+                  alt=""
+                  src="/wifi-fill0-wght500-grad0-opsz48-1.svg"
+                />
+              </div>
+              <img
+                className="absolute top-[2.48rem] left-[0.02rem] w-[16.25rem] h-[0.09rem]"
+                alt=""
+                src="/line-101.svg"
+              />
+              <img
+                className="absolute h-[44.44%] w-[7.69%] top-[17.78%] right-[-0.38%] bottom-[37.78%] left-[92.69%] max-w-full overflow-hidden max-h-full"
+                alt=""
+                src="/data-info-alert-fill0-wght400-grad0-opsz48-1.svg"
+              />
+              <img
+                className="absolute top-[0.5rem] left-[13.5rem] w-[1.25rem] h-[1.25rem] overflow-hidden"
+                alt=""
+                src="/mark-as-unread-fill0-wght500-grad0-opsz48-1.svg"
+              />
+            </div>
+            <div className="relative w-[16.25rem] h-[2.81rem]">
+              <div className="absolute top-[0rem] left-[0.06rem] flex flex-row items-center justify-center gap-[0.63rem]">
+                <img
+                  className="relative w-[2rem] h-[2rem] object-cover"
+                  alt=""
+                  src="/pngegg-4@2x.png"
+                />
+                <div className="relative">asdfadsf</div>
+                <img
+                  className="relative w-[0.75rem] h-[0.75rem] overflow-hidden shrink-0"
+                  alt=""
+                  src="/wifi-fill0-wght500-grad0-opsz48-1.svg"
+                />
+              </div>
+              <img
+                className="absolute top-[2.48rem] left-[0.02rem] w-[16.25rem] h-[0.09rem]"
+                alt=""
+                src="/line-101.svg"
+              />
+              <img
+                className="absolute h-[44.44%] w-[7.69%] top-[17.78%] right-[-0.38%] bottom-[37.78%] left-[92.69%] max-w-full overflow-hidden max-h-full"
+                alt=""
+                src="/data-info-alert-fill0-wght400-grad0-opsz48-11.svg"
+              />
+              <img
+                className="absolute top-[0.5rem] left-[13.5rem] w-[1.25rem] h-[1.25rem] overflow-hidden"
+                alt=""
+                src="/mark-as-unread-fill0-wght500-grad0-opsz48-11.svg"
+              />
+            </div>
+            <div className="relative w-[16.25rem] h-[2.81rem]">
+              <div className="absolute top-[0rem] left-[0.06rem] flex flex-row items-center justify-center gap-[0.63rem]">
+                <img
+                  className="relative w-[2rem] h-[2rem] object-cover"
+                  alt=""
+                  src="/pngegg-4@2x.png"
+                />
+                <div className="relative">sans</div>
+                <img
+                  className="relative w-[0.75rem] h-[0.75rem] overflow-hidden shrink-0"
+                  alt=""
+                  src="/wifi-fill0-wght500-grad0-opsz48-11.svg"
+                />
+              </div>
+              <img
+                className="absolute top-[2.48rem] left-[0.02rem] w-[16.25rem] h-[0.09rem]"
+                alt=""
+                src="/line-101.svg"
+              />
+              <img
+                className="absolute h-[44.44%] w-[7.69%] top-[17.78%] right-[-0.38%] bottom-[37.78%] left-[92.69%] max-w-full overflow-hidden max-h-full"
+                alt=""
+                src="/data-info-alert-fill0-wght400-grad0-opsz48-12.svg"
+              />
+              <img
+                className="absolute top-[0.5rem] left-[13.5rem] w-[1.25rem] h-[1.25rem] overflow-hidden"
+                alt=""
+                src="/mark-as-unread-fill0-wght500-grad0-opsz48-11.svg"
+              />
+            </div>
+            <div className="relative w-[16.25rem] h-[2.81rem]">
+              <div className="absolute top-[0rem] left-[0.06rem] flex flex-row items-center justify-center gap-[0.63rem]">
+                <img
+                  className="relative w-[2rem] h-[2rem] object-cover"
+                  alt=""
+                  src="/pngegg-4@2x.png"
+                />
+                <div className="relative">asdfadsf</div>
+                <img
+                  className="relative w-[0.75rem] h-[0.75rem] overflow-hidden shrink-0"
+                  alt=""
+                  src="/wifi-fill0-wght500-grad0-opsz48-12.svg"
+                />
+              </div>
+              <img
+                className="absolute top-[2.48rem] left-[0.02rem] w-[16.25rem] h-[0.09rem]"
+                alt=""
+                src="/line-101.svg"
+              />
+              <img
+                className="absolute h-[44.44%] w-[7.69%] top-[17.78%] right-[-0.38%] bottom-[37.78%] left-[92.69%] max-w-full overflow-hidden max-h-full"
+                alt=""
+                src="/data-info-alert-fill0-wght400-grad0-opsz48-13.svg"
+              />
+              <img
+                className="absolute top-[0.5rem] left-[13.5rem] w-[1.25rem] h-[1.25rem] overflow-hidden"
+                alt=""
+                src="/mark-as-unread-fill0-wght500-grad0-opsz48-12.svg"
+              />
+            </div>
+            <div className="flex flex-col items-center justify-center text-center text-[0.75rem]">
+              <div className="relative">gaming</div>
+            </div>
+            <div className="relative w-[16.25rem] h-[2.81rem]">
+              <div className="absolute top-[0rem] left-[0.06rem] flex flex-row items-center justify-center gap-[0.63rem]">
+                <img
+                  className="relative w-[2rem] h-[2rem] object-cover"
+                  alt=""
+                  src="/pngegg-4@2x.png"
+                />
+                <div className="relative">testNickname</div>
+                <img
+                  className="relative w-[0.75rem] h-[0.75rem] overflow-hidden shrink-0"
+                  alt=""
+                  src="/stadia-controller-fill0-wght500-grad0-opsz48-1.svg"
+                />
+              </div>
+              <img
+                className="absolute top-[2.48rem] left-[0.02rem] w-[16.25rem] h-[0.09rem]"
+                alt=""
+                src="/line-101.svg"
+              />
+              <img
+                className="absolute h-[44.44%] w-[7.69%] top-[17.78%] right-[-0.38%] bottom-[37.78%] left-[92.69%] max-w-full overflow-hidden max-h-full"
+                alt=""
+                src="/data-info-alert-fill0-wght400-grad0-opsz48-11.svg"
+              />
+            </div>
+            <div className="relative w-[16.25rem] h-[2.81rem]">
+              <div className="absolute top-[0rem] left-[0.06rem] flex flex-row items-center justify-center gap-[0.63rem]">
+                <img
+                  className="relative w-[2rem] h-[2rem] object-cover"
+                  alt=""
+                  src="/pngegg-4@2x.png"
+                />
+                <div className="relative">testNickname</div>
+                <img
+                  className="relative w-[0.75rem] h-[0.75rem] overflow-hidden shrink-0"
+                  alt=""
+                  src="/stadia-controller-fill0-wght500-grad0-opsz48-11.svg"
+                />
+              </div>
+              <img
+                className="absolute top-[2.48rem] left-[0.02rem] w-[16.25rem] h-[0.09rem]"
+                alt=""
+                src="/line-101.svg"
+              />
+              <img
+                className="absolute h-[44.44%] w-[7.69%] top-[17.78%] right-[-0.38%] bottom-[37.78%] left-[92.69%] max-w-full overflow-hidden max-h-full"
+                alt=""
+                src="/data-info-alert-fill0-wght400-grad0-opsz48-1.svg"
+              />
+            </div>
+            <div className="flex flex-col items-center justify-center text-center text-[0.75rem]">
+              <div className="relative">offline</div>
+            </div>
+            <div className="relative w-[16.25rem] h-[2.81rem]">
+              <div className="absolute top-[0rem] left-[0.06rem] flex flex-row items-center justify-center gap-[0.63rem]">
+                <img
+                  className="relative w-[2rem] h-[2rem] object-cover"
+                  alt=""
+                  src="/pngegg-4@2x.png"
+                />
+                <div className="relative">tjo</div>
+                <img
+                  className="relative w-[0.75rem] h-[0.75rem] overflow-hidden shrink-0"
+                  alt=""
+                  src="/wifi-off-fill0-wght500-grad0-opsz48-1.svg"
+                />
+              </div>
+              <img
+                className="absolute top-[2.48rem] left-[0.02rem] w-[16.25rem] h-[0.09rem]"
+                alt=""
+                src="/line-101.svg"
+              />
+              <img
+                className="absolute h-[44.44%] w-[7.69%] top-[17.78%] right-[-0.38%] bottom-[37.78%] left-[92.69%] max-w-full overflow-hidden max-h-full"
+                alt=""
+                src="/data-info-alert-fill0-wght400-grad0-opsz48-1.svg"
+              />
+            </div>
+            <div className="relative w-[16.25rem] h-[2.81rem]">
+              <div className="absolute top-[0rem] left-[0.06rem] flex flex-row items-center justify-center gap-[0.63rem]">
+                <img
+                  className="relative w-[2rem] h-[2rem] object-cover"
+                  alt=""
+                  src="/pngegg-4@2x.png"
+                />
+                <div className="relative">3124</div>
+                <img
+                  className="relative w-[0.75rem] h-[0.75rem] overflow-hidden shrink-0"
+                  alt=""
+                  src="/wifi-off-fill0-wght500-grad0-opsz48-11.svg"
+                />
+              </div>
+              <img
+                className="absolute top-[2.48rem] left-[0.02rem] w-[16.25rem] h-[0.09rem]"
+                alt=""
+                src="/line-101.svg"
+              />
+              <img
+                className="absolute h-[44.44%] w-[7.69%] top-[17.78%] right-[-0.38%] bottom-[37.78%] left-[92.69%] max-w-full overflow-hidden max-h-full"
+                alt=""
+                src="/data-info-alert-fill0-wght400-grad0-opsz48-1.svg"
+              />
+            </div>
+            <div className="relative w-[16.25rem] h-[2.81rem]">
+              <div className="absolute top-[0rem] left-[0.06rem] flex flex-row items-center justify-center gap-[0.63rem]">
+                <img
+                  className="relative w-[2rem] h-[2rem] object-cover"
+                  alt=""
+                  src="/pngegg-21@2x.png"
+                />
+                <div className="relative">tjo</div>
+                <img
+                  className="relative w-[0.75rem] h-[0.75rem] overflow-hidden shrink-0"
+                  alt=""
+                  src="/wifi-off-fill0-wght500-grad0-opsz48-11.svg"
+                />
+              </div>
+              <img
+                className="absolute top-[2.53rem] left-[0.06rem] w-[16.25rem] h-[0rem]"
+                alt=""
+                src="/rectangle-12.svg"
+              />
+              <img
+                className="absolute h-[44.44%] w-[7.69%] top-[17.78%] right-[-0.38%] bottom-[37.78%] left-[92.69%] max-w-full overflow-hidden max-h-full"
+                alt=""
+                src="/data-info-alert-fill0-wght400-grad0-opsz48-14.svg"
+              />
+            </div>
+            <div className="relative w-[16.25rem] h-[2.81rem]">
+              <div className="absolute top-[0rem] left-[0.06rem] flex flex-row items-center justify-center gap-[0.63rem]">
+                <img
+                  className="relative w-[2rem] h-[2rem] object-cover"
+                  alt=""
+                  src="/pngegg-41@2x.png"
+                />
+                <div className="relative">3124</div>
+                <img
+                  className="relative w-[0.75rem] h-[0.75rem] overflow-hidden shrink-0"
+                  alt=""
+                  src="/rectangle-12.svg"
+                />
+              </div>
+              <img
+                className="absolute top-[2.53rem] left-[0.06rem] w-[16.25rem] h-[0rem]"
+                alt=""
+                src="/rectangle-12.svg"
+              />
+              <img
+                className="absolute h-[44.44%] w-[7.69%] top-[17.78%] right-[-0.38%] bottom-[37.78%] left-[92.69%] max-w-full overflow-hidden max-h-full"
+                alt=""
+                src="/rectangle-12.svg"
+              />
+            </div>
+            <div className="relative inline-block w-[4.35rem] h-[1.31rem] shrink-0">
+              blocks
+            </div>
+            <div className="relative w-[16.25rem] h-[2.81rem]">
+              <div className="absolute top-[0rem] left-[0.06rem] flex flex-row items-center justify-center gap-[0.63rem]">
+                <img
+                  className="relative w-[2rem] h-[2rem] object-cover"
+                  alt=""
+                  src="/pngegg-41@2x.png"
+                />
+                <div className="relative">testNickname</div>
+              </div>
+              <img
+                className="absolute top-[0.25rem] left-[14.75rem] w-[1.5rem] h-[1.5rem] overflow-hidden"
+                alt=""
+                src="/rectangle-12.svg"
+              />
+              <img
+                className="absolute top-[2.53rem] left-[0.06rem] w-[16.25rem] h-[0rem]"
+                alt=""
+                src="/rectangle-12.svg"
+              />
+            </div>
+            <div className="relative w-[16.25rem] h-[2.81rem]">
+              <div className="absolute top-[0rem] left-[0.06rem] flex flex-row items-center justify-center gap-[0.63rem]">
+                <img
+                  className="relative w-[2rem] h-[2rem] object-cover"
+                  alt=""
+                  src="/pngegg-41@2x.png"
+                />
+                <div className="relative">asdfa</div>
+              </div>
+              <img
+                className="absolute top-[0.25rem] left-[14.75rem] w-[1.5rem] h-[1.5rem] overflow-hidden"
+                alt=""
+                src="/rectangle-12.svg"
+              />
+              <img
+                className="absolute top-[2.53rem] left-[0.06rem] w-[16.25rem] h-[0rem]"
+                alt=""
+                src="/rectangle-12.svg"
+              />
+            </div>
+            <div className="relative w-[16.25rem] h-[2.81rem]">
+              <div className="absolute top-[0rem] left-[0.06rem] flex flex-row items-center justify-center gap-[0.63rem]">
+                <img
+                  className="relative w-[2rem] h-[2rem] object-cover"
+                  alt=""
+                  src="/pngegg-41@2x.png"
+                />
+                <div className="relative">testNickname</div>
+              </div>
+              <img
+                className="absolute top-[0.25rem] left-[14.75rem] w-[1.5rem] h-[1.5rem] overflow-hidden"
+                alt=""
+                src="/rectangle-12.svg"
+              />
+              <img
+                className="absolute top-[2.53rem] left-[0.06rem] w-[16.25rem] h-[0rem]"
+                alt=""
+                src="/rectangle-12.svg"
+              />
+            </div>
+            <div className="relative w-[16.25rem] h-[2.81rem]">
+              <div className="absolute top-[0rem] left-[0.06rem] flex flex-row items-center justify-center gap-[0.63rem]">
+                <img
+                  className="relative w-[2rem] h-[2rem] object-cover"
+                  alt=""
+                  src="/pngegg-41@2x.png"
+                />
+                <div className="relative">asdfa</div>
+              </div>
+              <img
+                className="absolute top-[0.25rem] left-[14.75rem] w-[1.5rem] h-[1.5rem] overflow-hidden"
+                alt=""
+                src="/rectangle-12.svg"
+              />
+              <img
+                className="absolute top-[2.53rem] left-[0.06rem] w-[16.25rem] h-[0rem]"
+                alt=""
+                src="/rectangle-12.svg"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      {isMyPageFrameOpen && (
+            <PortalPopup
+                overlayColor="rgba(113, 113, 113, 0.3)"
+                placement="Centered"
+                onOutsideClick={closeMyPageFrame}
+            >
+                <MyPageFrame onClose={closeMyPageFrame} />
+            </PortalPopup>
+        )}
     </>
   );
 };
