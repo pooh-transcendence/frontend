@@ -1,13 +1,12 @@
 'use client'
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { ChatBottomBar } from "../frame/ChatBottomBar";
 import { ChatTitle } from "../frame/ChatTitle";
 import { UserListComponent } from "./ChatUserListComp";
-import { socket, auth } from "@/app/api/socket";
-import axios from "axios";
-import { useDispatch, useSelector } from 'react-redux';
-import { setFriendList, fetchInitialValue } from "../reducer";
+import { socket } from "@/app/api/socket";
+import { UserContext, chatStates } from "@/app/UserContext";
+
 
 const SmallSeparater=(props: {str: string}): JSX.Element => {
     return (
@@ -22,21 +21,84 @@ const BigSeparater=(props: {str: string}): JSX.Element => {
     );
 }
 
+interface friend
+{
+    id: number;
+    nickname: string;
+    avatar: string;
+    userState: "ONLINE" | "OFFLINE" | "GAMING";
+}
+
+function makeUserListComp(friend){
+    const {state, actions} = useContext(UserContext);
+
+    const gotoChat= () => {
+        actions.setChatState(chatStates.friendChat);
+        actions.setFriendChattingInfo(friend);
+        console.log("change to friendChat");
+    }
+    return (
+        <button onClick={gotoChat}>
+            <UserListComponent nick={friend.nickname} type={friend.userState} profileImg={friend.avatar}/>
+        </button>
+    )
+}
+
 export const ChatFriendList = (): JSX.Element => {
-    const dispatch = useDispatch();
-    const { loading, friendList } = useSelector((state: any) => ({
-        loading: state.chatReducer.loading,
-        friendList: state.chatReducer.friendList,
-      }));
+    const {state, actions} = useContext(UserContext);
+    const [friendList, setFriendList] = useState<friend[]>([]);
+    // const [friendList, setFriendList] = useState<Object[]>([
+    //     {
+    //         "id": 2,
+    //         "nickname": "hello4",
+    //         "winScore": 0,
+    //         "loseScore": 0,
+    //         "avatar": null,
+    //         "userState": "ONLINE",
+    //         "secret": null,
+    //         "socketId": null,
+    //         "winnerGame": [],
+    //         "loserGame": []
+    //     },
+    //     {
+    //         "id": 2,
+    //         "nickname": "OFFLINETEST",
+    //         "winScore": 0,
+    //         "loseScore": 0,
+    //         "avatar": null,
+    //         "userState": "OFFLINE",
+    //         "secret": null,
+    //         "socketId": null,
+    //         "winnerGame": [],
+    //         "loserGame": []
+    //     },
+    //     {
+    //         "id": 2,
+    //         "nickname": "GAMINGTEST",
+    //         "winScore": 0,
+    //         "loseScore": 0,
+    //         "avatar": null,
+    //         "userState": "GAMING",
+    //         "secret": null,
+    //         "socketId": null,
+    //         "winnerGame": [],
+    //         "loserGame": []
+    //     }
+    // ]);
 
     useEffect(() => {
-        dispatch<any>(fetchInitialValue());
         console.log(friendList ?? "friend list is null");
-        socket.on("getFriendList", (data)=>{
+        // socket.emit("getFriendList", (data)=>{
+        //     console.log("received"+ data);
+        // })
+        socket.emit("getFriendList", "test", (data) => {
             console.log(data);
-            // dispatch(setFriendList(data.friendList));
-        })
-    }, [dispatch, friendList]);
+        });
+    }, []);
+
+    socket.on("getFriendlist", (data)=>{
+        console.log("received" + data);
+    });
 
     return (
         <div className="w-[18.75rem] h-[40.625rem] relative">
@@ -53,14 +115,15 @@ export const ChatFriendList = (): JSX.Element => {
                 {/* renderFriends() */}
                 <BigSeparater str="friends" />
                 <SmallSeparater str="online" />
-                {/* <UserListComponent nick="t1" type="list_1" /> */}
                 {
-                    Object.entries(friendList ?? [{}]).map((data) => {
-                        console.log(data);
-                        return <UserListComponent nick="asdf" type="list_1" profileImg={"test2"}/>
-                    })
+                    Object.entries(friendList.filter(friend => friend.userState === "ONLINE" || friend.userState === "GAMING") ?? [{}]).map(
+                        ([idx, friend]) => makeUserListComp(friend))
                 }
                 <SmallSeparater str="offline" />
+                {
+                    Object.entries(friendList.filter(friend => friend.userState === "OFFLINE") ?? [{}]).map(
+                        ([idx, friend]) => makeUserListComp(friend))
+                }
                 <BigSeparater str="blocks" />
             </div>
         </div>

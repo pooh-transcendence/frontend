@@ -1,33 +1,25 @@
 'use client'
 
-import Image from 'next/image'
-import React from 'react'
+import React, { useContext } from 'react'
 import { ChatChannel } from './chatting/ChatChannel'
 import { ChatFriendList } from './lists/ChatFriendList'
 import { ChatChannelList } from './lists/ChatChannelList'
-import RoomSettings from './chatting/RoomSettings'
-import ChatUserSearch from './ChatUserSearch'
-import UserInfo from './lists/UserInfo'
-import { ChatBubble } from './chatting/ChatBubble'
-import { useSelector } from 'react-redux'
-import { chatStateEnum } from './reducer'
+import { UserContext, chatStates } from '../UserContext'
 
 export default function Chat() {
-  const { state } = useSelector((state: any) => ({
-    state: state.chatReducer.state,
-  }));
+  const {chatState} = useContext(UserContext).state;
 
-  switch(state)
+  switch(chatState)
   {
-    case (chatStateEnum.channelChat):
+    case (chatStates.channelChat):
       return <ChatChannel title="test1"/>;
-    case (chatStateEnum.channelList):
+    case (chatStates.channelList):
       return <ChatChannelList/>;
-    case (chatStateEnum.friendChat):
-      return <ChatChannel title="test2"/>
-    case (chatStateEnum.friendList):
+    case (chatStates.friendChat):
+      return <ChatChannel title="temporal friend chat test"/>
+    case (chatStates.friendList):
       return <ChatFriendList/>;
     default:
-      throw Error("unexpected chatReducer.state "+state);
+      throw Error("unexpected chatReducer.state "+chatState);
   }
 };

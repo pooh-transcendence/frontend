@@ -10,11 +10,6 @@ const ChatUserSearch = (props: {type: "add_friend" | "invite"}): JSX.Element => 
             <div className="w-[276px] h-[476px] left-0 top-0 absolute bg-[#FEFEFE] rounded-[10px]" />
             <div className="w-[247px] h-[368px] left-[15px] top-[93px] absolute flex-col justify-start items-start gap-[7px] inline-flex">
                 <UserListComponent nick="1" type="addFriend" />
-                <UserListComponent nick="2" type="addFriend" />
-                <UserListComponent nick="3" type="addFriend" />
-                <UserListComponent nick="4" type="addFriend" />
-                <UserListComponent nick="5" type="addFriend" />
-                <UserListComponent nick="6" type="addFriend" />
             </div>
             <div className="w-6 h-6 left-[238px] top-[7px] absolute" />
             <div className="w-[75px] h-3.5 left-[16px] top-[69px] absolute text-neutral-600 text-[15px] font-normal">result</div>
@@ -36,8 +31,6 @@ const ChatUserSearch = (props: {type: "add_friend" | "invite"}): JSX.Element => 
             <div className="w-[276px] h-[476px] left-0 top-0 absolute bg-[#FEFEFE] rounded-[10px]" />
             <div className="w-[247px] h-[340px] left-[15px] top-[93px] absolute flex-col justify-start items-start gap-[7px] inline-flex">
                 <UserListComponent nick="1" type="inviteFriend_0" />
-                <UserListComponent nick="2" type="inviteFriend_0" />
-                <UserListComponent nick="3" type="inviteFriend_0" />
             </div>
             <div className="w-6 h-6 left-[238px] top-[7px] absolute" />
             <div className="w-[75px] h-3.5 left-[16px] top-[69px] absolute text-neutral-600 text-[15px] font-normal">result</div>
