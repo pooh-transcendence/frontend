@@ -2,7 +2,7 @@
 
 import type { NextPage } from "next";
 import { useState, useCallback } from "react";
-import MyPageFrame from "@/components/my-page-frame";
+import MyPageLobby from "@/app/MyPageLobby/page";
 import PortalPopup from "@/components/portal-popup";
 
 export default function LeftSideButton() {
@@ -43,7 +43,7 @@ export default function LeftSideButton() {
                 placement="Centered"
                 onOutsideClick={closeMyPageFrame}
               >
-                <MyPageFrame onClose={closeMyPageFrame} />
+                <MyPageLobby onClose={closeMyPageFrame} />
               </PortalPopup>
             )}
         </>
