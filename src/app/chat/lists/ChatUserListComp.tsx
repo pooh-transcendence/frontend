@@ -2,7 +2,7 @@ import React from "react";
 
 interface UserListCompProps {
     nick: string,
-    type: "list_block" | "list_game" | "list_1" | "list_0" | "inviteFriend_1" | "inviteFriend_0" | "addFriend",
+    type: "list_block" | "GAMING" | "ONLINE" | "OFFLINE" | "inviteFriend_1" | "inviteFriend_0" | "addFriend",
     profileImg: string
   }
   
@@ -50,7 +50,7 @@ export const UserListComponent = ({
             <img className="top-[41px] relative" src="listComp_line_240px.svg" />
           </div>
         )}
-        {type == "list_0" && (
+        {type == "OFFLINE" && (
           <div className="w-[260px] h-[45px] relative">
             <div className="left-[1px] top-0 absolute justify-center items-center gap-2.5 inline-flex">
               <img className="w-8 h-8" src={profileImg} />
@@ -61,7 +61,7 @@ export const UserListComponent = ({
             <img className="top-[41px] relative" src="listComp_line_260px.svg" />
           </div>
         )}
-        {type == "list_1" && (
+        {type == "ONLINE" && (
           <div className="w-[260px] h-[45px] relative">
             <div className="left-[1px] top-0 absolute justify-center items-center gap-2.5 inline-flex">
               <img className="w-8 h-8" src={profileImg} />
@@ -73,7 +73,7 @@ export const UserListComponent = ({
             <img className="top-[41px] relative" src="listComp_line_260px.svg" />
           </div>
         )}
-        {type == "list_game" && (
+        {type == "GAMING" && (
           <div className="w-[260px] h-[45px] relative">
             <div className="left-[1px] top-0 absolute justify-center items-center gap-2.5 inline-flex">
               <img className="w-8 h-8" src={profileImg} />

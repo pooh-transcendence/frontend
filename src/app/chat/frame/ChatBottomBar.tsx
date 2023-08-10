@@ -1,11 +1,12 @@
-import React from 'react'
-import { changeToFriendList, changeToChannelList } from '../reducer';
-import { useDispatch } from 'react-redux';
+import React, { useContext } from 'react'
+import { UserContext, chatStates } from '@/app/UserContext';
 
 export const ChatBottomBar = (): JSX.Element => {
-  const dispatch=useDispatch();
-  const onChangeToFriendList=() => dispatch(changeToFriendList());
-  const onChangeToChannelList=() => dispatch(changeToChannelList());
+  const context = useContext(UserContext);
+
+  const onChangeToFriendList=() => context.actions.setChatState(chatStates.friendList);
+  const onChangeToChannelList=() => context.actions.setChatState(chatStates.channelList);
+  
     return (
       <div className="w-[18.75rem] h-[3.1875rem] relative">
         <div className="w-[18.74rem] h-[3.125rem] left-0 top-0 absolute bg-slate-100 rounded-[0.625rem]" />
