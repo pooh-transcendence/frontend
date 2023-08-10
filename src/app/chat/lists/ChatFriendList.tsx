@@ -4,7 +4,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { ChatBottomBar } from "../frame/ChatBottomBar";
 import { ChatTitle } from "../frame/ChatTitle";
 import { UserListComponent } from "./ChatUserListComp";
-import { socket } from "@/app/api/socket";
+import { socket } from "@/app/api";
 import { UserContext, chatStates } from "@/app/UserContext";
 
 
@@ -23,82 +23,56 @@ const BigSeparater=(props: {str: string}): JSX.Element => {
 
 interface friend
 {
-    id: number;
+    id: string;
     nickname: string;
     avatar: string;
     userState: "ONLINE" | "OFFLINE" | "GAMING";
 }
 
-function makeUserListComp(friend){
+interface block
+{
+    id: string;
+    nickname: string;
+    avatar: string;
+}
+
+function makeUserListComp(friend: friend){
     const {state, actions} = useContext(UserContext);
 
+    friend={...friend, id: "2"}; // for debug
     const gotoChat= () => {
         actions.setChatState(chatStates.friendChat);
         actions.setFriendChattingInfo(friend);
-        console.log("change to friendChat");
+        console.log("change to friendChat", friend.id);
     }
     return (
         <button onClick={gotoChat}>
-            <UserListComponent nick={friend.nickname} type={friend.userState} profileImg={friend.avatar}/>
+            <UserListComponent userId={friend.id} nick={friend.nickname} type={friend.userState} profileImg={friend.avatar}/>
         </button>
+    )
+}
+
+function makeBlockListComp(block: block){
+    return (
+            <UserListComponent userId={block.id} nick={block.nickname} type="list_block" profileImg={block.avatar}/>
     )
 }
 
 export const ChatFriendList = (): JSX.Element => {
     const {state, actions} = useContext(UserContext);
     const [friendList, setFriendList] = useState<friend[]>([]);
-    // const [friendList, setFriendList] = useState<Object[]>([
-    //     {
-    //         "id": 2,
-    //         "nickname": "hello4",
-    //         "winScore": 0,
-    //         "loseScore": 0,
-    //         "avatar": null,
-    //         "userState": "ONLINE",
-    //         "secret": null,
-    //         "socketId": null,
-    //         "winnerGame": [],
-    //         "loserGame": []
-    //     },
-    //     {
-    //         "id": 2,
-    //         "nickname": "OFFLINETEST",
-    //         "winScore": 0,
-    //         "loseScore": 0,
-    //         "avatar": null,
-    //         "userState": "OFFLINE",
-    //         "secret": null,
-    //         "socketId": null,
-    //         "winnerGame": [],
-    //         "loserGame": []
-    //     },
-    //     {
-    //         "id": 2,
-    //         "nickname": "GAMINGTEST",
-    //         "winScore": 0,
-    //         "loseScore": 0,
-    //         "avatar": null,
-    //         "userState": "GAMING",
-    //         "secret": null,
-    //         "socketId": null,
-    //         "winnerGame": [],
-    //         "loserGame": []
-    //     }
-    // ]);
+    const [blockList, setBlockList] = useState<block[]>([]);
 
     useEffect(() => {
-        console.log(friendList ?? "friend list is null");
-        // socket.emit("getFriendList", (data)=>{
-        //     console.log("received"+ data);
-        // })
-        socket.emit("getFriendList", "test", (data) => {
-            console.log(data);
+        socket.emit("getFriendList", (data: friend[]) => {
+            setFriendList(data);
         });
+        socket.emit("getBlockList", (data: block[]) => {
+            setBlockList(data);
+        });
+        console.log("friendList", friendList);
+        console.log("blockList", blockList);
     }, []);
-
-    socket.on("getFriendlist", (data)=>{
-        console.log("received" + data);
-    });
 
     return (
         <div className="w-[18.75rem] h-[40.625rem] relative">
@@ -125,6 +99,10 @@ export const ChatFriendList = (): JSX.Element => {
                         ([idx, friend]) => makeUserListComp(friend))
                 }
                 <BigSeparater str="blocks" />
+                {
+                    Object.entries(blockList).map(
+                        ([idx, block]) => makeBlockListComp(block))
+                }
             </div>
         </div>
     )

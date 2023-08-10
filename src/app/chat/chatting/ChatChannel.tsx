@@ -1,9 +1,11 @@
 'use client'
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { ChatTitle } from '../frame/ChatTitle' 
 import { ChatBubble } from './ChatBubble'
-import { socket } from "@/app/api/socket";
+import { socket } from "@/app/api";
+import { UserContext } from "@/app/UserContext";
+import UserInfo from "@/app/chat/lists/UserInfo";
 
 interface Props{
     title: string,
@@ -11,17 +13,25 @@ interface Props{
 
 export const ChatChannel = ({
     title,
-  }: Props): JSX.Element => {
+}: Props): JSX.Element => {
     
-    const [msgQuery, setMsgQuery]=useState<string[][]>([]);
-    useEffect(() => {        
-        socket.on("userMessage", (data)=>{
-            console.log(data);
-            setMsgQuery([...msgQuery, ["recv", data[0].nickname, data[0].message]]);
-        });
-      }, [msgQuery]);
+    const {state, actions}=useContext(UserContext);
+    const scrollRef = useRef<HTMLDivElement | null>(null);
+    
+    const openUserInfo=(id: string) => {
+        console.log("open "+id+"'s userinfo");
+        actions.setShowChatUserInfo(true);
+        actions.setChatTargetUser(id);
+    };
+    const closeUserInfo=() => {
+        actions.setShowChatUserInfo(false);
+    };
 
-    const [text, setText]=useState("");
+    useEffect(() => {            
+        scrollRef.current?.scrollIntoView();
+        renderMessage();
+      }, [state.userChat]); // 어떻게 해야 보고있는 채팅이 업데이트 될때만 리랜더할 수 있을까?
+      
     const onChange=(e: any)=>{setText(e.target.value);}
     const handleOnKeyPress=(e: any)=>{
         if(e.key === 'Enter')
@@ -33,47 +43,77 @@ export const ChatChannel = ({
 
     function renderMessage(): Array<JSX.Element>
     {
+        console.log("render", state.userChat[state.channelChattingInfo.id]);
         const res: Array<JSX.Element>=[];
-        for(let i=0; i<msgQuery.length; i++)
-        {
-            const [type, nickname, message]=msgQuery[i];
-            res.push(<ChatBubble 
-                    side={type==="recv" ? "left":"right"}
+        if(!state.userChat[state.channelChattingInfo.id]) return res;
+        state.userChat[state.channelChattingInfo.id].forEach((msg, idx) => {
+            const {nickname, message, userId}=msg;
+            if(nickname!==state.userInfo.nickname)
+                res.push(
+                    <button onClick={()=>openUserInfo(userId)} className="text-left" key={idx}>
+                        <ChatBubble
+                            side={"left"}
+                            nickname={nickname}
+                            messageText={message}
+                            key={idx} />
+                    </button>
+                );
+            else
+                res.push(
+                    <ChatBubble
+                    side={"right"}
                     nickname={nickname}
                     messageText={message}
-                    key={i} />);
-        }
+                    key={idx} />
+                )
+        });
         return res;
     }
-
     
+    const [text, setText]=useState("");
     const submitText=()=>{
-        console.log(socket);
-        // testQuery.push(["send", "", text]);
-        setMsgQuery([...msgQuery, ["send", "", text]]);
-        socket.emit("message", {userId : 2, message: text});
+        // sender side
+        // 서버가 자기가 보낸 것도 다시 보내주나?
+        // actions.setChannelChat({channelId: state.channelChattingInfo.id, userId: state.userInfo.userId, nickname: state.userInfo.nickname, message: text});
+
+        // opponent side
+        console.log("send to", Number(state.channelChattingInfo.id));
+        socket.emit("message", {channelId : Number(state.channelChattingInfo.id), message: text});
         setText("");
     }
+
     return (
-        <div className="w-[300px] h-[650px] relative">
-            {/* writing section */}
-            <div className="w-[300px] h-[70px] left-0 top-[580px] absolute">
-                <div className="w-[300px] h-[70px] left-0 top-0 absolute bg-slate-100 rounded-[10px]" />
-                <form onKeyDown={handleOnKeyPress}>
-                    {/* TODO: wrap text */}
-                    <img onClick={submitText} className="z-10 w-6 h-6 left-[260px] top-[23px] absolute justify-center items-center inline-flex" src="send.svg" />
-                    <input onChange={onChange} type="text" value={text} placeholder="test" className="z-10 outline-none w-[221px] h-[50px] left-[24px] top-[10px] absolute bg-slate-100 text-black font-normal" />
-                </form>
+        <>
+            <div className="w-[300px] h-[650px] relative">
+                {/* writing section */}
+                <div className="w-[300px] h-[70px] left-0 top-[580px] absolute">
+                    <div className="w-[300px] h-[70px] left-0 top-0 absolute bg-slate-100 rounded-[10px]" />
+                    <form onKeyDown={handleOnKeyPress}>
+                        {/* TODO: wrap text */}
+                        <img onClick={submitText} className="z-10 w-6 h-6 left-[260px] top-[23px] absolute justify-center items-center inline-flex" src="send.svg" />
+                        <input onChange={onChange} type="text" value={text} placeholder="test" className="z-10 outline-none w-[221px] h-[50px] left-[24px] top-[10px] absolute bg-slate-100 text-black font-normal" />
+                    </form>
+                </div>
+                {/* chat container*/}
+                {/* <div className="w-[270px] h-[511px] left-[15px] top-[59px] absolute flex-col justify-start items-end gap-[5px] inline-flex"> */}
+                <div className="scrollbar-hide overflow-auto z-10 w-[270px] h-[511px] left-[15px] top-[59px] absolute flex-col justify-start items-end gap-[5px] inline-flex">
+                    {renderMessage()}
+                    <div ref={scrollRef}/>
+                </div>
+                {/* title section */}
+                <ChatTitle type="channelChat" title={title}/>
+                {/* frame */}
+                <div className="w-[300px] h-[650px] left-0 top-0 absolute rounded-[10px] border border-neutral-600" />
+
             </div>
-            {/* chat container*/}
-            <div className="w-[270px] h-[511px] left-[15px] top-[59px] absolute flex-col justify-start items-end gap-[5px] inline-flex">
-                {/* TODO: scroll */}
-                {renderMessage()}
-            </div>
-            {/* title section */}
-            <ChatTitle type="channelChat" title={title}/>
-            {/* frame */}
-            <div className="w-[300px] h-[650px] left-0 top-0 absolute rounded-[10px] border border-neutral-600" />
-        </div>
+            {/* userInfoModal */}
+            {/* todo: zindex */}
+            {
+                state.showChatUserInfo && 
+                <div className="z-100 absolute">
+                    <UserInfo type="default"/>
+                </div>
+            }   
+        </>
     )
 }

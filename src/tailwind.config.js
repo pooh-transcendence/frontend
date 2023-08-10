@@ -37,5 +37,5 @@ module.exports = {
       smi: "0.81rem",
     },
   },
-  plugins: [],
+  plugins: [require("tailwind-scrollbar-hide")],
 }

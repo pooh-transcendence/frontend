@@ -1,18 +1,42 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { api_get, api_post, socket } from "@/app/api";
+import { UserContext } from "@/app/UserContext";
 
 interface Props{
     type: "mod" | "default",
-    userName: string,
-    profileImg: string,
 };
+
 const UserInfo = ({
     type,
-    userName = "temporalUser",
-    profileImg = "https://via.placeholder.com/32x32",
     }: Props): JSX.Element => {
+
+    const [userName, setUserName]=useState<string>("loading");
+    const [profileImg, setProfileImg]=useState<string>("https://via.placeholder.com/32x32");
+    const {state, actions}=useContext(UserContext);
+    useEffect(() => {
+        console.log(state.chatTargetUser);
+        api_get(`/user/${state.chatTargetUser}`).then((res) => {
+            setUserName(res.data.data.nickname);
+            setProfileImg(res.data.data.avatar ?? "https://via.placeholder.com/32x32");
+        })
+    }, []);
+
+    const gameHandler=() => {};
+    const followHandler=() => {socket.emit("createFriend", {
+        followingUserId: state.chatTargetUser
+    })};
+    const muteHandler = () => {actions.setMutedUser({
+        //   userId: state.chatTargetUser,
+          userId: "2",
+          until: new Date().getTime() + 1000 * 10, // 10초간 음소거
+    })};
+    const blockHandler=() => {socket.emit("createBlock", Number(state.chatTargetUser), (ack: any) => {console.log(ack)})}; // ?
+    // const blockHandler=() => {console.log("block", state.chatTargetUser); api_post("/block", {"bannedUserId": state.chatTargetUser})}; // http 400 
+    const infoHandler=() => {console.log("info button")};
+
     if(type === "mod")
         return (
-            <div className="w-[276px] h-[205px] bg-[#FEFEFE] relative">
+            <div className="z-100 w-[276px] h-[205px] bg-[#FEFEFE] relative">
                 {/* mod buttons */}
                 <div className="left-[56px] top-[136px] absolute justify-start items-start gap-8 inline-flex italic">
                     <div className="w-8 h-12 flex-col justify-start items-center inline-flex">
@@ -30,28 +54,32 @@ const UserInfo = ({
                 </div>
                 {/* default buttons */}
                 <div className="left-[37px] top-[69px] absolute justify-start items-start gap-[23px] inline-flex italic">
-                    <div className="flex-col justify-start items-center inline-flex">
+                    <button onClick={gameHandler} className="flex-col justify-start items-center inline-flex">
                         <img className="w-8 h-8 relative" src="mark_as_unread.svg" />
                         <div className="text-neutral-600 text-[13px] font-bold">1 vs 1</div>
-                    </div>
-                    <div className="flex-col justify-start items-start inline-flex">
+                    </button>
+                    <button onClick={followHandler} className="flex-col justify-start items-start inline-flex">
                         <img className="w-8 h-8 relative" src="person_add.svg" />
                         <div className="text-neutral-600 text-[13px] font-bold">follow</div>
-                    </div>
-                    <div className="flex-col justify-start items-start inline-flex">
+                    </button>
+                    <button onClick={muteHandler} className="flex-col justify-start items-start inline-flex">
                         <img className="w-8 h-8 relative" src="mute.svg" />
                         <div className="text-neutral-600 text-[13px] font-bold">mute</div>
-                    </div>
-                    <div className="flex-col justify-start items-start inline-flex">
+                    </button>
+                    <button onClick={blockHandler} className="flex-col justify-start items-start inline-flex">
                         <img className="w-8 h-8 relative" src="block.svg" />
                         <div className="text-neutral-600 text-[13px] font-bold">block</div>
-                    </div>
+                    </button>
                 </div>
                 {/* title section */}
                 <div className="left-[65px] top-[27px] absolute text-neutral-600 text-base font-normal">{userName}</div>
                 <img className="w-8 h-8 left-[23px] top-[22px] absolute" src={profileImg} />
-                <img className="w-7 h-7 left-[200px] top-[22px] absolute" src="info.svg" />
-                <img className="w-6 h-6 left-[238px] top-[24px] absolute" src="cancel.svg" />
+                <button onClick={infoHandler}>
+                    <img className="w-7 h-7 left-[200px] top-[22px] absolute" src="info.svg" />
+                </button>
+                <button onClick={()=>{actions.setShowChatUserInfo(false)}} className="z-10">
+                    <img className="w-6 h-6 left-[238px] top-[24px] absolute" src="cancel.svg" />
+                </button>
             </div>
         );
     else // if(type == "default")
@@ -59,30 +87,34 @@ const UserInfo = ({
             <div className="w-[276px] h-[138px] bg-[#FEFEFE] relative">
                 {/* default buttons */}
                 <div className="left-[37px] top-[69px] absolute justify-start items-start gap-[23px] inline-flex italic">
-                    <div className="flex-col justify-start items-center inline-flex">
+                    <button onClick={gameHandler} className="flex-col justify-start items-center inline-flex">
                         <img className="w-8 h-8 relative" src="mark_as_unread.svg" />
                         <div className="text-neutral-600 text-[13px] font-bold">1 vs 1</div>
-                    </div>
-                    <div className="flex-col justify-start items-start inline-flex">
+                    </button>
+                    <button onClick={followHandler} className="flex-col justify-start items-start inline-flex">
                         <img className="w-8 h-8 relative" src="person_add.svg" />
                         <div className="text-neutral-600 text-[13px] font-bold">follow</div>
-                    </div>
-                    <div className="flex-col justify-start items-start inline-flex">
+                    </button>
+                    <button onClick={muteHandler} className="flex-col justify-start items-start inline-flex">
                         <img className="w-8 h-8 relative" src="mute.svg" />
                         <div className="text-neutral-600 text-[13px] font-bold">mute</div>
-                    </div>
-                    <div className="flex-col justify-start items-start inline-flex">
+                    </button>
+                    <button onClick={blockHandler} className="flex-col justify-start items-start inline-flex">
                         <img className="w-8 h-8 relative" src="block.svg" />
                         <div className="text-neutral-600 text-[13px] font-bold">block</div>
-                    </div>
+                    </button>
                 </div>
                 {/* title section */}
                 <div className="left-[65px] top-[27px] absolute text-neutral-600 text-base font-normal">{userName}</div>
                 <img className="w-8 h-8 left-[23px] top-[22px] absolute" src={profileImg} />
-                <img className="w-7 h-7 left-[200px] top-[22px] absolute" src="info.svg" />
-                <img className="w-6 h-6 left-[238px] top-[24px] absolute" src="cancel.svg" />
+                <button onClick={infoHandler}>
+                    <img className="w-7 h-7 left-[200px] top-[22px] absolute" src="info.svg" />
+                </button>
+                <button onClick={()=>{actions.setShowChatUserInfo(false)}}>
+                    <img className="w-6 h-6 left-[238px] top-[24px] absolute" src="cancel.svg" />
+                </button>
             </div>
         );
-} 
+    }
 
 export default UserInfo;
