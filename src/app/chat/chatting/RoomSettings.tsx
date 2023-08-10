@@ -1,6 +1,20 @@
-import React from "react";
+'use client'
+
+import React, {useContext} from "react";
+import { UserContext, chatStates } from "@/app/UserContext";
+import { socket } from "@/app/api"
 
 export default function RoomSettings(props: { type: "mod_protected" | "mod_public" | "default" }) {
+    const {state, actions}=useContext(UserContext);
+
+    const exitButtonHandler=() => {
+        actions.setShowChatSetting(false);
+    }
+    const exitChannelHandler=() => {
+        exitButtonHandler();
+        socket.emit("leaveChannel", Number(state.channelChattingInfo.id), (ack: any) => {console.log("exited channel", ack)});
+        actions.setChatState(chatStates.channelList);
+    }
     if (props.type === "mod_protected") {
         return (
             <div className="w-[276px] h-[124px] relative shadow">
@@ -22,10 +36,10 @@ export default function RoomSettings(props: { type: "mod_protected" | "mod_publi
                 </div>
 
                 {/* exit channel button */}
-                <div className="pr-[5px] left-[17px] top-[7px] absolute justify-start items-center inline-flex">
+                <button onClick={exitChannelHandler} className="pr-[5px] left-[17px] top-[7px] absolute justify-start items-center inline-flex">
                     <img className="w-6 h-6 justify-center items-center inline-flex" src="logout.svg" />
                     <div className="text-neutral-600 text-xs font-bold italic">exit channel</div>
-                </div>
+                </button>
                 {/* password input form */}
                 <div className="w-[220px] h-[25px] left-[28px] top-[45px] absolute">
                     <div className="left-0 top-0 absolute text-neutral-600 text-[15px] font-bold">new pw</div>
@@ -34,7 +48,9 @@ export default function RoomSettings(props: { type: "mod_protected" | "mod_publi
                     </div>
                     <img className="absolute left-[50px] top-[25px]" src="password_input_line.svg" />
                 </div>
-                <img className="w-6 h-6 left-[238px] top-[7px] absolute justify-center items-center inline-flex" src="cancel.svg" />
+                <button onClick={exitButtonHandler}>
+                    <img className="w-6 h-6 left-[238px] top-[7px] absolute justify-center items-center inline-flex" src="cancel.svg" />
+                </button>
             </div>
         )
     }
@@ -59,11 +75,13 @@ export default function RoomSettings(props: { type: "mod_protected" | "mod_publi
                 </div>
 
                 {/* exit channel button */}
-                <div className="pr-[5px] left-[17px] top-[7px] absolute justify-start items-center inline-flex">
+                <button onClick={exitChannelHandler} className="pr-[5px] left-[17px] top-[7px] absolute justify-start items-center inline-flex">
                     <img className="w-6 h-6 justify-center items-center inline-flex" src="logout.svg" />
                     <div className="text-neutral-600 text-xs font-bold italic">exit channel</div>
-                </div>
-                <img className="w-6 h-6 left-[238px] top-[7px] absolute justify-center items-center inline-flex" src="cancel.svg" />
+                </button>
+                <button onClick={exitButtonHandler}>
+                    <img className="w-6 h-6 left-[238px] top-[7px] absolute justify-center items-center inline-flex" src="cancel.svg" />
+                </button>
             </div>
         );
     }
@@ -74,11 +92,13 @@ export default function RoomSettings(props: { type: "mod_protected" | "mod_publi
                 <div className="w-[276px] h-[39px] left-0 top-0 absolute bg-[#FEFEFE] rounded-[10px]" />
 
                 {/* exit channel button */}
-                <div className="pr-[5px] left-[17px] top-[7px] absolute justify-start items-center inline-flex">
+                <button onClick={exitChannelHandler} className="pr-[5px] left-[17px] top-[7px] absolute justify-start items-center inline-flex">
                     <img className="w-6 h-6 justify-center items-center inline-flex" src="logout.svg" />
                     <div className="text-neutral-600 text-xs font-bold italic">exit channel</div>
-                </div>
-                <img className="w-6 h-6 left-[238px] top-[7px] absolute justify-center items-center inline-flex" src="cancel.svg" />
+                </button>
+                <button onClick={exitButtonHandler}>
+                    <img className="w-6 h-6 left-[238px] top-[7px] absolute justify-center items-center inline-flex" src="cancel.svg" />
+                </button>
             </div>
         );
     }

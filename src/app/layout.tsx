@@ -2,7 +2,6 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Inria_Sans } from 'next/font/google'
 import React from 'react'
-import { UserContext } from './UserContext'
 
 const Inria = Inria_Sans({ subsets: ["latin", "latin-ext"], weight: ["300", "400", "700"], style: ["normal", "italic"] });
 
@@ -17,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en">\
         <body className={Inria.className}>
           {children}
         </body>

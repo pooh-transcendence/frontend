@@ -1,12 +1,15 @@
+import { socket } from "@/app/api";
 import React from "react";
 
 interface UserListCompProps {
+    userId: string,
     nick: string,
     type: "list_block" | "GAMING" | "ONLINE" | "OFFLINE" | "inviteFriend_1" | "inviteFriend_0" | "addFriend",
-    profileImg: string
+    profileImg: string,
   }
   
 export const UserListComponent = ({
+    userId,
     nick = "testNickasdf",
     type,
     profileImg = "https://via.placeholder.com/32x32",
@@ -90,7 +93,9 @@ export const UserListComponent = ({
               <img className="w-8 h-8" src={profileImg} />
               <div className="text-neutral-600 text-base font-normal">{nick}</div>
             </div>
-            <img className="w-5 h-5 left-[241px] top-[8px] absolute" src="unblock.svg" />
+            <button onClick={()=>{socket.emit("deleteBlock", userId, (ack: any) => {console.log(ack)})}}>
+              <img className="w-5 h-5 left-[241px] top-[8px] absolute" src="unblock.svg" />
+            </button>
             <img className="top-[41px] relative" src="listComp_line_260px.svg" />
           </div>
         )}
