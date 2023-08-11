@@ -76,7 +76,7 @@ export const ChatFriend = ({
     const [text, setText]=useState("");
     const submitText=()=>{
         // sender side
-        actions.setUserChat({userId: "2", nickname: state.userInfo.nickname, message: text});
+        actions.setUserChat({userId: state.userInfo.userId, nickname: state.userInfo.nickname, message: text});
 
         // opponent side
         console.log("send to", Number(state.friendChattingInfo.id));
