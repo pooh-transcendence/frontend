@@ -81,7 +81,8 @@ export const ChatFriend = ({
         // opponent side
         console.log("send to", Number(state.friendChattingInfo.id));
         // socket.emit("message", {userId : Number(state.friendChattingInfo.id), message: text});
-        socket.emit("message", {userId : Number("2"), message: text});
+        // socket.emit("message", {userId : Number("2"), message: text});
+        socket.emit("message", {userId : 1, message: text});
         setText("");
     }
 

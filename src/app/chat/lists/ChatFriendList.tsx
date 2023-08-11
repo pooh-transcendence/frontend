@@ -26,7 +26,7 @@ interface friend
     id: string;
     nickname: string;
     avatar: string;
-    userState: "ONLINE" | "OFFLINE" | "GAMING";
+    userState: "ONLINE" | "OFFLINE" | "GAMING" | "ONCHAT";
 }
 
 interface block
@@ -39,7 +39,8 @@ interface block
 function makeUserListComp(friend: friend){
     const {state, actions} = useContext(UserContext);
 
-    friend={...friend, id: "2"}; // for debug
+    // friend={...friend, id: "2"}; // for debug
+    friend={...friend, userState: "ONLINE"};
     const gotoChat= () => {
         actions.setChatState(chatStates.friendChat);
         actions.setFriendChattingInfo(friend);
@@ -68,12 +69,12 @@ export const ChatFriendList = (): JSX.Element => {
         socket.emit("getBlockList");
         
         const friendListListener=(friendList: friend[]) => {
-            console.log("friendListListener", friendList);
             setFriendList(friendList);
+            console.log("friendListListener", friendList);
         } 
         const blockListListener=(blockList: block[]) => {
-            console.log("blockListListener", blockList);
             setBlockList(blockList);
+            console.log("blockListListener", blockList);
         } 
         socket.on("getFriendList", friendListListener);
         socket.on("getBlockList", blockListListener);
@@ -100,7 +101,7 @@ export const ChatFriendList = (): JSX.Element => {
                 <BigSeparater str="friends" />
                 <SmallSeparater str="online" />
                 {
-                    Object.entries(friendList.filter(friend => friend.userState === "ONLINE" || friend.userState === "GAMING") ?? [{}]).map(
+                    Object.entries(friendList.filter(friend => friend.userState === "ONLINE" || friend.userState === "ONCHAT" || friend.userState === "GAMING") ?? [{}]).map(
                         ([idx, friend]) => makeUserListComp(friend))
                 }
                 <SmallSeparater str="offline" />
