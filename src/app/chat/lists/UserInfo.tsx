@@ -30,8 +30,11 @@ const UserInfo = ({
           userId: "2",
           until: new Date().getTime() + 1000 * 10, // 10초간 음소거
     })};
-    const blockHandler=() => {socket.emit("createBlock", Number(state.chatTargetUser), (ack: any) => {console.log(ack)})}; // ?
-    // const blockHandler=() => {console.log("block", state.chatTargetUser); api_post("/block", {"bannedUserId": state.chatTargetUser})}; // http 400 
+    // const blockHandler=() => {socket.emit("createBlock", Number(state.chatTargetUser), (ack: any) => {console.log(ack)})}; // ?
+    const blockHandler=() => {
+        console.log("block", state.chatTargetUser); 
+        api_post("/block", {"bannedUserId": state.chatTargetUser})
+    }; // http 400 
     const infoHandler=() => {console.log("info button")};
 
     if(type === "mod")

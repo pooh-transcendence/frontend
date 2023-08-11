@@ -1,14 +1,16 @@
 // 'use client'
 
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { ChatBottomBar } from "../frame/ChatBottomBar";
 import { ChatTitle } from "../frame/ChatTitle";
+import { UserContext, chatStates, channelInfo as channel  } from "@/app/UserContext";
+import { socket } from "@/app/api";
 
 interface ChannelListProps {
     channelName: string,
     channelOwner: string,
     channelPeopleCnt: number,
-    channelProfileImg: string
+    channelProfileImg: string,
 };
 
 const ChannelListComponent=({
@@ -34,6 +36,39 @@ const ChannelListComponent=({
 };
 
 export const ChatChannelList = (): JSX.Element => {
+
+    const {state, actions} = useContext(UserContext);
+    const [channelList, setChannelList]=useState<channel[]>([]);
+
+    useEffect(() => {
+        socket.emit("visibleChannel", (ack: any) => { 
+            console.log("visibleChannel emitl", ack );
+            setChannelList(ack);
+        });
+
+        // socket.on("visibleChannel", (data: channel[]) => {
+        //     setChannelList(data);
+        // });
+        // console.log("channelList", channelList);
+    }, []);
+
+    function makeChannelListComp(channel: channel){
+        const {state, actions} = useContext(UserContext);
+    
+        // friend={...friend, id: "2"}; // for debug
+    
+        const gotoChat= () => {
+            actions.setChatState(chatStates.channelChat);
+            actions.setChannelChattingInfo(channel);
+            console.log("change to channelChat", channel.id);
+        }
+        return (
+            <button onClick={gotoChat}>
+                <ChannelListComponent channelName={channel.channelName} channelOwner={`${channel.ownerId} <- ownerId`} channelPeopleCnt={channel.channelUser.length} channelProfileImg="https://via.placeholder.com/32x32"/>
+            </button>
+        )
+    }
+
     return (
         <div className="w-[300px] h-[650px] relative">
             {/* BottomBarSection */}
@@ -46,29 +81,12 @@ export const ChatChannelList = (): JSX.Element => {
             </div>
             {/* ContentsSection */}
             <div className="w-[260px] py-2 left-[20px] top-[58px] absolute flex-col justify-start items-start gap-[7px] inline-flex">
-                <ChannelListComponent channelName="testSans" channelOwner="toj" channelPeopleCnt={123}/>
+                {
+                    channelList.map((channel, idx) => {
+                        return makeChannelListComp(channel);
+                    })
+                }
             </div>
         </div>
     )
 }
-
-// let testQuery: string[][]=
-// [
-//     ["recv", "user1", "testText"],
-//     ["recv", "user2", "test2"],
-//     ["send", "", "testssett"],
-// ];
-
-// function renderMessage(): Array<JSX.Element>
-// {
-//     const res: Array<JSX.Element>=[];
-//     for(let i=0; i<testQuery.length; i++)
-//     {
-//         const [type, nickname, message]=testQuery[i];
-//         res.push(<ChatBubble 
-//                 side={type==="recv" ? "left":"right"}
-//                 nickname={nickname}
-//                 messageText={message} />);
-//     }
-//     return res;
-// }

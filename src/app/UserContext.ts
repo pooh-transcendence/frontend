@@ -23,9 +23,10 @@ export interface friendInfo
 export interface channelInfo
 {
     id: string;
-    channelType: string;
+    channelType: "PRIVATE" | "PROTECTED" | "PUBLIC";
     channelName: string;
     ownerId: string;
+    channelUser: Object[];
 };
 
 export interface userInfo

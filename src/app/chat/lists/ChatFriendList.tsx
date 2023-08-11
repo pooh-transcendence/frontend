@@ -64,14 +64,24 @@ export const ChatFriendList = (): JSX.Element => {
     const [blockList, setBlockList] = useState<block[]>([]);
 
     useEffect(() => {
-        socket.emit("getFriendList", (data: friend[]) => {
-            setFriendList(data);
-        });
-        socket.emit("getBlockList", (data: block[]) => {
-            setBlockList(data);
-        });
-        console.log("friendList", friendList);
-        console.log("blockList", blockList);
+        socket.emit("getFriendList", (ack) => console.log(ack));
+        socket.emit("getBlockList");
+        
+        const friendListListener=(friendList: friend[]) => {
+            console.log("friendListListener", friendList);
+            setFriendList(friendList);
+        } 
+        const blockListListener=(blockList: block[]) => {
+            console.log("blockListListener", blockList);
+            setBlockList(blockList);
+        } 
+        socket.on("getFriendList", friendListListener);
+        socket.on("getBlockList", blockListListener);
+
+        return () => {
+            socket.off("getFriendList", friendListListener);
+            socket.off("getBlockList", blockListListener);
+          };
     }, []);
 
     return (

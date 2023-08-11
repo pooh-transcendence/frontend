@@ -10,7 +10,7 @@ import { socket } from '@/app/api'
 
 export default function Chat() {
   const { state, actions } = useContext(UserContext);
-  
+
   useEffect(() => {
     const userMessageListener = (data: any) => {
       const renderTime = new Date().getTime();
