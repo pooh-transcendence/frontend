@@ -75,7 +75,7 @@ export const ChatChannelList = (): JSX.Element => {
             </div>
             {/* TitleSection */}
             <div className="w-[300px] h-[50px] left-0 top-0 absolute">
-                <ChatTitle title="" type="channelList" />
+                <ChatTitle title="" type="channelList" id={"-1"} />
             </div>
             {/* ContentsSection */}
             <div className="w-[260px] py-2 left-[20px] top-[58px] absolute flex-col justify-start items-start gap-[7px] inline-flex">

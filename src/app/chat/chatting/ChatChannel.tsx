@@ -72,13 +72,13 @@ export const ChatChannel = ({
     
     const [text, setText]=useState("");
     const submitText=()=>{
+        if(text==="") return;
         // sender side
-        // 서버가 자기가 보낸 것도 다시 보내주나?
         actions.setChannelChat({channelId: state.channelChattingInfo.id, userId: state.userInfo.id, nickname: state.userInfo.nickname, message: text});
 
         // opponent side
         console.log("send to", Number(state.channelChattingInfo.id));
-        socket.emit("message", {channelId : Number(state.channelChattingInfo.id), message: text});
+        socket.emit("message", {channelId : Number(state.channelChattingInfo.id), message: text+' '});
         setText("");
     }
 
@@ -101,7 +101,7 @@ export const ChatChannel = ({
                     <div ref={scrollRef}/>
                 </div>
                 {/* title section */}
-                <ChatTitle type="channelChat" title={title}/>
+                <ChatTitle type="channelChat" title={title} id={state.channelChattingInfo.id}/>
                 {/* frame */}
                 <div className="w-[300px] h-[650px] left-0 top-0 absolute rounded-[10px] border border-neutral-600" />
 
