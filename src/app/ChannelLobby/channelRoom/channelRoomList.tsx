@@ -23,7 +23,7 @@ export default function ChannelRoomList() {
           <div className="flex flex-col items-center justify-center text-center text-[1rem]">
             <div className="relative">public</div>
           </div>
-          
+          <UserImage />
           <UserImage />
           <UserImage />
           <UserImage />
@@ -34,7 +34,6 @@ export default function ChannelRoomList() {
           </div>
           <UserImage />
           <UserImage /> 
-          <UserImage />
         </div>
         </>
     );
