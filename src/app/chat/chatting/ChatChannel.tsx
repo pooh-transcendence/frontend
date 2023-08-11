@@ -30,7 +30,7 @@ export const ChatChannel = ({
     useEffect(() => {            
         scrollRef.current?.scrollIntoView();
         renderMessage();
-      }, [state.userChat]); // 어떻게 해야 보고있는 채팅이 업데이트 될때만 리랜더할 수 있을까?
+      }, [state.channelChat]); // 어떻게 해야 보고있는 채팅이 업데이트 될때만 리랜더할 수 있을까?
       
     const onChange=(e: any)=>{setText(e.target.value);}
     const handleOnKeyPress=(e: any)=>{
@@ -43,10 +43,10 @@ export const ChatChannel = ({
 
     function renderMessage(): Array<JSX.Element>
     {
-        console.log("render", state.userChat[state.channelChattingInfo.id]);
+        console.log("render", state.channelChat[state.channelChattingInfo.id]);
         const res: Array<JSX.Element>=[];
-        if(!state.userChat[state.channelChattingInfo.id]) return res;
-        state.userChat[state.channelChattingInfo.id].forEach((msg, idx) => {
+        if(!state.channelChat[state.channelChattingInfo.id]) return res;
+        state.channelChat[state.channelChattingInfo.id].forEach((msg, idx) => {
             const {nickname, message, userId}=msg;
             if(nickname!==state.userInfo.nickname)
                 res.push(
@@ -74,7 +74,7 @@ export const ChatChannel = ({
     const submitText=()=>{
         // sender side
         // 서버가 자기가 보낸 것도 다시 보내주나?
-        // actions.setChannelChat({channelId: state.channelChattingInfo.id, userId: state.userInfo.userId, nickname: state.userInfo.nickname, message: text});
+        actions.setChannelChat({channelId: state.channelChattingInfo.id, userId: state.userInfo.userId, nickname: state.userInfo.nickname, message: text});
 
         // opponent side
         console.log("send to", Number(state.channelChattingInfo.id));
