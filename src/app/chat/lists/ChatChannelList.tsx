@@ -55,8 +55,6 @@ export const ChatChannelList = (): JSX.Element => {
     function makeChannelListComp(channel: channel){
         const {state, actions} = useContext(UserContext);
     
-        // friend={...friend, id: "2"}; // for debug
-    
         const gotoChat= () => {
             actions.setChatState(chatStates.channelChat);
             actions.setChannelChattingInfo(channel);

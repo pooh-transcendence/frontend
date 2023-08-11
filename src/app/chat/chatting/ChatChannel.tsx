@@ -74,7 +74,7 @@ export const ChatChannel = ({
     const submitText=()=>{
         // sender side
         // 서버가 자기가 보낸 것도 다시 보내주나?
-        actions.setChannelChat({channelId: state.channelChattingInfo.id, userId: state.userInfo.userId, nickname: state.userInfo.nickname, message: text});
+        actions.setChannelChat({channelId: state.channelChattingInfo.id, userId: state.userInfo.id, nickname: state.userInfo.nickname, message: text});
 
         // opponent side
         console.log("send to", Number(state.channelChattingInfo.id));

@@ -76,13 +76,11 @@ export const ChatFriend = ({
     const [text, setText]=useState("");
     const submitText=()=>{
         // sender side
-        actions.setUserChat({userId: state.userInfo.userId, nickname: state.userInfo.nickname, message: text});
+        actions.setUserChat({userId: state.userInfo.id, nickname: state.userInfo.nickname, message: text});
 
         // opponent side
         console.log("send to", Number(state.friendChattingInfo.id));
-        // socket.emit("message", {userId : Number(state.friendChattingInfo.id), message: text});
-        // socket.emit("message", {userId : Number("2"), message: text});
-        socket.emit("message", {userId : 1, message: text});
+        socket.emit("message", {userId : state.friendChattingInfo.id, message: text});
         setText("");
     }
 

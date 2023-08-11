@@ -6,7 +6,7 @@ import { ChatFriendList } from './lists/ChatFriendList'
 import { ChatChannelList } from './lists/ChatChannelList'
 import { ChatFriend } from './chatting/ChatFriend'
 import { UserContext, chatStates } from '../UserContext'
-import { socket } from '@/app/api'
+import { socket, api_get } from '@/app/api'
 
 export default function Chat() {
   const { state, actions } = useContext(UserContext);
@@ -40,6 +40,10 @@ export default function Chat() {
   
     socket.on("userMessage", userMessageListener);
     socket.on("channelMessage", channelMessageListener);
+    api_get("/user").then((data) => {
+      actions.setUserInfo(data.data.data);
+      console.log(state.userInfo);
+    });
   
     return () => {
       socket.off("userMessage", userMessageListener);

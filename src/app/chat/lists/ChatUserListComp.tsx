@@ -4,7 +4,7 @@ import React from "react";
 interface UserListCompProps {
     userId: string,
     nick: string,
-    type: "list_block" | "GAMING" | "ONLINE" | "OFFLINE" | "inviteFriend_1" | "inviteFriend_0" | "addFriend",
+    type: "list_block" | "GAMING" | "ONLINE" | "OFFLINE" | "ONCHAT" | "inviteFriend_1" | "inviteFriend_0" | "addFriend",
     profileImg: string,
   }
   
@@ -16,7 +16,7 @@ export const UserListComponent = ({
   }: UserListCompProps): JSX.Element => {
     return (
       <>
-        {type == "addFriend" && (
+        {type === "addFriend" && (
           <div className="w-[247px] h-[45px] relative">
             <div className="left-[1px] top-0 absolute justify-center items-center gap-2.5 inline-flex">
               <img className="w-8 h-8" src={profileImg} />
@@ -29,8 +29,9 @@ export const UserListComponent = ({
             <img className="top-[41px] relative" src="listComp_line_240px.svg" />
           </div>
         )}
-        {type == "inviteFriend_0" && (
+        {type === "inviteFriend_0" && (
           <div className="w-[247px] h-[45px] relative">
+            <img className="top-[41px] relative" src="listComp_line_240px.svg" />
             <div className="left-[1px] top-0 absolute justify-center items-center gap-2.5 inline-flex">
               <img className="w-8 h-8" src={profileImg} />
               <div className="text-neutral-600 text-base font-normal">{nick}</div>
@@ -38,11 +39,11 @@ export const UserListComponent = ({
             <div className="w-6 h-6 left-[217px] top-[4px] absolute flex-col justify-center items-center gap-2.5 inline-flex">
               <img className="w-7 h-7 relative" src="Checkmarks0.svg" />
             </div>
-            <img className="top-[41px] relative" src="listComp_line_240px.svg" />
           </div>
         )}
-        {type == "inviteFriend_1" && (
+        {type === "inviteFriend_1" && (
           <div className="w-[247px] h-[45px] relative">
+            <img className="top-[41px] relative" src="listComp_line_240px.svg" />
             <div className="left-[1px] top-0 absolute justify-center items-center gap-2.5 inline-flex">
               <img className="w-8 h-8" src={profileImg} />
               <div className="text-neutral-600 text-base font-normal">{nick}</div>
@@ -50,22 +51,22 @@ export const UserListComponent = ({
             <div className="w-6 h-6 left-[217px] top-[4px] absolute flex-col justify-center items-center gap-2.5 inline-flex">
               <img className="w-7 h-7 relative" src="Checkmarks1.svg" />
             </div>
-            <img className="top-[41px] relative" src="listComp_line_240px.svg" />
           </div>
         )}
-        {type == "OFFLINE" && (
+        {type === "OFFLINE" && (
           <div className="w-[260px] h-[45px] relative">
+          <img className="w-5 h-5 left-[241px] top-[8px] absolute" src="info.svg" />
             <div className="left-[1px] top-0 absolute justify-center items-center gap-2.5 inline-flex">
               <img className="w-8 h-8" src={profileImg} />
               <div className="text-neutral-600 text-base font-normal">{nick}</div>
               <img className="w-3.5 h-3.5 relative" src="wifi_off.svg" />
             </div>
-            <img className="w-5 h-5 left-[241px] top-[8px] absolute" src="info.svg" />
             <img className="top-[41px] relative" src="listComp_line_260px.svg" />
           </div>
         )}
-        {type == "ONLINE" && (
+        {type === "ONLINE" || type === "ONCHAT" && (
           <div className="w-[260px] h-[45px] relative">
+            <img className="top-[41px] relative" src="listComp_line_260px.svg" />
             <div className="left-[1px] top-0 absolute justify-center items-center gap-2.5 inline-flex">
               <img className="w-8 h-8" src={profileImg} />
               <div className="text-neutral-600 text-base font-normal">{nick}</div>
@@ -73,30 +74,29 @@ export const UserListComponent = ({
             </div>
             <img className="w-5 h-5 left-[216px] top-[8px] absolute" src="mark_as_unread.svg" />
             <img className="w-5 h-5 left-[241px] top-[8px] absolute" src="info.svg" />
-            <img className="top-[41px] relative" src="listComp_line_260px.svg" />
           </div>
         )}
-        {type == "GAMING" && (
+        {type === "GAMING" && (
           <div className="w-[260px] h-[45px] relative">
+            <img className="top-[41px] relative" src="listComp_line_260px.svg" />
             <div className="left-[1px] top-0 absolute justify-center items-center gap-2.5 inline-flex">
               <img className="w-8 h-8" src={profileImg} />
               <div className="text-neutral-600 text-base font-normal">{nick}</div>
               <img className="w-3.5 h-3.5 relative" src="gaming.svg" />
             </div>
             <img className="w-5 h-5 left-[241px] top-[8px] absolute" src="info.svg" />
-            <img className="top-[41px] relative" src="listComp_line_260px.svg" />
           </div>
         )}
-        {type == "list_block" && (
+        {type === "list_block" && (
           <div className="w-[260px] h-[45px] relative">
+            <img className="top-[41px] relative" src="listComp_line_260px.svg" />
             <div className="left-[1px] top-0 absolute justify-center items-center gap-2.5 inline-flex">
               <img className="w-8 h-8" src={profileImg} />
               <div className="text-neutral-600 text-base font-normal">{nick}</div>
             </div>
-            <button onClick={()=>{socket.emit("deleteBlock", userId, (ack: any) => {console.log(ack)})}}>
+            <button onClick={()=>{socket.emit("deleteBlock", {"blockedUserId": Number(userId)}, (ack: any) => {console.log(ack)})}}>
               <img className="w-5 h-5 left-[241px] top-[8px] absolute" src="unblock.svg" />
             </button>
-            <img className="top-[41px] relative" src="listComp_line_260px.svg" />
           </div>
         )}
       </>

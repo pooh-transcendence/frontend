@@ -33,7 +33,7 @@ export interface userInfo
 {
   nickname: string;
   avatar: string;
-  userId: string;
+  id: string;
 };
 
 export const UserContext = React.createContext({
