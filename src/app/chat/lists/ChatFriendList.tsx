@@ -7,7 +7,6 @@ import { UserListComponent } from "./ChatUserListComp";
 import { socket } from "@/app/api";
 import { UserContext, chatStates } from "@/app/UserContext";
 
-
 const SmallSeparater=(props: {str: string}): JSX.Element => {
     return (
         <div className="flex-col justify-center items-center gap-[5px] flex">
@@ -15,6 +14,7 @@ const SmallSeparater=(props: {str: string}): JSX.Element => {
         </div>
     );
 }
+
 const BigSeparater=(props: {str: string}): JSX.Element => {
     return (
         <div className="w-[69.59px] h-[21px] text-neutral-600 text-base font-normal">{props.str}</div>
@@ -39,7 +39,6 @@ interface block
 function makeUserListComp(friend: friend){
     const {state, actions} = useContext(UserContext);
 
-    // friend={...friend, id: "2"}; // for debug
     friend={...friend, userState: "ONLINE"};
     const gotoChat= () => {
         actions.setChatState(chatStates.friendChat);

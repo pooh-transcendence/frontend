@@ -5,7 +5,7 @@ import { UserContext, chatStates, mainStates, friendInfo, channelInfo, userInfo 
 
 export default function UserProvider({ children }: { children: React.ReactNode }) {
   const [isConnected, setConnectionState] = useState<boolean>(false);
-  const [userInfo, setUserInfo] = useState<userInfoInterface>({nickname: "defaultNick", avatar: "https://via.placeholder.com/32x32", userId: "2"});
+  const [userInfo, setUserInfo] = useState<userInfoInterface>({nickname: "defaultNick", avatar: "https://via.placeholder.com/32x32", id: "-1"});
   const [chatState, setChatState] = useState(chatStates.friendList);
   const [mainState, setMainState] = useState(mainStates.gameLobby);
   const [friendChattingInfo, setFriendChattingInfo] = useState<friendInfo>({} as friendInfo);
