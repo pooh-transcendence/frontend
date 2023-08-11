@@ -43,7 +43,7 @@ export default function MyInfo() {
               </div>
             </div>
             <img
-              className="absolute h-[6.03%] w-[76.36%] top-[25.24%] right-[0.13%] bottom-[68.74%] left-[23.51%] max-w-full overflow-hidden max-h-full"
+              className="absolute h-[6.03%] w-[85%] top-[25.24%] right-[0.13%] bottom-[68.74%] left-[15%] max-w-full overflow-hidden max-h-full"
               alt=""
               src="/line-12.svg"
             />
@@ -70,11 +70,13 @@ export default function MyInfo() {
           />
           <SearchUsers />
         </div>
-        <img
-          className="absolute top-[0.63rem] right-[0.75rem] w-[2rem] h-[2rem] overflow-hidden"
-          alt=""
-          src="/cancelbutton.svg"
-        />
+        {/* <button>
+          <img
+            className="absolute top-[0.63rem] right-[0.75rem] w-[2rem] h-[2rem] overflow-hidden"
+            alt=""
+            src="/cancelbutton.svg"
+          />
+        </button> */} {/* 모달은 보통 닫기 버튼이 없어서 */}
       </>
     ); 
 };

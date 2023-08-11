@@ -2,7 +2,7 @@
 
 import type { NextPage } from "next";
 
-import LeftSideButtons from "../GameLobby/button/leftSideButtons";
+import LeftSideButtons from "../ChannelLobby/button/leftSideButtons";
 import MyPageButton from "./button/myPageButton";
 import ChannelRoomList from "./channelRoom/channelRoomList";
 
@@ -34,7 +34,7 @@ const ChannelLobby: NextPage = () => {
             <CreateListFrame />
           </div>
         </div>
-        <FriendList />
+        {/* <FriendList /> 지워도 됨 */}
       </div>
     </>
   );

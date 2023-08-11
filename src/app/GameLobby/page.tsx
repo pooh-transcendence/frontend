@@ -27,7 +27,7 @@ const GameLobby: NextPage = () => {
         </div>
 
         <MyInfoFrame />
-        <ChatFrame />
+        {/* <ChatFrame /> 지워도 됨 */}
 
       </div>
     </>
