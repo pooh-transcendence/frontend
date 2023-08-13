@@ -5,7 +5,7 @@ import { UserContext, chatStates, mainStates, friendInfo, channelInfo, userInfo 
 
 export default function UserProvider({ children }: { children: React.ReactNode }) {
   const [isConnected, setConnectionState] = useState<boolean>(false);
-  const [userInfo, setUserInfo] = useState<userInfoInterface>({nickname: "defaultNick", avatar: "https://via.placeholder.com/32x32", id: "-1"});
+  const [userInfo, setUserInfo] = useState<userInfoInterface>({token: "-1", registered: false, nickname: "defaultNick", avatar: "https://via.placeholder.com/32x32", id: "-1"});
   const [chatState, setChatState] = useState(chatStates.friendList);
   const [mainState, setMainState] = useState(mainStates.gameLobby);
   const [friendChattingInfo, setFriendChattingInfo] = useState<friendInfo>({} as friendInfo);
@@ -19,6 +19,14 @@ export default function UserProvider({ children }: { children: React.ReactNode }
   const [mutedUser, setMutedUser] = useState<Record<string, { until: number }>>({});
   const [userChat, setUserChat] = useState<Record<string, { userId: string, nickname: string, message: string }[]>>({});
   const [channelChat, setChannelChat] = useState<Record<string, { channelId: string, userId: string, nickname: string, message: string }[]>>({});
+
+  function loadState(prevState: any)
+  {
+    setUserInfo(prevState.userInfo);
+    setUserChat(prevState.userChat);
+    setChannelChat(prevState.channelChat);
+    setMutedUser(prevState.mutedUser);
+  };
 
   const userContextValue = {
     state: {
@@ -39,6 +47,8 @@ export default function UserProvider({ children }: { children: React.ReactNode }
       channelChat,
     },
     actions: {
+      loadState: (prevState: Object) => loadState(prevState),
+
       setConnectionState: (newState: boolean) => setConnectionState(newState),
       setChatState: (newState: chatStates) => setChatState(newState),
       setUserInfo: (newState: userInfoInterface) => setUserInfo(newState),
