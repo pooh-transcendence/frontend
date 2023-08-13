@@ -46,7 +46,7 @@ export const ChatFriend = ({
 
     function renderMessage(): Array<JSX.Element>
     {
-        console.log("render", state.userChat[state.friendChattingInfo.id]);
+        console.log("render", state.userChat[state.friendChattingInfo.id] ?? []);
         const res: Array<JSX.Element>=[];
         if(!state.userChat[state.friendChattingInfo.id]) return res;
         state.userChat[state.friendChattingInfo.id].forEach((msg, idx) => {
@@ -75,8 +75,9 @@ export const ChatFriend = ({
     
     const [text, setText]=useState("");
     const submitText=()=>{
+        if(text==="") return;
         // sender side
-        actions.setUserChat({userId: state.userInfo.id, nickname: state.userInfo.nickname, message: text});
+        actions.setUserChat({userId: state.friendChattingInfo.id, nickname: state.userInfo.nickname, message: text});
 
         // opponent side
         console.log("send to", Number(state.friendChattingInfo.id));
@@ -103,7 +104,7 @@ export const ChatFriend = ({
                     <div ref={scrollRef}/>
                 </div>
                 {/* title section */}
-                <ChatTitle type="friendChat" title={title}/>
+                <ChatTitle type="friendChat" title={title} id={state.friendChattingInfo.id}/>
                 {/* frame */}
 
             </div>

@@ -1,5 +1,5 @@
 'use client'
-import React, { useContext } from "react"
+import React, { useContext, useEffect } from "react"
 import Chat from "./chat/page"
 
 import { UserContext } from "@/app/UserContext"
@@ -9,15 +9,24 @@ import UserProvider from "./UserProvider";
 export default function MainFrame() {
   const {state, actions}=useContext(UserContext);
 
-  socket.on('connect', ()=>{
-    console.log("connected", socket);
-    actions.setConnectionState(true);
-  });
+  useEffect(() => {
+    const connectionHandler=() => {
+      console.log("connected", socket);
+      actions.setConnectionState(true);
+    }
+    socket.on('connect', connectionHandler);
 
-  socket.on('disconnect', ()=>{
-    console.log("disconnected");
-    actions.setConnectionState(false);
-  })
+    const disconnectionHandler=() => {
+      console.log("socket disconnected");
+      actions.setConnectionState(false);
+    }
+    socket.on('disconnect', disconnectionHandler);
+
+    return () => {
+      socket.off('connect', connectionHandler);
+      socket.off('disconnect', disconnectionHandler);
+    }
+  }, []);
 
   return (
       <UserProvider>

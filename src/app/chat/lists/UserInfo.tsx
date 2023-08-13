@@ -26,8 +26,7 @@ const UserInfo = ({
         followingUserId: state.chatTargetUser
     })};
     const muteHandler = () => {actions.setMutedUser({
-        //   userId: state.chatTargetUser,
-          userId: "2",
+          userId: state.chatTargetUser,
           until: new Date().getTime() + 1000 * 10, // 10초간 음소거
     })};
     // const blockHandler=() => {socket.emit("createBlock", Number(state.chatTargetUser), (ack: any) => {console.log(ack)})}; // ?
