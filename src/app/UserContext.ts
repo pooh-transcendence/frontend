@@ -34,6 +34,8 @@ export interface userInfo
   nickname: string;
   avatar: string;
   id: string; 
+  token: string; // this value is our backend's token 
+  registered: boolean; // this value would be true after two-factor auth
 };
 
 export const UserContext = React.createContext({
@@ -55,6 +57,7 @@ export const UserContext = React.createContext({
     channelChat: {} as Record<string, { channelId: string, userId: string, nickname: string, message: string }[]>,
   },
   actions: {
+    loadState: (prevState: Object) => {},
     setConnectionState: (newState: boolean) => {},
     setChatState: (newState: chatStates) => {},
     setUserInfo: (newState: userInfo) => {},
