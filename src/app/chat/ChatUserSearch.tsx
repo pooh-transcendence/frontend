@@ -24,8 +24,8 @@ const ChatUserSearch = (props: {type: "add_friend" | "invite"}): JSX.Element => 
         if(state.showChatAddFriend)
         {
             // api_get("/user/AllUser").then((data) => {
-            socket.emit("AllUser", (data: any[]) => {
-               setUserList(data);
+            socket.emit("allUser", (data: any[]) => {
+            //    setUserList(data);
                console.log(data);
             //    console.log(data.data);
             });
