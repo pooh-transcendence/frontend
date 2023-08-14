@@ -64,9 +64,9 @@ export const ChatFriendList = (): JSX.Element => {
     const [blockList, setBlockList] = useState<block[]>([]);
 
     useEffect(() => {
-        console.log("uef on chatFriendList");
         socket.emit("getFriendList");
         socket.emit("getBlockList");
+        console.log("ChatFriendList state", state);
         
         const friendListListener=(friendList: friend[]) => {
             setFriendList(friendList);
@@ -118,7 +118,7 @@ export const ChatFriendList = (): JSX.Element => {
                 </div>
                 <div className="top-[87px] left-[12px] absolute">
                 {
-                            (state.showChatAddFriend && <ChatUserSearch type="add_friend"/>)
+                    (state.showChatAddFriend && <ChatUserSearch type="add_friend"/>)
                 }
                 </div>
             </div>

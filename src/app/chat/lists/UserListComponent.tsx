@@ -1,5 +1,8 @@
+'use client'
+
 import { socket } from "@/app/api";
-import React from "react";
+import React, { useContext } from "react";
+import { UserContext } from "@/app/UserContext";
 
 interface UserListCompProps {
     userId: string,
@@ -14,6 +17,8 @@ export const UserListComponent = ({
     type,
     profileImg = "https://via.placeholder.com/32x32",
   }: UserListCompProps): JSX.Element => {
+
+    const {state, actions}=useContext(UserContext);
 
     const addFriendHandler=() => {
       socket.emit("createFriend", {"followingUserId": Number(userId)});

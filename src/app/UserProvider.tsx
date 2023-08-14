@@ -43,7 +43,10 @@ export default function UserProvider({ children }: { children: React.ReactNode }
     actions: {
       setConnectionState: (newState: boolean) => setConnectionState(newState),
       setChatState: (newState: chatStates) => setChatState(newState),
-      setUserInfo: (newState: userInfoInterface) => setUserInfo(newState),
+      setUserInfo: (newState: userInfoInterface) => {
+        console.log("state changed to", newState);
+        setUserInfo(newState);
+      },
       setMainState: (newState: mainStates) => setMainState(newState),
       setFriendChattingInfo: (newState: any) => setFriendChattingInfo(newState),
       setChannelChattingInfo: (newState: any) => setChannelChattingInfo(newState),

@@ -2,17 +2,36 @@
 import React, { useContext, useEffect } from "react"
 import Chat from "./chat/page"
 
-import { UserContext } from "@/app/UserContext"
-import { getAuth, getUserId, redirectUri, setAuth, socket, updateSocket } from '@/app/api';
-import UserProvider from "./UserProvider";
+import { UserContext, userInfo } from "@/app/UserContext"
+import { getAuth, getUserId, redirectUri, setAuth, socket, updateSocket, api_get } from '@/app/api';
 import TwoFactor from "./TwoFactor/page";
 
 export default function MainFrame() {
   const { state, actions } = useContext(UserContext);
 
+  const bypassMe=() => {
+    api_get("/user").then((res) => {
+      console.log("/user", res);
+      const data: userInfo=res.data.data;
+      actions.setUserInfo({
+          nickname: data.nickname,
+          avatar: data.avatar ?? "https://via.placeholder.com/32x32",
+          id: data.id,
+          token: getAuth()!,
+          registered: true,
+          });
+      });
+  }
+
   useEffect(() => {
-    // setAuth("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwibmlja25hbWUiOiJ0ZXN0MiIsImZ0SWQiOiJ0am9hc2RmIiwiaWF0IjoxNjkxOTcyODc1LCJleHAiOjE2OTQ1NjQ4NzV9.hMSX82U4JZtvw9QpXyDpXI5jIwDsKIDKIbQ3uLKYbnk");
-    // updateSocket();
+    {
+      // auth bypass
+      setAuth("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwibmlja25hbWUiOiJ0am8iLCJmdElkIjoxMDcwNTIsImlhdCI6MTY5MTk5ODUyMCwiZXhwIjoxNjk0NTkwNTIwfQ.-LZ_RwDwrlvb1COe-bNR-_JExEm_XqHQswqzwUXHjzI");
+      updateSocket();
+
+      // setAuth("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwibmlja25hbWUiOiJ0ZXN0MiIsImZ0SWQiOiJ0am9hc2RmIiwiaWF0IjoxNjkxOTcyODc1LCJleHAiOjE2OTQ1NjQ4NzV9.hMSX82U4JZtvw9QpXyDpXI5jIwDsKIDKIbQ3uLKYbnk");
+      // updateSocket();
+    }
 
     const connectionHandler = () => {
       console.log("connected", socket);
@@ -21,7 +40,6 @@ export default function MainFrame() {
     const disconnectionHandler = () => {
       console.log("socket disconnected");
       actions.setConnectionState(false);
-    
     }
     if(getAuth())
     {
@@ -43,6 +61,7 @@ export default function MainFrame() {
     return (
       <>
         <pre>{JSON.stringify(state.userInfo)}</pre>
+        <button onClick={bypassMe}>bypassMe</button>
         {
           // check whether this user is registered
           (!getAuth()) && 
@@ -53,7 +72,7 @@ export default function MainFrame() {
         }
         {
           (getAuth()) && 
-          <UserProvider>
+          <>
             <div className="flex justify-center items-center h-screen bg-gradient-to-bl from-neutral-100 to-slate-50">
               <div className="flex justify-center items-center w-[1280px] h-[832px] relative gap-[12px]" >
                 <div className="w-[800px] h-[650px] z-1 rounded-[10px] border border-neutral-600">
@@ -64,10 +83,10 @@ export default function MainFrame() {
                 </div>
               </div>
             </div>
-          </UserProvider>
+          </>
         }
       </>
     )
   else // redirect to oauth uri
-    window.location.replace(redirectUri());
+    window!.location.replace(redirectUri());
 }

@@ -25,6 +25,7 @@ export default function TwoFactor() {
                 console.log("signInWithVerificationCode", res);
                 setAuth(res.data.accessToken);
                 setRefToken(res.data.refreshToken);
+                updateSocket();
                 console.log("auth", getAuth());
                 api_get("/user").then((res) => {
                     console.log("/user", res);
