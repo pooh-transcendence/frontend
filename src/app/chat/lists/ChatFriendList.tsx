@@ -3,9 +3,10 @@
 import React, { useState, useEffect, useContext } from "react";
 import { ChatBottomBar } from "../frame/ChatBottomBar";
 import { ChatTitle } from "../frame/ChatTitle";
-import { UserListComponent } from "./ChatUserListComp";
-import { socket } from "@/app/api";
+import { UserListComponent } from "./UserListComponent";
+import { api_get, socket } from "@/app/api";
 import { UserContext, chatStates } from "@/app/UserContext";
+import ChatUserSearch from "../ChatUserSearch";
 
 const SmallSeparater=(props: {str: string}): JSX.Element => {
     return (
@@ -63,7 +64,8 @@ export const ChatFriendList = (): JSX.Element => {
     const [blockList, setBlockList] = useState<block[]>([]);
 
     useEffect(() => {
-        socket.emit("getFriendList", (ack) => console.log(ack));
+        console.log("uef on chatFriendList");
+        socket.emit("getFriendList");
         socket.emit("getBlockList");
         
         const friendListListener=(friendList: friend[]) => {
@@ -84,35 +86,42 @@ export const ChatFriendList = (): JSX.Element => {
     }, []);
 
     return (
-        <div className="w-[18.75rem] h-[40.625rem] relative">
-            {/* BottomBarSection */}
-            <div className="w-[18.75rem] h-[3.1875rem] left-0 top-[37.4375rem] absolute">
-                <ChatBottomBar />
-            </div>
-            {/* TitleSection */}
-            <div className="w-[18.75rem] h-[3.125rem] left-0 top-0 absolute">
-                <ChatTitle title="" type="friendList" id={"-1"} />
-            </div>
-            {/* ContentsSection */}
-            <div className="w-[16.25rem] py-2 left-[1.25rem] top-[3.625rem] absolute flex-col justify-start items-start gap-[0.4375rem] inline-flex">
-                {/* renderFriends() */}
-                <BigSeparater str="friends" />
-                <SmallSeparater str="online" />
+        <>
+            <div className="w-[18.75rem] h-[40.625rem] relative">
+                {/* BottomBarSection */}
+                <div className="w-[18.75rem] h-[3.1875rem] left-0 top-[37.4375rem] absolute">
+                    <ChatBottomBar />
+                </div>
+                {/* TitleSection */}
+                <div className="w-[18.75rem] h-[3.125rem] left-0 top-0 absolute">
+                    <ChatTitle title="" type="friendList" id={"-1"} />
+                </div>
+                {/* ContentsSection */}
+                <div className="w-[16.25rem] py-2 left-[1.25rem] top-[3.625rem] absolute flex-col justify-start items-start gap-[0.4375rem] inline-flex">
+                    {/* renderFriends() */}
+                    <BigSeparater str="friends" />
+                    <SmallSeparater str="online" />
+                    {
+                        Object.entries(friendList.filter(friend => friend.userState === "ONLINE" || friend.userState === "ONCHAT" || friend.userState === "GAMING") ?? [{}]).map(
+                            ([idx, friend]) => makeUserListComp(friend))
+                        }
+                    <SmallSeparater str="offline" />
+                    {
+                        Object.entries(friendList.filter(friend => friend.userState === "OFFLINE") ?? [{}]).map(
+                            ([idx, friend]) => makeUserListComp(friend))
+                        }
+                    <BigSeparater str="blocks" />
+                    {
+                        Object.entries(blockList).map(
+                            ([idx, block]) => makeBlockListComp(block))
+                        }
+                </div>
+                <div className="top-[87px] left-[12px] absolute">
                 {
-                    Object.entries(friendList.filter(friend => friend.userState === "ONLINE" || friend.userState === "ONCHAT" || friend.userState === "GAMING") ?? [{}]).map(
-                        ([idx, friend]) => makeUserListComp(friend))
+                            (state.showChatAddFriend && <ChatUserSearch type="add_friend"/>)
                 }
-                <SmallSeparater str="offline" />
-                {
-                    Object.entries(friendList.filter(friend => friend.userState === "OFFLINE") ?? [{}]).map(
-                        ([idx, friend]) => makeUserListComp(friend))
-                }
-                <BigSeparater str="blocks" />
-                {
-                    Object.entries(blockList).map(
-                        ([idx, block]) => makeBlockListComp(block))
-                }
+                </div>
             </div>
-        </div>
+        </>
     )
 }

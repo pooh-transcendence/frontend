@@ -107,29 +107,14 @@ export const ChatFriend = ({
                 <ChatTitle type="friendChat" title={title} id={state.friendChattingInfo.id}/>
                 {/* frame */}
 
+                {/* userInfoModal */}
+                <div className="absolute top-[256px] left-[12px]">
+                {
+                    state.showChatUserInfo && 
+                        <UserInfo type="default"/>
+                    }   
+                </div>
             </div>
-            {/* todo: zindex */}
-            {/* userInfoModal */}
-            {
-                state.showChatUserInfo && 
-                <div className="z-100 absolute">
-                    <UserInfo type="default"/>
-                </div>
-            }   
-            {/* chatSettingModal */}
-            {
-                state.showChatSetting &&
-                <div className="z-100 absolute">
-                    <RoomSettings/>
-                </div>
-            }
-            {/* chatInviteModal */}
-            {
-                state.showChatInvite &&
-                <div className="z-100 absolute">
-                    <ChatUserSearch/>
-                </div>
-            }
         </>
     )
 }

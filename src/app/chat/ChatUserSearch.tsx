@@ -1,9 +1,9 @@
 'use client'
 
 import React, { useContext, useState, useEffect} from "react";
-import { UserListComponent } from "./lists/ChatUserListComp";
+import { UserListComponent } from "./lists/UserListComponent";
 import { UserContext } from "@/app/UserContext"
-import { socket } from "../api";
+import { api_get, socket } from "../api";
 
 interface friend
 {
@@ -18,15 +18,26 @@ interface friend
 const ChatUserSearch = (props: {type: "add_friend" | "invite"}): JSX.Element => {
     const {state, actions}=useContext(UserContext);
     const [friendList, setFriendList] = useState<friend[]>([]);
+    const [userList, setUserList] = useState<any[]>([]);
 
     useEffect(() => {
-        socket.emit("getFriendList", (data: friend[]) => {
-            setFriendList(data);
+        if(state.showChatAddFriend)
+            api_get("/user/AllUser").then((data) => {
+            socket.emit("allUser", (data: any[]) => {
+            //    setUserList(data);
+               console.log(data);
         });
+        else
+            socket.emit("getFriendList", (data: friend[]) => {
+                setFriendList(data);
+            });
     }, []);
-    const exitButtonHandler=() => {
-        actions.setShowChatInvite(false);
+    const exitButtonHandler1=() => {
+        actions.setShowChatAddFriend(false);
     }
+    const exitButtonHandler2=() => {
+        actions.setShowChatInvite(false);
+    };
 
 
     if(props.type === "add_friend")
@@ -35,6 +46,7 @@ const ChatUserSearch = (props: {type: "add_friend" | "invite"}): JSX.Element => 
             <div className="w-[276px] h-[476px] left-0 top-0 absolute bg-[#FEFEFE] rounded-[10px]" />
             <div className="w-[247px] h-[368px] left-[15px] top-[93px] absolute flex-col justify-start items-start gap-[7px] inline-flex">
                 {/* { renderComponent("add_friend") } */}
+                <UserListComponent userId="3" nick="test3" profileImg="" type="addFriend"/>
             </div>
             <div className="w-6 h-6 left-[238px] top-[7px] absolute" />
             <div className="w-[75px] h-3.5 left-[16px] top-[69px] absolute text-neutral-600 text-[15px] font-normal">result</div>
@@ -47,7 +59,7 @@ const ChatUserSearch = (props: {type: "add_friend" | "invite"}): JSX.Element => 
                 <img className="absolute left-[2.86px] top-[2.87px]" src="search.svg" />
                 <img className="absolute left-[1.24px] top-[27px]" src="userSearch_line_240px.svg" />
             </div>
-            <button onClick={exitButtonHandler}>
+            <button onClick={exitButtonHandler1}>
                     <img className="w-6 h-6 left-[238px] top-[7px] absolute justify-center items-center inline-flex" src="cancel.svg" />
             </button>
         </div>
@@ -82,7 +94,7 @@ const ChatUserSearch = (props: {type: "add_friend" | "invite"}): JSX.Element => 
                 <img className="w-8 h-8 left-0 top-0 absolute" src="sweep.svg" />
                 <div className="left-[29px] top-[7px] absolute text-neutral-600 text-base font-bold italic"> invite</div>
             </div>
-            <button onClick={exitButtonHandler}>
+            <button onClick={exitButtonHandler2}>
                     <img className="w-6 h-6 left-[238px] top-[7px] absolute justify-center items-center inline-flex" src="cancel.svg" />
             </button>
         </div>

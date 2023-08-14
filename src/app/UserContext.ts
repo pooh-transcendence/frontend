@@ -50,6 +50,7 @@ export const UserContext = React.createContext({
     showChatUserInfo: false,
     showChatSetting: false,
     showChatInvite: false,
+    showChatAddFriend: false,
 
     chatTargetUser: "",
     mutedUser: {} as Record<string, { until: number }>,
@@ -57,7 +58,6 @@ export const UserContext = React.createContext({
     channelChat: {} as Record<string, { channelId: string, userId: string, nickname: string, message: string }[]>,
   },
   actions: {
-    loadState: (prevState: Object) => {},
     setConnectionState: (newState: boolean) => {},
     setChatState: (newState: chatStates) => {},
     setUserInfo: (newState: userInfo) => {},
@@ -68,6 +68,7 @@ export const UserContext = React.createContext({
     setShowChatUserInfo: (newState: boolean) => {},
     setShowChatSetting: (newState: boolean) => {},
     setShowChatInvite: (newState: boolean) => {},
+    setShowChatAddFriend: (newState: boolean) => {},
     
     setChatTargetUser: (newState: string) => {},
     setMutedUser: (newState: {userId: string, until: number}) => {},

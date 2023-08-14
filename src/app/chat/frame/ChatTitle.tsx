@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useContext } from "react";
-import { UserContext, chatStates} from '@/app/UserContext';
+import { UserContext, chatStates } from '@/app/UserContext';
 
 interface Props {
     title: string,
@@ -14,26 +14,29 @@ export const ChatTitle = ({
     id = "-1",
     type,
 }: Props): JSX.Element => {
-    
-    const {state, actions}=useContext(UserContext);
-    
-    const chatBackHandler=() => {
+
+    const { state, actions } = useContext(UserContext);
+
+    const chatBackHandler = () => {
         console.log("back to chatlist");
         actions.setChatState(chatStates.friendList);
     };
-    const channelBackHandler=() => {
+    const channelBackHandler = () => {
         console.log("back to channellist");
         actions.setChatState(chatStates.channelList);
     };
-    const channelSettingHandler=() => {
+    const channelSettingHandler = () => {
         actions.setShowChatSetting(true);
     };
-    const channelInviteHandler=() => {
+    const channelInviteHandler = () => {
         actions.setShowChatInvite(true);
     }
-    const chatUserInfoHandler=() => {
+    const chatUserInfoHandler = () => {
         actions.setShowChatUserInfo(true);
         actions.setChatTargetUser(id);
+    }
+    const addFriendHandler = () => {
+        actions.setShowChatAddFriend(true);
     }
 
     return (
@@ -70,7 +73,7 @@ export const ChatTitle = ({
                     </button>
                     <button onClick={chatBackHandler} className="z-10 w-[1.4375rem] h-[1.4375rem] left-[1rem] top-[1.0625rem] absolute">
                         <img className="w-[1.4375rem] h-[1.4375rem] left-0 top-0 absolute" src="backButton.svg" />
-                    </button> 
+                    </button>
                     <img className="w-7 h-7 left-[16.125rem] top-[0.875rem] absolute justify-center items-center inline-flex" src="settings.svg" />
                 </div>
             )}
@@ -81,7 +84,9 @@ export const ChatTitle = ({
                     <div className="w-[1.4375rem] h-[1.4375rem] left-[1rem] top-[1.0625rem] absolute">
                         <img className="w-[1.4375rem] h-[1.4375rem] left-0 top-0 absolute" src="group.svg" />
                     </div>
-                    <img className="w-7 h-7 left-[16.125rem] top-[0.875rem] absolute justify-center items-center inline-flex" src="group_add.svg" />
+                    <button onClick={addFriendHandler} className="z-10">
+                        <img className="w-7 h-7 left-[16.125rem] top-[0.875rem] absolute justify-center items-center inline-flex" src="group_add.svg" />
+                    </button>
                 </div>
             )}
         </section>

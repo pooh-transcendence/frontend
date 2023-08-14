@@ -14,19 +14,12 @@ export default function UserProvider({ children }: { children: React.ReactNode }
   const [showChatUserInfo, setShowChatUserInfo] = useState<boolean>(false);
   const [showChatSetting, setShowChatSetting] = useState<boolean>(false);
   const [showChatInvite, setShowChatInvite] = useState<boolean>(false);
+  const [showChatAddFriend, setShowChatAddFriend] = useState<boolean>(false);
 
   const [chatTargetUser, setChatTargetUser] = useState<string>("");
   const [mutedUser, setMutedUser] = useState<Record<string, { until: number }>>({});
   const [userChat, setUserChat] = useState<Record<string, { userId: string, nickname: string, message: string }[]>>({});
   const [channelChat, setChannelChat] = useState<Record<string, { channelId: string, userId: string, nickname: string, message: string }[]>>({});
-
-  function loadState(prevState: any)
-  {
-    setUserInfo(prevState.userInfo);
-    setUserChat(prevState.userChat);
-    setChannelChat(prevState.channelChat);
-    setMutedUser(prevState.mutedUser);
-  };
 
   const userContextValue = {
     state: {
@@ -40,6 +33,7 @@ export default function UserProvider({ children }: { children: React.ReactNode }
       showChatUserInfo,
       showChatSetting,
       showChatInvite, 
+      showChatAddFriend,
 
       chatTargetUser,
       mutedUser,
@@ -47,8 +41,6 @@ export default function UserProvider({ children }: { children: React.ReactNode }
       channelChat,
     },
     actions: {
-      loadState: (prevState: Object) => loadState(prevState),
-
       setConnectionState: (newState: boolean) => setConnectionState(newState),
       setChatState: (newState: chatStates) => setChatState(newState),
       setUserInfo: (newState: userInfoInterface) => setUserInfo(newState),
@@ -59,6 +51,7 @@ export default function UserProvider({ children }: { children: React.ReactNode }
       setShowChatUserInfo: (newState: boolean) => setShowChatUserInfo(newState),
       setShowChatSetting: (newState: boolean) => setShowChatSetting(newState),
       setShowChatInvite: (newState: boolean) => setShowChatInvite(newState),
+      setShowChatAddFriend: (newState: boolean) => setShowChatAddFriend(newState),
 
       setChatTargetUser: (newState: string) => setChatTargetUser(newState),
       setMutedUser: (newState: { userId: string, until: number }) => setMutedUser({ ...mutedUser, [newState.userId]: { until: newState.until } }),
