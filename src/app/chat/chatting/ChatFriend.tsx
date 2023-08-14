@@ -6,7 +6,6 @@ import { ChatBubble } from './ChatBubble'
 import { socket } from "@/app/api";
 import { UserContext } from "@/app/UserContext";
 import UserInfo from "@/app/chat/lists/UserInfo";
-
 import RoomSettings from "./RoomSettings";
 import ChatUserSearch from "../ChatUserSearch";
 

@@ -49,7 +49,7 @@ export default function Chat() {
 
   switch (state.chatState) {
     case chatStates.channelChat:
-      return <ChatChannel title="test1" />;
+      return <ChatChannel title={state.channelChattingInfo.channelName} />;
     case chatStates.channelList:
       return <ChatChannelList />;
     case chatStates.friendChat:

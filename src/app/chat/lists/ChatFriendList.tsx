@@ -7,6 +7,7 @@ import { UserListComponent } from "./UserListComponent";
 import { api_get, socket } from "@/app/api";
 import { UserContext, chatStates } from "@/app/UserContext";
 import ChatUserSearch from "../ChatUserSearch";
+import FriendList from "@/app/ChannelLobby/friendList/friendList";
 
 const SmallSeparater=(props: {str: string}): JSX.Element => {
     return (
@@ -46,7 +47,7 @@ function makeUserListComp(friend: friend){
         console.log("change to friendChat", friend.id);
     }
     return (
-        <button onClick={gotoChat}>
+        <button key={friend.id} onClick={gotoChat}>
             <UserListComponent userId={friend.id} nick={friend.nickname} type={friend.userState} profileImg={friend.avatar}/>
         </button>
     )
@@ -54,7 +55,7 @@ function makeUserListComp(friend: friend){
 
 function makeBlockListComp(block: block){
     return (
-            <UserListComponent userId={block.id} nick={block.nickname} type="list_block" profileImg={block.avatar}/>
+            <UserListComponent key={block.id} userId={block.id} nick={block.nickname} type="list_block" profileImg={block.avatar}/>
     )
 }
 
