@@ -2,7 +2,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { UserContext, userInfo } from "../UserContext";
 import { useQRCode } from 'next-qrcode';
-import { api_get, api_post, getAuth, getUserId, setAuth, updateSocket } from "../api";
+import { api_get, api_post, getAuth, getUserId, setAuth, updateSocket, setRefToken } from "../api";
 
 export default function TwoFactor() {
     const {Canvas}=useQRCode();
@@ -22,21 +22,19 @@ export default function TwoFactor() {
         api_post("/auth/signInWithVerificationCode", {
             verificationCode: password, userId: Number(getUserId())
             }).then((res) => {
-                console.log("signInWithVerificationCode", res)
-                api_post("/auth/accessToken", {id: Number(getUserId()!)}).then((res) => {
-                    console.log("/auth/accessToken", res);
-                    // setAuth()
-                    // updateSocket()
-                    api_get("/user").then((res) => {
-                        console.log("/user", res);
-                        const data: userInfo=res.data.data;
-                        actions.setUserInfo({
-                            nickname: data.nickname,
-                            avatar: data.avatar ?? "https://via.placeholder.com/32x32",
-                            id: data.id,
-                            token: getAuth()!,
-                            registered: true,
-                        });
+                console.log("signInWithVerificationCode", res);
+                setAuth(res.data.accessToken);
+                setRefToken(res.data.refreshToken);
+                console.log("auth", getAuth());
+                api_get("/user").then((res) => {
+                    console.log("/user", res);
+                    const data: userInfo=res.data.data;
+                    actions.setUserInfo({
+                        nickname: data.nickname,
+                        avatar: data.avatar ?? "https://via.placeholder.com/32x32",
+                        id: data.id,
+                        token: getAuth()!,
+                        registered: true,
                     });
                 });
             }).catch((e) => {

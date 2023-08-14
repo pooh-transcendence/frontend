@@ -15,6 +15,16 @@ export function getAuth():string | null
     return auth;
 }
 
+let refToken: string | null=null;
+export function setRefToken(newToken: string)
+{
+    refToken=newToken;
+}
+export function getRefToken():string | null
+{
+    return refToken;
+}
+
 let userId: string | null=null;
 export function setUserId(newToken: string)
 {
@@ -25,19 +35,19 @@ export function getUserId():string | null
     return userId;
 }
 
-export const baseUrl="http://localhost:3000";
+// export const baseUrl="http://localhost:3000";
 // export const auth="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwibmlja25hbWUiOiJqb293cGFyayIsImZ0SWQiOiJqb293cGFyayIsImlhdCI6MTY5MTczMTA4OCwiZXhwIjoxNjk0MzIzMDg4fQ.F2R2Qf02IqY9pwvUzKQVoj8GayO2N9f3l9K3t4qt4DM";
-// export const baseUrl="http://10.19.233.166:8484";
+export const baseUrl="http://10.19.233.166:3000";
 
-// export let socket = io(baseUrl+"/channel",
-// {
-//     path: "/socket.io", 
-//     transports: ['websocket'],
-//     auth: {
-//         "authorization": auth,
-//     },
-// });
-export let socket: any = null;
+export let socket = io(baseUrl+"/channel",
+{
+    path: "/socket.io", 
+    transports: ['websocket'],
+    auth: {
+        "authorization": auth,
+    },
+});
+// export let socket: any = null;
 
 export const updateSocket=() => {
     console.log("socket updated using", auth);

@@ -11,24 +11,30 @@ export default function MainFrame() {
   const { state, actions } = useContext(UserContext);
 
   useEffect(() => {
-    setAuth("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwibmlja25hbWUiOiJ0ZXN0MiIsImZ0SWQiOiJ0am9hc2RmIiwiaWF0IjoxNjkxOTcyODc1LCJleHAiOjE2OTQ1NjQ4NzV9.hMSX82U4JZtvw9QpXyDpXI5jIwDsKIDKIbQ3uLKYbnk");
-    updateSocket();
+    // setAuth("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwibmlja25hbWUiOiJ0ZXN0MiIsImZ0SWQiOiJ0am9hc2RmIiwiaWF0IjoxNjkxOTcyODc1LCJleHAiOjE2OTQ1NjQ4NzV9.hMSX82U4JZtvw9QpXyDpXI5jIwDsKIDKIbQ3uLKYbnk");
+    // updateSocket();
 
     const connectionHandler = () => {
       console.log("connected", socket);
       actions.setConnectionState(true);
     }
-    socket.on('connect', connectionHandler);
-
     const disconnectionHandler = () => {
       console.log("socket disconnected");
       actions.setConnectionState(false);
+    
     }
-    socket.on('disconnect', disconnectionHandler);
+    if(getAuth())
+    {
+      socket.on('connect', connectionHandler);
+      socket.on('disconnect', disconnectionHandler);
+    }
 
     return () => {
-      socket.off('connect', connectionHandler);
-      socket.off('disconnect', disconnectionHandler);
+      if(getAuth())
+      {
+        socket.off('connect', connectionHandler);
+        socket.off('disconnect', disconnectionHandler);
+      }
     }
   }, []);
 
@@ -36,17 +42,17 @@ export default function MainFrame() {
   if(getUserId())
     return (
       <>
+        <pre>{JSON.stringify(state.userInfo)}</pre>
         {
           // check whether this user is registered
           (!getAuth()) && 
           <div>
             two-factor auth modal activated
-            <pre>{JSON.stringify(state.userInfo)}</pre>
             <TwoFactor/>
           </div>
         }
         {
-          (getAuth()) &&
+          (getAuth()) && 
           <UserProvider>
             <div className="flex justify-center items-center h-screen bg-gradient-to-bl from-neutral-100 to-slate-50">
               <div className="flex justify-center items-center w-[1280px] h-[832px] relative gap-[12px]" >
