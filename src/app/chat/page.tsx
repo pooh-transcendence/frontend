@@ -40,16 +40,12 @@ export default function Chat() {
   
     socket.on("userMessage", userMessageListener);
     socket.on("channelMessage", channelMessageListener);
-    api_get("/user").then((data) => {
-      actions.setUserInfo(data.data.data);
-      console.log(state.userInfo);
-    });
   
     return () => {
       socket.off("userMessage", userMessageListener);
       socket.off("channelMessage", channelMessageListener);
     };
-  }, [state.mutedUser]);
+  }, []);
 
   switch (state.chatState) {
     case chatStates.channelChat:

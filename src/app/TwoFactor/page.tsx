@@ -2,7 +2,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { UserContext, userInfo } from "../UserContext";
 import { useQRCode } from 'next-qrcode';
-import { api_get, api_post, getAuth, getUserId, setAuth } from "../api";
+import { api_get, api_post, getAuth, getUserId, setAuth, updateSocket } from "../api";
 
 export default function TwoFactor() {
     const {Canvas}=useQRCode();
@@ -25,6 +25,8 @@ export default function TwoFactor() {
                 console.log("signInWithVerificationCode", res)
                 api_post("/auth/accessToken", {id: Number(getUserId()!)}).then((res) => {
                     console.log("/auth/accessToken", res);
+                    // setAuth()
+                    // updateSocket()
                     api_get("/user").then((res) => {
                         console.log("/user", res);
                         const data: userInfo=res.data.data;

@@ -14,6 +14,11 @@ export const UserListComponent = ({
     type,
     profileImg = "https://via.placeholder.com/32x32",
   }: UserListCompProps): JSX.Element => {
+
+    const addFriendHandler=() => {
+      socket.emit("createFriend", {"followingUserId": Number(userId)});
+    }
+
     return (
       <>
         {type === "addFriend" && (
@@ -24,7 +29,9 @@ export const UserListComponent = ({
             </div>
             <div className="left-[182px] top-[2px] absolute justify-start items-start gap-[3px] inline-flex">
               <img className="w-7 h-7 relative" src="toUserInfo.svg" />
+            <button onClick={addFriendHandler}>
               <img className="w-7 h-7 relative" src="group_add.svg" />
+            </button>
             </div>
             <img className="top-[41px] relative" src="listComp_line_240px.svg" />
           </div>

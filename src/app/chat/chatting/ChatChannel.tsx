@@ -105,15 +105,28 @@ export const ChatChannel = ({
                 {/* frame */}
                 <div className="w-[300px] h-[650px] left-0 top-0 absolute rounded-[10px] border border-neutral-600" />
 
+                {/* userInfoModal */}
+                {
+                    state.showChatUserInfo &&
+                    <div className="absolute top-[256px] left-[12px]">
+                        <UserInfo type="default"/>)
+                    </div>
+                }   
+                {/* chatSettingModal */}
+                {
+                    state.showChatSetting &&
+                    <div className="absolute top-[305px] left-[12px]">
+                        <RoomSettings/>
+                    </div>
+                }
+                {/* chatInviteModal */}
+                {
+                    state.showChatInvite &&
+                    <div className="absolute top-[87px] left-[12px]">
+                        <ChatUserSearch/>
+                    </div>
+                }
             </div>
-            {/* userInfoModal */}
-            {/* todo: zindex */}
-            {
-                state.showChatUserInfo && 
-                <div className="z-100 absolute">
-                    <UserInfo type="default"/>
-                </div>
-            }   
         </>
     )
 }
