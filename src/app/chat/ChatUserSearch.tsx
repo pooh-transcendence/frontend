@@ -22,15 +22,20 @@ const ChatUserSearch = (props: {type: "add_friend" | "invite"}): JSX.Element => 
 
     useEffect(() => {
         if(state.showChatAddFriend)
-            api_get("/user/AllUser").then((data) => {
-            socket.emit("allUser", (data: any[]) => {
-            //    setUserList(data);
+        {
+            // api_get("/user/AllUser").then((data) => {
+            socket.emit("AllUser", (data: any[]) => {
+               setUserList(data);
                console.log(data);
-        });
+            //    console.log(data.data);
+            });
+        }
         else
+        {
             socket.emit("getFriendList", (data: friend[]) => {
                 setFriendList(data);
             });
+        }
     }, []);
     const exitButtonHandler1=() => {
         actions.setShowChatAddFriend(false);
