@@ -6,17 +6,9 @@ import { useSearchParams } from "next/navigation";
 import { UserContext, userInfo } from "../UserContext";
 import { api_get, api_post, setUserId } from "../api";
 import { useRouter } from "next/navigation";
-import UserProvider from "@/app/UserProvider";
 import axios from "axios";
 
-export default function Wrapper() {
-    return (
-        <UserProvider>
-            <Oauth/>
-        </UserProvider>
-    )
-}
-function Oauth() {
+export default function Oauth() {
     const params=useSearchParams();
     const {state, actions}=useContext(UserContext);
     const router=useRouter();

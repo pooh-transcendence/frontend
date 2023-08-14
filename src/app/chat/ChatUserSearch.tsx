@@ -17,25 +17,26 @@ interface friend
 
 const ChatUserSearch = (props: {type: "add_friend" | "invite"}): JSX.Element => {
     const {state, actions}=useContext(UserContext);
-    const [friendList, setFriendList] = useState<friend[]>([]);
-    const [userList, setUserList] = useState<any[]>([]);
+    const [originalList, setOriginalList]=useState<friend[]>([]);
+    const [userList, setUserList] = useState<friend[]>([]);
+    const onChange=(e: any)=>{
+        const query: string=e.target.value;
+        setUserList(originalList.filter((elem) => elem.nickname.startsWith(query)));
+    };
 
     useEffect(() => {
+        // TODO: 더 나은 검색결과를 위해 정렬하는거 조을듯
         if(state.showChatAddFriend)
-        {
-            // api_get("/user/AllUser").then((data) => {
-            socket.emit("allUser", (data: any[]) => {
-            //    setUserList(data);
-               console.log(data);
-            //    console.log(data.data);
+            socket.emit("allUser", (data: friend[]) => {
+                const tmpList=data.filter((elem) => elem.id != state.userInfo.id);
+                setOriginalList(tmpList);
+                setUserList(tmpList)
             });
-        }
         else
-        {
             socket.emit("getFriendList", (data: friend[]) => {
-                setFriendList(data);
+                setOriginalList(data);
+                setUserList(data);
             });
-        }
     }, []);
     const exitButtonHandler1=() => {
         actions.setShowChatAddFriend(false);
@@ -51,7 +52,13 @@ const ChatUserSearch = (props: {type: "add_friend" | "invite"}): JSX.Element => 
             <div className="w-[276px] h-[476px] left-0 top-0 absolute bg-[#FEFEFE] rounded-[10px]" />
             <div className="w-[247px] h-[368px] left-[15px] top-[93px] absolute flex-col justify-start items-start gap-[7px] inline-flex">
                 {/* { renderComponent("add_friend") } */}
-                <UserListComponent userId="3" nick="test3" profileImg="" type="addFriend"/>
+                {
+                    Object.entries(userList).map(
+                        ([idx, friend]) => {
+                            return <UserListComponent userId={friend.id} nick={friend.nickname} profileImg={friend.avatar} type="addFriend" />
+                    })
+                }
+
             </div>
             <div className="w-6 h-6 left-[238px] top-[7px] absolute" />
             <div className="w-[75px] h-3.5 left-[16px] top-[69px] absolute text-neutral-600 text-[15px] font-normal">result</div>
@@ -59,7 +66,7 @@ const ChatUserSearch = (props: {type: "add_friend" | "invite"}): JSX.Element => 
             <div className="w-[247px] h-[30px] left-[15px] top-[23px] absolute">
                 <div className="left-[7px] top-0 absolute justify-start items-center gap-1 inline-flex">
                     <div className="w-6 h-6 pl-[2.86px] pr-[3.23px] pt-[2.87px] pb-[3.22px] justify-center items-center flex" />
-                    <input type="text" placeholder="search" className="placeholder:italic outline-none w-[142px] h-[19px] text-neutral-600 text-base font-bold"></input>
+                    <input onChange={onChange} type="text" placeholder="search" className="placeholder:italic outline-none w-[142px] h-[19px] text-neutral-600 text-base font-bold"></input>
                 </div>
                 <img className="absolute left-[2.86px] top-[2.87px]" src="search.svg" />
                 <img className="absolute left-[1.24px] top-[27px]" src="userSearch_line_240px.svg" />
@@ -77,7 +84,7 @@ const ChatUserSearch = (props: {type: "add_friend" | "invite"}): JSX.Element => 
             <div className="w-[247px] h-[340px] left-[15px] top-[93px] absolute flex-col justify-start items-start gap-[7px] inline-flex">
                 {/* { renderComponent("inviteFriend_0") } */}
                 {
-                    Object.entries(friendList).map(
+                    Object.entries(userList).map(
                         ([idx, friend]) => {
                             return <UserListComponent userId={friend.id} nick={friend.nickname} profileImg={friend.avatar} type="inviteFriend_0" />
                     })
@@ -89,7 +96,7 @@ const ChatUserSearch = (props: {type: "add_friend" | "invite"}): JSX.Element => 
             <div className="w-[247px] h-[30px] left-[15px] top-[23px] absolute">
                 <div className="left-[7px] top-0 absolute justify-start items-center gap-1 inline-flex">
                     <div className="w-6 h-6 pl-[2.86px] pr-[3.23px] pt-[2.87px] pb-[3.22px] justify-center items-center flex" />
-                    <input type="text" placeholder="search" className="placeholder:italic outline-none w-[142px] h-[19px] text-neutral-600 text-base font-bold"></input>
+                    <input onChange={onChange} type="text" placeholder="search" className="placeholder:italic outline-none w-[142px] h-[19px] text-neutral-600 text-base font-bold"></input>
                 </div>
                 <img className="absolute left-[2.86px] top-[2.87px]" src="search.svg" />
                 <img className="absolute left-[1.24px] top-[27px]" src="userSearch_line_240px.svg" />
