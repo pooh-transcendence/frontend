@@ -1,11 +1,13 @@
 'use client'
 
 import React, { useState, useEffect, useContext, useRef } from "react";
-import { ChatTitle } from '../frame/ChatTitle' 
-import { ChatBubble } from './ChatBubble'
+import { ChatTitle } from '@/app/chat/frame/ChatTitle';
+import { ChatBubble } from '@/app/chat/chatting/ChatBubble';
 import { socket } from "@/app/api";
 import { UserContext } from "@/app/UserContext";
 import UserInfo from "@/app/chat/lists/UserInfo";
+import RoomSettings from "@/app/chat/chatting/RoomSettings";
+import ChatUserSearch from "@/app/chat/ChatUserSearch";
 
 interface Props{
     title: string,
@@ -43,7 +45,7 @@ export const ChatChannel = ({
 
     function renderMessage(): Array<JSX.Element>
     {
-        console.log("render", state.channelChat[state.channelChattingInfo.id]);
+        // console.log("render", state.channelChat[state.channelChattingInfo.id]);
         const res: Array<JSX.Element>=[];
         if(!state.channelChat[state.channelChattingInfo.id]) return res;
         state.channelChat[state.channelChattingInfo.id].forEach((msg, idx) => {
@@ -77,7 +79,7 @@ export const ChatChannel = ({
         actions.setChannelChat({channelId: state.channelChattingInfo.id, userId: state.userInfo.id, nickname: state.userInfo.nickname, message: text});
 
         // opponent side
-        console.log("send to", Number(state.channelChattingInfo.id));
+        // console.log("send to", Number(state.channelChattingInfo.id));
         socket.emit("message", {channelId : Number(state.channelChattingInfo.id), message: text+' '});
         setText("");
     }
@@ -114,16 +116,26 @@ export const ChatChannel = ({
                 }   
                 {/* chatSettingModal */}
                 {
-                    state.showChatSetting &&
-                    <div className="absolute top-[305px] left-[12px]">
-                        <RoomSettings/>
-                    </div>
+                    state.showChatSetting && (
+                        state.channelChattingInfo.userType == "MODERATOR" && state.channelChattingInfo.channelType == "PROTECTED" ? 
+                        <div className="z-11 absolute top-[16.44rem] left-[0.75rem]">
+                            <RoomSettings roomType={state.channelChattingInfo.channelType} userType={state.channelChattingInfo.userType}/>
+                        </div> : 
+                        state.channelChattingInfo.userType == "MODERATOR" && state.channelChattingInfo.channelType == "PUBLIC" ?
+                        <div className="z-11 absolute top-[17.69rem] left-[0.75rem]">
+                            <RoomSettings roomType={state.channelChattingInfo.channelType} userType={state.channelChattingInfo.userType}/>
+                        </div> :
+                        // default
+                        <div className="z-11 absolute top-[19.06rem] left-[0.75rem]">
+                            <RoomSettings roomType={state.channelChattingInfo.channelType} userType={state.channelChattingInfo.userType}/>
+                        </div>
+                    )
                 }
                 {/* chatInviteModal */}
                 {
                     state.showChatInvite &&
-                    <div className="absolute top-[87px] left-[12px]">
-                        <ChatUserSearch/>
+                    <div className="z-10 absolute top-[5.4375rem] left-[0.75rem]">
+                        <ChatUserSearch type="invite" />
                     </div>
                 }
             </div>

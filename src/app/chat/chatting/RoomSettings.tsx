@@ -4,7 +4,7 @@ import React, {useContext} from "react";
 import { UserContext, chatStates } from "@/app/UserContext";
 import { socket } from "@/app/api"
 
-export default function RoomSettings(props: { type: "mod_protected" | "mod_public" | "default" }) {
+export default function RoomSettings(props: { userType: "DEFAULT" | "MODERATOR" | "OWNER", roomType: "PUBLIC" | "PRIVATE" | "PROTECTED" }) {
     const {state, actions}=useContext(UserContext);
 
     const exitButtonHandler=() => {
@@ -15,7 +15,7 @@ export default function RoomSettings(props: { type: "mod_protected" | "mod_publi
         socket.emit("leaveChannel", Number(state.channelChattingInfo.id), (ack: any) => {console.log("exited channel", ack)});
         actions.setChatState(chatStates.channelList);
     }
-    if (props.type === "mod_protected") {
+    if (props.roomType === "PROTECTED" && props.userType === "MODERATOR" || props.userType === "OWNER") {
         return (
             <div className="w-[276px] h-[124px] relative shadow">
                 <div className="w-[276px] h-[124px] left-0 top-0 absolute bg-[#FEFEFE] rounded-[10px]" />
@@ -54,14 +54,14 @@ export default function RoomSettings(props: { type: "mod_protected" | "mod_publi
             </div>
         )
     }
-    else if (props.type === "mod_public") {
+    else if (props.roomType === "PUBLIC" && props.userType === "MODERATOR" || props.userType === "OWNER") {
         return (
             <div className="w-[276px] h-[84px] relative shadow">
                 <div className="w-[276px] h-[84px] left-0 top-0 absolute bg-[#FEFEFE] rounded-[10px]" />
 
                 {/* bottom buttons */}
                 <div className="left-[33.50px] top-[40px] absolute justify-start items-end gap-[26px] inline-flex">
-                    {/* to public button */}
+                    {/* to protected button */}
                     <div className="justify-center items-center gap-px flex">
                         <img className="w-7 h-7 justify-center items-center inline-flex" src="lock.svg" />
                         <div className="text-neutral-600 text-base font-bold italic">to protected</div>
@@ -85,7 +85,7 @@ export default function RoomSettings(props: { type: "mod_protected" | "mod_publi
             </div>
         );
     }
-    else // if(props.type === "default")
+    else // other users
     {
         return (
             <div className="w-[276px] h-[39px] relative shadow">

@@ -56,7 +56,7 @@ export const updateSocket=() => {
             "authorization": auth,
         },
     });
-    console.log("socket updated using", auth, socket);
+    // console.log("socket updated using", auth, socket);
 };
 
 export const api_get=(url: string, params: Object | void) => {

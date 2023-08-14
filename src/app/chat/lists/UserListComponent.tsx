@@ -76,7 +76,7 @@ export const UserListComponent = ({
             <img className="top-[41px] relative" src="listComp_line_260px.svg" />
           </div>
         )}
-        {type === "ONLINE" || type === "ONCHAT" && (
+        {(type === "ONLINE" || type === "ONCHAT") && (
           <div className="w-[260px] h-[45px] relative">
             <img className="top-[41px] relative" src="listComp_line_260px.svg" />
             <div className="left-[1px] top-0 absolute justify-center items-center gap-2.5 inline-flex">

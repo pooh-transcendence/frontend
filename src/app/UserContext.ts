@@ -27,6 +27,7 @@ export interface channelInfo
     channelName: string;
     ownerId: string;
     channelUser: Object[];
+    userType: "DEFAULT" | "MODERATOR" | "OWNER"; 
 };
 
 export interface userInfo

@@ -4,7 +4,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { ChatBottomBar } from "../frame/ChatBottomBar";
 import { ChatTitle } from "../frame/ChatTitle";
 import { UserContext, chatStates, channelInfo as channel  } from "@/app/UserContext";
-import { socket } from "@/app/api";
+import { api_get, api_post, socket } from "@/app/api";
 
 interface ChannelListProps {
     channelName: string,
@@ -41,20 +41,31 @@ export const ChatChannelList = (): JSX.Element => {
     const [channelList, setChannelList]=useState<channel[]>([]);
 
     useEffect(() => {
-        socket.emit("visibleChannel", (ack: any) => { 
-            console.log("visibleChannel emitl", ack );
-            setChannelList(ack);
+        api_get("/user/channel").then((data) => {
+            console.log("/user/channel", data.data.data);
+            const res: channel[]=data.data.data;
+            const ret: channel[]=[];
+            for(const elem of res)
+            {
+                let tmp=elem;
+                api_get(`/channel/admin/${elem.id}`).then((data) => {
+                    console.log(data.data.data.filter(
+                        (it: any) => state.userInfo.id == it.id));
+                    tmp.userType=data.data.data.filter(
+                        (it: any) => state.userInfo.id == it.id).length ? "MODERATOR" : "DEFAULT";
+                });
+                api_get(`/user/${elem.ownerId}`).then((data) => {
+                    tmp.ownerId=data.data.data.nickname;
+                });
+                ret.push(tmp);
+            }
+            setChannelList(ret);
         });
-
-        // socket.on("visibleChannel", (data: channel[]) => {
-        //     setChannelList(data);
-        // });
-        // console.log("channelList", channelList);
     }, []);
 
     function makeChannelListComp(channel: channel){
         const {state, actions} = useContext(UserContext);
-    
+
         const gotoChat= () => {
             actions.setChatState(chatStates.channelChat);
             actions.setChannelChattingInfo(channel);
@@ -62,7 +73,7 @@ export const ChatChannelList = (): JSX.Element => {
         }
         return (
             <button onClick={gotoChat}>
-                <ChannelListComponent channelName={channel.channelName} channelOwner={`${channel.ownerId} <- ownerId`} channelPeopleCnt={channel.channelUser.length} channelProfileImg="https://via.placeholder.com/32x32"/>
+                <ChannelListComponent channelName={channel.channelName} channelOwner={channel.ownerId} channelPeopleCnt={42/* channel.channelUser.length */} channelProfileImg="https://via.placeholder.com/32x32"/>
             </button>
         )
     }
@@ -73,10 +84,6 @@ export const ChatChannelList = (): JSX.Element => {
             <div className="w-[300px] h-[51px] left-0 top-[599px] absolute">
                 <ChatBottomBar />
             </div>
-            {/* TitleSection */}
-            <div className="w-[300px] h-[50px] left-0 top-0 absolute">
-                <ChatTitle title="" type="channelList" id={"-1"} />
-            </div>
             {/* ContentsSection */}
             <div className="w-[260px] py-2 left-[20px] top-[58px] absolute flex-col justify-start items-start gap-[7px] inline-flex">
                 {
@@ -84,6 +91,10 @@ export const ChatChannelList = (): JSX.Element => {
                         return makeChannelListComp(channel);
                     })
                 }
+            </div>
+            {/* TitleSection */}
+            <div className="w-[300px] h-[50px] left-0 top-0 absolute">
+                <ChatTitle title="" type="channelList" id={"-1"} />
             </div>
         </div>
     )
