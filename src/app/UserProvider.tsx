@@ -1,11 +1,11 @@
 'use client'
 
 import React, { useState } from 'react';
-import { UserContext, chatStates, mainStates, friendInfo, channelInfo, userInfo as userInfoInterface, userInfo } from './UserContext';
+import { UserContext, chatStates, mainStates, friendInfo, channelInfo, userInfo as userInfoInterface, targetChannelInfo } from './UserContext';
 
 export default function UserProvider({ children }: { children: React.ReactNode }) {
   const [isConnected, setConnectionState] = useState<boolean>(false);
-  const [userInfo, setUserInfo] = useState<userInfoInterface>({token: "-1", registered: false, nickname: "defaultNick", avatar: "https://via.placeholder.com/32x32", id: "-1"});
+  const [userInfo, setUserInfo] = useState<userInfoInterface>({token: "-1", registered: false, nickname: "defaultNick", avatar: "https://via.placeholder.com/32x32", id: "-1", winnerGame: [], loserGame: []});
   const [chatState, setChatState] = useState(chatStates.friendList);
   const [mainState, setMainState] = useState(mainStates.gameLobby);
   const [friendChattingInfo, setFriendChattingInfo] = useState<friendInfo>({} as friendInfo);
@@ -15,8 +15,10 @@ export default function UserProvider({ children }: { children: React.ReactNode }
   const [showChatSetting, setShowChatSetting] = useState<boolean>(false);
   const [showChatInvite, setShowChatInvite] = useState<boolean>(false);
   const [showChatAddFriend, setShowChatAddFriend] = useState<boolean>(false);
+  const [showChannelPassword, setShowChannelPassword] = useState<boolean>(false);
 
   const [chatTargetUser, setChatTargetUser] = useState<string>("");
+  const [targetChannel, setTargetChannel] = useState<targetChannelInfo>({} as targetChannelInfo);
   const [mutedUser, setMutedUser] = useState<Record<string, { until: number }>>({});
   const [userChat, setUserChat] = useState<Record<string, { userId: string, nickname: string, message: string }[]>>({});
   const [channelChat, setChannelChat] = useState<Record<string, { channelId: string, userId: string, nickname: string, message: string }[]>>({});
@@ -34,8 +36,10 @@ export default function UserProvider({ children }: { children: React.ReactNode }
       showChatSetting,
       showChatInvite, 
       showChatAddFriend,
+      showChannelPassword,
 
       chatTargetUser,
+      targetChannel,
       mutedUser,
       userChat,
       channelChat,
@@ -55,8 +59,10 @@ export default function UserProvider({ children }: { children: React.ReactNode }
       setShowChatSetting: (newState: boolean) => setShowChatSetting(newState),
       setShowChatInvite: (newState: boolean) => setShowChatInvite(newState),
       setShowChatAddFriend: (newState: boolean) => setShowChatAddFriend(newState),
+      setShowChannelPassword: (newState: boolean) => setShowChannelPassword(newState),
 
       setChatTargetUser: (newState: string) => setChatTargetUser(newState),
+      setTargetChannel: (newState: targetChannelInfo) => setTargetChannel(newState),
       setMutedUser: (newState: { userId: string, until: number }) => setMutedUser({ ...mutedUser, [newState.userId]: { until: newState.until } }),
       setUserChat: (newState: { userId: string, nickname: string, message: string }) => setUserChat(prevUserChat => {
         const newChat = { ...prevUserChat };

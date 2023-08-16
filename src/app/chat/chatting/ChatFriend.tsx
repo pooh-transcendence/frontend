@@ -107,7 +107,7 @@ export const ChatFriend = ({
                 {/* frame */}
 
                 {/* userInfoModal */}
-                <div className="absolute top-[256px] left-[12px]">
+                <div className="z-20 absolute top-[256px] left-[12px]">
                 {
                     state.showChatUserInfo && 
                         <UserInfo type="default"/>

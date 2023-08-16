@@ -110,7 +110,7 @@ export const ChatChannel = ({
                 {/* userInfoModal */}
                 {
                     state.showChatUserInfo &&
-                    <div className="absolute top-[256px] left-[12px]">
+                    <div className="absolute z-20 top-[256px] left-[12px]">
                         <UserInfo type="default"/>)
                     </div>
                 }   
@@ -118,15 +118,15 @@ export const ChatChannel = ({
                 {
                     state.showChatSetting && (
                         state.channelChattingInfo.userType == "MODERATOR" && state.channelChattingInfo.channelType == "PROTECTED" ? 
-                        <div className="z-11 absolute top-[16.44rem] left-[0.75rem]">
+                        <div className="z-20 absolute top-[16.44rem] left-[0.75rem]">
                             <RoomSettings roomType={state.channelChattingInfo.channelType} userType={state.channelChattingInfo.userType}/>
                         </div> : 
                         state.channelChattingInfo.userType == "MODERATOR" && state.channelChattingInfo.channelType == "PUBLIC" ?
-                        <div className="z-11 absolute top-[17.69rem] left-[0.75rem]">
+                        <div className="z-20 absolute top-[17.69rem] left-[0.75rem]">
                             <RoomSettings roomType={state.channelChattingInfo.channelType} userType={state.channelChattingInfo.userType}/>
                         </div> :
                         // default
-                        <div className="z-11 absolute top-[19.06rem] left-[0.75rem]">
+                        <div className="z-20 absolute top-[19.06rem] left-[0.75rem]">
                             <RoomSettings roomType={state.channelChattingInfo.channelType} userType={state.channelChattingInfo.userType}/>
                         </div>
                     )
@@ -134,7 +134,7 @@ export const ChatChannel = ({
                 {/* chatInviteModal */}
                 {
                     state.showChatInvite &&
-                    <div className="z-10 absolute top-[5.4375rem] left-[0.75rem]">
+                    <div className="z-20 absolute top-[5.4375rem] left-[0.75rem]">
                         <ChatUserSearch type="invite" />
                     </div>
                 }

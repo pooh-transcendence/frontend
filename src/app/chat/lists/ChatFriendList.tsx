@@ -28,7 +28,7 @@ interface friend
     id: string;
     nickname: string;
     avatar: string;
-    userState: "ONLINE" | "OFFLINE" | "GAMING" | "ONCHAT";
+    userState: "ONLINE" | "OFFLINE" | "GAMING";
 }
 
 interface block
@@ -40,7 +40,7 @@ interface block
 
 function makeUserListComp(friend: friend){
     const {state, actions} = useContext(UserContext);
-    console.log("makeUserListComp", friend);
+    // console.log("makeUserListComp", friend);
     const gotoChat= () => {
         actions.setChatState(chatStates.friendChat);
         actions.setFriendChattingInfo(friend);
