@@ -34,7 +34,7 @@ const ChannelLobby: NextPage = () => {
             <CreateListFrame />
           </div>
         </div>
-        {/* <FriendList /> 지워도 됨 */}
+        <FriendList /> 지워도 됨
       </div>
     </>
   );
