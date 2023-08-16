@@ -3,7 +3,7 @@
 import React, { useContext, useState, useEffect} from "react";
 import { UserListComponent } from "./lists/UserListComponent";
 import { UserContext } from "@/app/UserContext"
-import { api_get, socket } from "../api";
+import { api_get, api_patch, socket } from "../api";
 
 interface friend
 {
@@ -19,6 +19,7 @@ const ChatUserSearch = (props: {type: "add_friend" | "invite"}): JSX.Element => 
     const {state, actions}=useContext(UserContext);
     const [originalList, setOriginalList]=useState<friend[]>([]);
     const [userList, setUserList] = useState<friend[]>([]);
+
     const onChange=(e: any)=>{
         const query: string=e.target.value;
         setUserList(originalList.filter((elem) => elem.nickname.startsWith(query)));
@@ -33,10 +34,17 @@ const ChatUserSearch = (props: {type: "add_friend" | "invite"}): JSX.Element => 
                 setUserList(tmpList)
             });
         else
+        {
             socket.emit("getFriendList", (data: friend[]) => {
+                // setOriginalList(data);
+                // setUserList(data);
+                console.log(data);
+            });
+            socket.once("getFriendList", (data: friend[]) => {
                 setOriginalList(data);
                 setUserList(data);
             });
+        }
     }, []);
     const exitButtonHandler1=() => {
         actions.setShowChatAddFriend(false);
@@ -44,6 +52,14 @@ const ChatUserSearch = (props: {type: "add_friend" | "invite"}): JSX.Element => 
     const exitButtonHandler2=() => {
         actions.setShowChatInvite(false);
     };
+    const inviteHandler=() => {
+        state.channelChattingInfo.inviteSelectedList.forEach((elem) => {
+            api_patch("/channel/invite", {userId: elem, channelId: state.channelChattingInfo.id});
+        })
+        api_patch("/channel/invite", {}).catch((e) => {/* */});
+        actions.setShowChatInvite(false);
+        actions.setChannelChattingInfo({...state.channelChattingInfo, inviteSelectedList: []});
+    }
 
 
     if(props.type === "add_friend")
@@ -86,7 +102,7 @@ const ChatUserSearch = (props: {type: "add_friend" | "invite"}): JSX.Element => 
                 {
                     Object.entries(userList).map(
                         ([idx, friend]) => {
-                            return <UserListComponent userId={friend.id} nick={friend.nickname} profileImg={friend.avatar} type="inviteFriend_0" />
+                            return <UserListComponent userId={friend.id} nick={friend.nickname} profileImg={friend.avatar} type={state.channelChattingInfo.inviteSelectedList.includes(friend.id) ? "inviteFriend_1" : "inviteFriend_0"} />
                     })
                 }
             </div>
@@ -102,10 +118,10 @@ const ChatUserSearch = (props: {type: "add_friend" | "invite"}): JSX.Element => 
                 <img className="absolute left-[1.24px] top-[27px]" src="userSearch_line_240px.svg" />
             </div>
             {/* invite button */}
-            <div className="left-[101px] top-[439px] w-[75px] h-8 relative">
+            <button onClick={inviteHandler} className="left-[101px] top-[439px] w-[75px] h-8 relative">
                 <img className="w-8 h-8 left-0 top-0 absolute" src="sweep.svg" />
                 <div className="left-[29px] top-[7px] absolute text-neutral-600 text-base font-bold italic"> invite</div>
-            </div>
+            </button>
             <button onClick={exitButtonHandler2}>
                     <img className="w-6 h-6 left-[238px] top-[7px] absolute justify-center items-center inline-flex" src="cancel.svg" />
             </button>

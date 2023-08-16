@@ -41,23 +41,24 @@ export const ChatChannelList = (): JSX.Element => {
     const [channelList, setChannelList]=useState<channel[]>([]);
 
     useEffect(() => {
-        api_get("/user/channel").then((data) => {
+        api_get("/user/channel").then(async (data) => {
             console.log("/user/channel", data.data.data);
             const res: channel[]=data.data.data;
             const ret: channel[]=[];
             for(const elem of res)
             {
                 let tmp=elem;
-                api_get(`/channel/admin/${elem.id}`).then((data) => {
-                    console.log(data.data.data.filter(
-                        (it: any) => state.userInfo.id == it.id));
+                await api_get(`/channel/admin/${elem.id}`).then((data) => {
+                    // console.log(data.data.data.filter(
+                    //     (it: any) => state.userInfo.id == it.id));
                     tmp.userType=data.data.data.filter(
                         (it: any) => state.userInfo.id == it.id).length ? "MODERATOR" : "DEFAULT";
                 });
-                api_get(`/user/${elem.ownerId}`).then((data) => {
+                await api_get(`/user/${elem.ownerId}`).then((data) => {
+                    console.log(data.data.data.nickname);
                     tmp.ownerId=data.data.data.nickname;
                 });
-                ret.push(tmp);
+                ret.push({...tmp, inviteSelectedList: [], channelUser: []});
             }
             setChannelList(ret);
         });
@@ -72,7 +73,7 @@ export const ChatChannelList = (): JSX.Element => {
             console.log("change to channelChat", channel.id);
         }
         return (
-            <button onClick={gotoChat}>
+            <button key={channel.id} onClick={gotoChat}>
                 <ChannelListComponent channelName={channel.channelName} channelOwner={channel.ownerId} channelPeopleCnt={42/* channel.channelUser.length */} channelProfileImg="https://via.placeholder.com/32x32"/>
             </button>
         )

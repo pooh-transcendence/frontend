@@ -6,7 +6,7 @@ export const redirectUri=() => {
 }
 
 let auth: string | null =null;
-export function setAuth(newToken: string)
+export function setAuth(newToken: string | null)
 {
     auth=newToken;
 }
@@ -26,7 +26,7 @@ export function getRefToken():string | null
 }
 
 let userId: string | null=null;
-export function setUserId(newToken: string)
+export function setUserId(newToken: string | null)
 {
     userId=newToken;
 }
@@ -67,5 +67,10 @@ export const api_get=(url: string, params: Object | void) => {
 
 export const api_post=(url: string, body: object) => {
     return axios.post(baseUrl+url, 
+        body, { headers: {Authorization: `Bearer ${auth!}`}});
+}
+
+export const api_patch=(url: string, body: object) => {
+    return axios.patch(baseUrl+url, 
         body, { headers: {Authorization: `Bearer ${auth!}`}});
 }

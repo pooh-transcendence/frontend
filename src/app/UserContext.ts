@@ -27,14 +27,15 @@ export interface channelInfo
     channelName: string;
     ownerId: string;
     channelUser: Object[];
-    userType: "DEFAULT" | "MODERATOR" | "OWNER"; 
+    userType: "DEFAULT" | "MODERATOR" | "OWNER";
+    inviteSelectedList: string[];
 };
 
 export interface userInfo
 {
   nickname: string;
   avatar: string;
-  id: string; 
+  id: string;
   token: string; // this value is our backend's token 
   registered: boolean; // this value would be true after two-factor auth
 };
@@ -63,8 +64,8 @@ export const UserContext = React.createContext({
     setChatState: (newState: chatStates) => {},
     setUserInfo: (newState: userInfo) => {},
     setMainState: (newState: mainStates) => {},
-    setFriendChattingInfo: (newState: any) => {},
-    setChannelChattingInfo: (newState: any) => {},
+    setFriendChattingInfo: (newState: friendInfo) => {},
+    setChannelChattingInfo: (newState: channelInfo) => {},
     
     setShowChatUserInfo: (newState: boolean) => {},
     setShowChatSetting: (newState: boolean) => {},

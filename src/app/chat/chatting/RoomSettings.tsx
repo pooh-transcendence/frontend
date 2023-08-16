@@ -1,19 +1,46 @@
 'use client'
 
-import React, {useContext} from "react";
+import React, {useContext, useState} from "react";
 import { UserContext, chatStates } from "@/app/UserContext";
 import { socket } from "@/app/api"
 
 export default function RoomSettings(props: { userType: "DEFAULT" | "MODERATOR" | "OWNER", roomType: "PUBLIC" | "PRIVATE" | "PROTECTED" }) {
     const {state, actions}=useContext(UserContext);
+    const [text, setText]=useState("");
+    const onChange=(e: any)=>{setText(e.target.value);}
 
     const exitButtonHandler=() => {
         actions.setShowChatSetting(false);
-    }
+    };
     const exitChannelHandler=() => {
         exitButtonHandler();
-        socket.emit("leaveChannel", Number(state.channelChattingInfo.id), (ack: any) => {console.log("exited channel", ack)});
+        socket.emit("leaveChannel", {channelId: Number(state.channelChattingInfo.id)}, (ack: any) => {console.log("exited channel", ack)});
         actions.setChatState(chatStates.channelList);
+    };
+    const passwordChangeHandler=() => {
+        if(state.channelChattingInfo.channelType === "PROTECTED")
+        {
+            // console.log("change pw to", text);
+            socket.emit("password", {"channelId": state.channelChattingInfo.id, "password": text});
+        }
+        else if(state.channelChattingInfo.channelType === "PUBLIC")
+        {
+            // console.log("pub to pri");
+            socket.emit("password", {"channelId": state.channelChattingInfo.id, "password": "defaultPw"});
+            actions.setChannelChattingInfo({...state.channelChattingInfo, channelType: "PROTECTED"});
+            console.log(state);
+        }
+        setText("");
+    };
+    const passwordChangeApplyHandler=() => {
+        // console.log("apply clicked", text);
+        if(text==="") return;
+        else passwordChangeHandler();
+        actions.setShowChatSetting(false);
+    };
+    const changeToPublicHandler=() => {
+        socket.emit("password", {"channelId": state.channelChattingInfo.id});
+        actions.setChannelChattingInfo({...state.channelChattingInfo, channelType: "PUBLIC"});
     }
     if (props.roomType === "PROTECTED" && props.userType === "MODERATOR" || props.userType === "OWNER") {
         return (
@@ -23,16 +50,16 @@ export default function RoomSettings(props: { userType: "DEFAULT" | "MODERATOR" 
                 {/* bottom buttons */}
                 <div className="left-[42px] top-[79px] absolute justify-start items-end gap-[26px] inline-flex">
                     {/* to public button */}
-                    <div className="justify-center items-center gap-px flex">
+                    <button onClick={changeToPublicHandler} className="justify-center items-center gap-px flex">
                         <img className="w-7 h-7 justify-center items-center inline-flex" src="public.svg" />
                         <div className="text-neutral-600 text-base font-bold italic">to public</div>
-                    </div>
+                    </button>
                     {/* apply button */}
                     {/* TODO: */}
-                    <div className="w-[75px] h-8 relative">
+                    <button onClick={passwordChangeApplyHandler} className="w-[75px] h-8 relative">
                         <img className="w-8 h-8 left-0 top-0 absolute justify-center items-center inline-flex" src="sweep.svg" />
                         <div className="left-[29px] top-[7px] absolute text-neutral-600 text-base font-bold italic">apply</div>
-                    </div>
+                    </button>
                 </div>
 
                 {/* exit channel button */}
@@ -44,7 +71,7 @@ export default function RoomSettings(props: { userType: "DEFAULT" | "MODERATOR" 
                 <div className="w-[220px] h-[25px] left-[28px] top-[45px] absolute">
                     <div className="left-0 top-0 absolute text-neutral-600 text-[15px] font-bold">new pw</div>
                     <div className="w-[85px] h-[21px] left-[92px] top-0 absolute justify-center items-center inline-flex">
-                        <input type="password" className="outline-none w-[120px] h-[21px] text-center text-neutral-600 text-[25px] font-normal leading-[21px]" />
+                        <input onChange={onChange} type="password" maxLength={12} className="outline-none w-[120px] h-[21px] text-center text-neutral-600 text-[25px] font-normal leading-[21px]" />
                     </div>
                     <img className="absolute left-[50px] top-[25px]" src="password_input_line.svg" />
                 </div>
@@ -62,16 +89,16 @@ export default function RoomSettings(props: { userType: "DEFAULT" | "MODERATOR" 
                 {/* bottom buttons */}
                 <div className="left-[33.50px] top-[40px] absolute justify-start items-end gap-[26px] inline-flex">
                     {/* to protected button */}
-                    <div className="justify-center items-center gap-px flex">
+                    <button onClick={passwordChangeHandler} className="justify-center items-center gap-px flex">
                         <img className="w-7 h-7 justify-center items-center inline-flex" src="lock.svg" />
                         <div className="text-neutral-600 text-base font-bold italic">to protected</div>
-                    </div>
+                    </button>
                     {/* apply button */}
                     {/* TODO: */}
-                    <div className="w-[75px] h-8 relative">
+                    {/* <div className="w-[75px] h-8 relative">
                         <img className="w-8 h-8 left-0 top-0 absolute justify-center items-center inline-flex" src="sweep.svg" />
                         <div className="left-[29px] top-[7px] absolute text-neutral-600 text-base font-bold italic">apply</div>
-                    </div>
+                    </div> */}
                 </div>
 
                 {/* exit channel button */}

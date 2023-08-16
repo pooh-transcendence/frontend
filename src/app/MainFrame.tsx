@@ -3,7 +3,7 @@ import React, { useContext, useEffect } from "react"
 import Chat from "./chat/page"
 
 import { UserContext, userInfo } from "@/app/UserContext"
-import { getAuth, getUserId, redirectUri, setAuth, socket, updateSocket, api_get } from '@/app/api';
+import { getAuth, setUserId, getUserId, redirectUri, setAuth, socket, updateSocket, api_get } from '@/app/api';
 import TwoFactor from "./TwoFactor/page";
 
 export default function MainFrame() {
@@ -24,14 +24,12 @@ export default function MainFrame() {
   }
 
   useEffect(() => {
-    {
       // auth bypass
-      setAuth("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsIm5pY2tuYW1lIjoidGVzdDYiLCJmdElkIjoiYWRzZmFzc2Rkc2RmIiwiaWF0IjoxNjkyMDA2OTU5LCJleHAiOjE2OTQ1OTg5NTl9.7z3DFG0O6bGPaQb5Wu99bBGoyIiqjW9Y5NYBSqSPGVw");
-      updateSocket();
-
-      // setAuth("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwibmlja25hbWUiOiJ0ZXN0MiIsImZ0SWQiOiJ0am9hc2RmIiwiaWF0IjoxNjkxOTcyODc1LCJleHAiOjE2OTQ1NjQ4NzV9.hMSX82U4JZtvw9QpXyDpXI5jIwDsKIDKIbQ3uLKYbnk");
-      // updateSocket();
-    }
+      if(!getAuth())
+      {
+        setAuth("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsIm5pY2tuYW1lIjoidGVzdDYiLCJmdElkIjoiYWRzZmFzc2Rkc2RmIiwiaWF0IjoxNjkyMDA2OTU5LCJleHAiOjE2OTQ1OTg5NTl9.7z3DFG0O6bGPaQb5Wu99bBGoyIiqjW9Y5NYBSqSPGVw");
+        updateSocket();
+      }
 
     const connectionHandler = () => {
       console.log("connected", socket);
@@ -61,7 +59,9 @@ export default function MainFrame() {
     return (
       <>
         <pre>{JSON.stringify(state.userInfo)}</pre>
-        <button onClick={bypassMe}>bypassMe</button>
+        <div className="flex-auto gap-5">
+          <button onClick={bypassMe}>bypassMe</button>
+        </div>
         {
           // check whether this user is registered
           (!getAuth()) && 

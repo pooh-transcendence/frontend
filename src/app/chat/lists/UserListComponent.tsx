@@ -23,6 +23,12 @@ export const UserListComponent = ({
     const addFriendHandler=() => {
       socket.emit("createFriend", {"followingUserId": Number(userId)});
     }
+    const selectHandler=() => {
+      actions.setChannelChattingInfo({...state.channelChattingInfo, inviteSelectedList: [...state.channelChattingInfo.inviteSelectedList, userId]});
+    }
+    const unselectHandler=() => {
+      actions.setChannelChattingInfo({...state.channelChattingInfo, inviteSelectedList: state.channelChattingInfo.inviteSelectedList.filter((elem) => elem != userId)});
+    }
 
     return (
       <>
@@ -48,9 +54,9 @@ export const UserListComponent = ({
               <img className="w-8 h-8" src={profileImg} />
               <div className="text-neutral-600 text-base font-normal">{nick}</div>
             </div>
-            <div className="w-6 h-6 left-[217px] top-[4px] absolute flex-col justify-center items-center gap-2.5 inline-flex">
+            <button onClick={selectHandler} className="w-6 h-6 left-[217px] top-[4px] absolute flex-col justify-center items-center gap-2.5 inline-flex">
               <img className="w-7 h-7 relative" src="Checkmarks0.svg" />
-            </div>
+            </button>
           </div>
         )}
         {type === "inviteFriend_1" && (
@@ -60,9 +66,9 @@ export const UserListComponent = ({
               <img className="w-8 h-8" src={profileImg} />
               <div className="text-neutral-600 text-base font-normal">{nick}</div>
             </div>
-            <div className="w-6 h-6 left-[217px] top-[4px] absolute flex-col justify-center items-center gap-2.5 inline-flex">
+            <button onClick={unselectHandler} className="w-6 h-6 left-[217px] top-[4px] absolute flex-col justify-center items-center gap-2.5 inline-flex">
               <img className="w-7 h-7 relative" src="Checkmarks1.svg" />
-            </div>
+            </button>
           </div>
         )}
         {type === "OFFLINE" && (
@@ -106,7 +112,7 @@ export const UserListComponent = ({
               <img className="w-8 h-8" src={profileImg} />
               <div className="text-neutral-600 text-base font-normal">{nick}</div>
             </div>
-            <button onClick={()=>{socket.emit("deleteBlock", {"blockedUserId": Number(userId)}, (ack: any) => {console.log(ack)})}}>
+            <button onClick={()=>{socket.emit("deleteBlock", {"blockedUserId": Number(userId)})}}>
               <img className="w-5 h-5 left-[241px] top-[8px] absolute" src="unblock.svg" />
             </button>
           </div>
