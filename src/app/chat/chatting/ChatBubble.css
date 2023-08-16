@@ -1,11 +1,88 @@
-.chat-bubble {
-    align-items: flex-start;
+.right {
+    align-items: flex-end;
     display: flex;
+    flex-direction: column;
+    gap: 1px;
+    justify-content: center;
+    position: relative;
+    width: 270px;
+  }
+  
+  .right .main-frame {
+    align-items: flex-end;
+    display: inline-flex;
+    flex: 0 0 auto;
     flex-direction: column;
     position: relative;
   }
   
-  .chat-bubble .frame {
+  .right .msg-frame {
+    align-items: flex-start;
+    display: inline-flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0px 7px;
+    position: relative;
+  }
+  
+  .right .text-frame {
+    align-items: center;
+    background-color: #7649bb;
+    border-radius: 25px;
+    display: inline-flex;
+    flex: 0 0 auto;
+    gap: 10px;
+    justify-content: center;
+    padding: 10px 20px;
+    position: relative;
+  }
+  
+  .right .text-wrapper {
+    color: #fdfdfd;
+    font-family: "Inria Sans", Helvetica;
+    font-size: 15px;
+    font-weight: 400;
+    letter-spacing: -0.07px;
+    line-height: 16.3px;
+    margin-top: -1px;
+    position: relative;
+    width: 170px;
+    word-break: break-all;
+  }
+  
+  .right .tail-frame {
+    align-items: flex-start;
+    display: inline-flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: -17px;
+    padding: 4px 0px;
+    position: relative;
+  }
+  
+  .right .union {
+    height: 11.55px;
+    margin-bottom: -0.5px;
+    margin-left: -0.52px;
+    margin-right: -0.11px;
+    margin-top: -1.03px;
+    position: relative;
+    width: 23.41px;
+  }
+  
+
+  .left {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    position: relative;
+    width: 270px;
+  }
+  
+  .left .name {
     align-items: flex-start;
     display: inline-flex;
     flex: 0 0 auto;
@@ -13,9 +90,9 @@
     position: relative;
   }
   
-  .chat-bubble .your-name {
+  .left .text-wrapper {
     color: #8a898e;
-    font-family: "Inria Sans-Regular", Helvetica;
+    font-family: "Inria Sans", Helvetica;
     font-size: 12px;
     font-weight: 400;
     letter-spacing: 0.6px;
@@ -24,253 +101,69 @@
     position: relative;
     white-space: nowrap;
     width: fit-content;
+    word-break: break-all;
   }
   
-  .chat-bubble .bubble-left {
-    align-items: center;
-    display: flex;
-    flex: 0 0 auto;
-    justify-content: center;
-    position: relative;
-    transform: rotate(180deg);
-    width: 230px;
-  }
-  
-  .chat-bubble .div {
+  .left .main-frame {
     align-items: flex-start;
-    align-self: stretch;
     display: inline-flex;
     flex: 0 0 auto;
     flex-direction: column;
     position: relative;
-    /* margin-top: -1px; */
   }
   
-  .chat-bubble .rectangle {
-    background-color: #e9e9eb;
-    border: 1px solid;
-    border-color: #e9e9eb;
-    border-radius: 64.18px 0px 0px 0px;
-    height: 19px;
-    margin-left: -1px;
-    margin-right: -0.61px;
-    margin-top: -1px;
-    position: relative;
-    width: 26px;
-}
-
-.chat-bubble .rectangle-2 {
-    background-color: #e9e9eb;
-    border: 1px solid;
-    border-color: #e9e9eb;
-    flex: 1;
-    flex-grow: 1;
-    margin-left: -1px;
-    margin-right: -1px;
-    position: relative;
-    width: 26.39px;
-  }
-  
-  .chat-bubble .rectangle-3 {
-    background-color: #e9e9eb;
-    border: 1px solid;
-    border-color: #e9e9eb;
-    border-radius: 64.18px 0px 0px 0px;
-    height: 20px;
-    margin-bottom: -1px;
-    margin-left: -1px;
-    margin-right: -0.61px;
-    position: relative;
-    width: 26px;
-  }
-  
-  .chat-bubble .text-wrapper {
+  .left .msg-frame {
     align-items: flex-start;
-    background-color: #e9e9eb;
-    border: 1px solid;
-    border-color: #e9e9eb;
-    display: flex;
-    flex: 1;
-    flex-grow: 1;
-    gap: 6.42px;
-    margin-bottom: -3px;
-    padding: 10px 0px;
+    display: inline-flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0px 7px;
     position: relative;
   }
   
-  .chat-bubble .text {
+  .left .text-frame {
+    align-items: center;
+    background-color: #e9e9eb;
+    border-radius: 25px;
+    display: inline-flex;
+    flex: 0 0 auto;
+    gap: 10px;
+    justify-content: center;
+    padding: 10px 20px;
+    position: relative;
+  }
+  
+  .left .your-message-goes {
     color: #555555;
-    flex: 1;
-    font-family: "Inria Sans-Regular", Helvetica;
+    font-family: "Inria Sans", Helvetica;
     font-size: 15px;
     font-weight: 400;
     letter-spacing: -0.07px;
     line-height: 16.3px;
-    margin-top: -0.5px;
+    margin-top: -1px;
     position: relative;
-    transform: rotate(180deg);
+    width: 170px;
   }
   
-  .chat-bubble .frame-2 {
-    align-items: flex-end;
-    align-self: stretch;
+  .left .tail-frame {
+    align-items: flex-start;
     display: inline-flex;
     flex: 0 0 auto;
     flex-direction: column;
-    justify-content: center;
-    position: relative;
-    transform: rotate(180deg);
-  }
-  
-  .chat-bubble .rectangle-4 {
-    background-color: #e9e9eb;
-    border: 1px solid;
-    border-color: #e9e9eb;
-    border-radius: 64.18px 0px 0px 0px;
-    height: 18px;
-    margin-bottom: -3px;
-    margin-right: -1px;
-    position: relative;
-    width: 27px;
-  }
-  
-  .chat-bubble .img {
-    flex: 1;
-    flex-grow: 1;
-    margin-left: -0.5px;
-    position: relative;
-    transform: rotate(-180deg);
-    width: 26px;
-  }
-  
-  .chat-bubble .union {
-    height: 20px;
-    margin-left: -0.5px;
-    margin-right: -0.11px;
-    margin-top: -0.5px;
-    position: relative;
-    /* transform: rotate(-180deg); */
-    width: 34.61px;
-  }
-  
-  .chat-bubble .bubble-left-2 {
-    align-items: center;
-    display: flex;
-    flex: 0 0 auto;
-    justify-content: center;
-    position: relative;
-    width: 230px;
-  }
-  
-  .chat-bubble .rectangle-5 {
-    background-color: #7649bb;
-    border: 1px solid;
-    border-color: #7649bb;
-    border-radius: 64.18px 0px 0px 0px;
-    height: 19px;
-    margin-left: -1px;
-    margin-right: -0.61px;
-    margin-top: -1px;
-    position: relative;
-    width: 26px;
-  }
-  
-  .chat-bubble .rectangle-6 {
-    background-color: #7649bb;
-    border: 1px solid;
-    border-color: #7649bb;
-    flex: 1;
-    flex-grow: 1;
-    margin-left: -1px;
-    margin-right: -1px;
-    position: relative;
-    width: 26.39px;
-  }
-  
-  .chat-bubble .rectangle-7 {
-    background-color: #7649bb;
-    border: 1px solid;
-    border-color: #7649bb;
-    border-radius: 64.18px 0px 0px 0px;
-    height: 20px;
-    margin-bottom: -1px;
-    margin-left: -1px;
-    margin-right: -0.61px;
-    position: relative;
-    width: 26px;
-  }
-  
-  .chat-bubble .div-wrapper {
-    align-items: flex-start;
-    background-color: #7649bb;
-    border: 1px solid;
-    border-color: #7649bb;
-    display: flex;
-    flex: 1;
-    flex-grow: 1;
-    gap: 6.42px;
-    margin-bottom: -1px;
-    margin-top: -1px;
-    padding: 12px 0px;
+    gap: 10px;
+    margin-top: -17px;
+    padding: 4px 0px;
     position: relative;
   }
   
-  .chat-bubble .text-2 {
-    color: #fdfdfd;
-    flex: 1;
-    font-family: "Inria Sans-Regular", Helvetica;
-    font-size: 15px;
-    font-weight: 400;
-    letter-spacing: -0.07px;
-    line-height: 16.3px;
-    margin-top: -0.5px;
+  .left .union {
+    height: 11.55px;
+    margin-bottom: -0.5px;
+    margin-left: -0.12px;
+    margin-right: -0.52px;
+    margin-top: -1.05px;
     position: relative;
+    width: 22.63px;
   }
   
-  .chat-bubble .rectangle-8 {
-    background-color: #7649bb;
-    border: 1px solid;
-    border-color: #7649bb;
-    border-radius: 64.18px 0px 0px 0px;
-    height: 18px;
-    /* margin-bottom: -3px;
-    margin-right: -1px; */
-    position: relative;
-    transform: rotateX(180deg);
-    width: 27px;
-  }
-  
-  .chat-bubble .rectangle-9 {
-    flex: 1;
-    flex-grow: 1;
-    margin-right: -0.5px;
-    position: relative;
-    transform: rotate(-180deg);
-    width: 26px;
-  }
-  
-  .chat-bubble .union-2 {
-    height: 20px;
-    margin-left: -0.11px;
-    margin-right: -0.5px;
-    margin-top: -0.1px;
-    position: absolute;
-    transform: rotate(-180deg);
-    width: 34.61px;
-  }
-  
-  .chat-bubble.right {
-    gap: 4px;
-    height: 40px;
-    justify-content: flex-end;
-    width: 230px;
-  }
-  
-  .chat-bubble.left {
-    gap: 1px;
-    width: 270px;
-  }
-  
-  .chat-bubble.rot {
-    transform: rotate(45deg);
-  }

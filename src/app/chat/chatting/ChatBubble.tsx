@@ -8,11 +8,60 @@ interface Props {
   side: "right" | "left";
 }
 
+
 export const ChatBubble = ({
     nickname = "Your name",
     messageText = "Your message goes here",
     side,
   }: Props): JSX.Element => {
+
+    return (
+      <>
+      {
+          side === "left" && (
+            <div className={`left left-instance`}>
+            <div className="name">
+              <div className="text-wrapper">{nickname}</div>
+            </div>
+            <div className="main-frame">
+              <div className="msg-frame">
+                <div className="text-frame">
+                  <div className="your-message-goes">
+                    {messageText}
+                  </div>
+                </div>
+              </div>
+              <div className="tail-frame">
+                <img
+                  className="union"
+                  src="chatbubble_left_tail.svg"
+                />
+              </div>
+            </div>
+          </div>
+          )
+      }
+      {
+          side === "right" && (
+            <div className={`right right-instance`}>
+            <div className="main-frame">
+              <div className="msg-frame">
+                <div className="text-frame">
+                  <div className="text-wrapper">{messageText}</div>
+                </div>
+              </div>
+              <div className="tail-frame">
+                <img
+                  className="union"
+                  src="chatbubble_right_tail.svg"
+                />
+              </div>
+            </div>
+          </div>
+          )
+      }
+      </>
+    )
     return (
       <div className={`chat-bubble ${side}`}>
         {side === "left" && (

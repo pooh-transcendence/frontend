@@ -98,7 +98,7 @@ export const ChatFriend = ({
                 </div>
                 {/* chat container*/}
                 {/* <div className="w-[270px] h-[511px] left-[15px] top-[59px] absolute flex-col justify-start items-end gap-[5px] inline-flex"> */}
-                <div className="scrollbar-hide overflow-auto z-10 w-[270px] h-[511px] left-[15px] top-[59px] absolute flex-col justify-start items-end gap-[5px] inline-flex">
+                <div className="scrollbar-hide overflow-auto z-10 w-[270px] h-[511px] left-[15px] top-[59px] absolute flex-col justify-start items-end gap-[6px] inline-flex">
                     {renderMessage()}
                     <div ref={scrollRef}/>
                 </div>

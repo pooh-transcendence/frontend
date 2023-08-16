@@ -74,7 +74,7 @@ export const ChatTitle = ({
                     <button onClick={chatBackHandler} className="z-10 w-[1.4375rem] h-[1.4375rem] left-[1rem] top-[1.0625rem] absolute">
                         <img className="w-[1.4375rem] h-[1.4375rem] left-0 top-0 absolute" src="backButton.svg" />
                     </button>
-                    <img className="w-7 h-7 left-[16.125rem] top-[0.875rem] absolute justify-center items-center inline-flex" src="settings.svg" />
+                    {/* <img className="w-7 h-7 left-[16.125rem] top-[0.875rem] absolute justify-center items-center inline-flex" src="settings.svg" /> */}
                 </div>
             )}
             {type == "friendList" && (
