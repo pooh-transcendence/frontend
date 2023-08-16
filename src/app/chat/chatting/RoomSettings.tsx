@@ -7,7 +7,7 @@ import { socket } from "@/app/api"
 export default function RoomSettings(props: { userType: "DEFAULT" | "MODERATOR" | "OWNER", roomType: "PUBLIC" | "PRIVATE" | "PROTECTED" }) {
     const {state, actions}=useContext(UserContext);
     const [text, setText]=useState("");
-    const onChange=(e: any)=>{setText(e.target.value);}
+    // const onChange=(e: any)=>{setText(e.target.value);}
 
     const exitButtonHandler=() => {
         actions.setShowChatSetting(false);

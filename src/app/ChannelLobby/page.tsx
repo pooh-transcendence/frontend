@@ -12,6 +12,15 @@ import FriendList from "./friendList/friendList";
 const ChannelLobby: NextPage = () => {
 
   return (
+    <div className="absolute w-[50rem] h-[40.63rem] text-[1.25rem] text-[#555555]">
+      <div className="absolute h-full w-full top-[0%] right-[0%] bottom-[0%] left-[0%] rounded-3xs box-border border-[3px] border-solid border-dimgray" />
+      <div className="absolute top-[1.19rem] left-[1.69rem] w-[46.56rem] h-[37.88rem]">
+        <ChannelRoomList />
+        <CreateListFrame />
+      </div>
+    </div>
+  );
+  return (
     <>
       <div className="relative bg-white w-full h-[52rem] overflow-hidden text-left text-[2rem] text-dimgray font-inria-sans">
         <div className="absolute top-[0rem] left-[0rem] w-[80rem] h-[52rem]">
