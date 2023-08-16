@@ -2,17 +2,17 @@ import React, { useContext, useEffect, useState } from "react";
 import { api_get, api_post, socket } from "@/app/api";
 import { UserContext, chatStates } from "@/app/UserContext";
 
-interface Props{
+interface Props {
     type: "mod" | "default",
 };
 
 const UserInfo = ({
     type,
-    }: Props): JSX.Element => {
+}: Props): JSX.Element => {
 
-    const [userName, setUserName]=useState<string>("loading");
-    const [profileImg, setProfileImg]=useState<string>("https://via.placeholder.com/32x32");
-    const {state, actions}=useContext(UserContext);
+    const [userName, setUserName] = useState<string>("loading");
+    const [profileImg, setProfileImg] = useState<string>("https://via.placeholder.com/32x32");
+    const { state, actions } = useContext(UserContext);
     useEffect(() => {
         console.log(state.chatTargetUser);
         api_get(`/user/${state.chatTargetUser}`).then((res) => {
@@ -21,35 +21,39 @@ const UserInfo = ({
         })
     }, []);
 
-    const gameHandler=() => {};
-    const followHandler=() => {socket.emit("createFriend", {
-        followingUserId: state.chatTargetUser
-    })};
-    const muteHandler = () => {actions.setMutedUser({
-          userId: state.chatTargetUser,
-          until: new Date().getTime() + 1000 * 10, // 10초간 음소거
-    })};
+    const gameHandler = () => { };
+    const followHandler = () => {
+        socket.emit("createFriend", {
+            followingUserId: state.chatTargetUser
+        })
+    };
+    const muteHandler = () => {
+        actions.setMutedUser({
+            userId: state.chatTargetUser,
+            until: new Date().getTime() + 1000 * 10, // 10초간 음소거
+        })
+    };
     // const blockHandler=() => {socket.emit("createBlock", Number(state.chatTargetUser), (ack: any) => {console.log(ack)})}; // ?
-    const blockHandler=() => {
-        api_post("/block", {"bannedUserId": state.chatTargetUser})
-        if(state.chatState===chatStates.friendChat)
+    const blockHandler = () => {
+        api_post("/block", { "bannedUserId": state.chatTargetUser })
+        if (state.chatState === chatStates.friendChat)
             actions.setChatState(chatStates.friendList);
         // else
         //     actions.setChatState(chatStates.channelList);
     }; // http 400 
-    const infoHandler=() => {console.log("info button", state.chatTargetUser)};
-    const banHandler=() => {
-        socket.emit("updateChannelUser", {userId: state.chatTargetUser, channelId: state.channelChattingInfo.id, isBanned: true});
+    const infoHandler = () => { console.log("info button", state.chatTargetUser) };
+    const banHandler = () => {
+        socket.emit("updateChannelUser", { userId: state.chatTargetUser, channelId: state.channelChattingInfo.id, isBanned: true });
     };
-    const addModHandler=() => {
-        socket.emit("kickChannelUser", {userId: state.chatTargetUser, channelId: state.channelChattingInfo.id});
+    const addModHandler = () => {
+        socket.emit("kickChannelUser", { userId: state.chatTargetUser, channelId: state.channelChattingInfo.id });
     };
-    const kickHandler=() => {
-        socket.emit("admin", {userId: state.chatTargetUser, channelId: state.channelChattingInfo.id});
+    const kickHandler = () => {
+        socket.emit("admin", { userId: state.chatTargetUser, channelId: state.channelChattingInfo.id });
     };
 
     // if(type === "mod")
-    if(state.channelChattingInfo.userType=="MODERATOR")
+    if (state.channelChattingInfo.userType == "MODERATOR")
         return (
             <div className="z-100 w-[276px] h-[205px] bg-[#FEFEFE] relative">
                 {/* mod buttons */}
@@ -92,7 +96,7 @@ const UserInfo = ({
                 <button onClick={infoHandler}>
                     <img className="w-7 h-7 left-[200px] top-[22px] absolute" src="info.svg" />
                 </button>
-                <button onClick={()=>{actions.setShowChatUserInfo(false)}} className="z-10">
+                <button onClick={() => { actions.setShowChatUserInfo(false) }} className="z-10">
                     <img className="w-6 h-6 left-[238px] top-[24px] absolute" src="cancel.svg" />
                 </button>
             </div>
@@ -125,11 +129,11 @@ const UserInfo = ({
                 <button onClick={infoHandler}>
                     <img className="w-7 h-7 left-[200px] top-[22px] absolute" src="info.svg" />
                 </button>
-                <button onClick={()=>{actions.setShowChatUserInfo(false)}}>
+                <button onClick={() => { actions.setShowChatUserInfo(false) }}>
                     <img className="w-6 h-6 left-[238px] top-[24px] absolute" src="cancel.svg" />
                 </button>
             </div>
         );
-    }
+}
 
 export default UserInfo;

@@ -98,7 +98,7 @@ export const ChatChannel = ({
                 </div>
                 {/* chat container*/}
                 {/* <div className="w-[270px] h-[511px] left-[15px] top-[59px] absolute flex-col justify-start items-end gap-[5px] inline-flex"> */}
-                <div className="scrollbar-hide overflow-auto z-10 w-[270px] h-[511px] left-[15px] top-[59px] absolute flex-col justify-start items-end gap-[5px] inline-flex">
+                <div className="scrollbar-hide overflow-auto z-10 w-[270px] h-[511px] left-[15px] top-[59px] absolute flex-col justify-start items-end gap-[6px] inline-flex">
                     {renderMessage()}
                     <div ref={scrollRef}/>
                 </div>
@@ -111,7 +111,7 @@ export const ChatChannel = ({
                 {
                     state.showChatUserInfo &&
                     <div className="absolute z-20 top-[256px] left-[12px]">
-                        <UserInfo type="default"/>)
+                        <UserInfo type="default"/>
                     </div>
                 }   
                 {/* chatSettingModal */}
