@@ -1,7 +1,7 @@
 'use client'
 
 import { UserContext } from "@/app/UserContext";
-import { api_post } from "@/app/api";
+import { api_patch, api_post } from "@/app/api";
 import { useContext, useState } from "react";
 
 enum ChannelModeEnum {
@@ -12,7 +12,7 @@ enum ChannelModeEnum {
 
 export const CreateChannelModal = () => {
   const { state, actions } = useContext(UserContext);
-  const [channelMode, setChannelMode] = useState<ChannelModeEnum>(ChannelModeEnum.Protected);
+  const [channelMode, setChannelMode] = useState<ChannelModeEnum>(ChannelModeEnum.Public);
   const [name, setName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const onChangeName = (e: any) => {
@@ -43,14 +43,23 @@ export const CreateChannelModal = () => {
 
     api_post("/channel", {
       "channelInfo": {
-        "channelType": channelMode,
+        "channelType": "PUBLIC",
         "channelName": name,
         "ownerId": state.userInfo.id
       },
       "channelUserIds": [
         state.userInfo.id
       ]
-    }).then((e) => console.log);
+    }).then((res) => {
+      if(channelMode === ChannelModeEnum.Protected)
+      {
+        api_patch("/channel/password", {
+          "channelId": res.data.data.id,
+          "password": password,
+        }).then((res) => console.log);
+      }
+    })
+    actions.setShowCreateChannel(false);
   };
 
   if (channelMode === ChannelModeEnum.Protected)
@@ -87,7 +96,7 @@ export const CreateChannelModal = () => {
             <div className="Private left-[24px] top-0 absolute text-neutral-600 text-base font-bold">private</div>
           </button>
         </div>
-        <button className="Createbutton w-[75px] h-8 left-[155px] top-[157px] absolute">
+        <button onClick={createButtonHandler} className="Createbutton w-[75px] h-8 left-[155px] top-[157px] absolute">
           <img src="sweep.svg" className="w-8 h-8 left-0 top-0 absolute" />
           <div className="Create left-[29px] top-[7px] absolute text-neutral-600 text-base font-bold">create</div>
         </button>
@@ -121,7 +130,7 @@ export const CreateChannelModal = () => {
             <div className="Private left-[24px] top-0 absolute text-neutral-600 text-base font-bold">private</div>
           </button>
         </div>
-        <button className="Createbutton w-[75px] h-8 left-[155px] top-[124px] absolute">
+        <button onClick={createButtonHandler} className="Createbutton w-[75px] h-8 left-[155px] top-[124px] absolute">
           <img src="sweep.svg" className="w-8 h-8 left-0 top-0 absolute" />
           <div className="Create left-[29px] top-[7px] absolute text-neutral-600 text-base font-bold">create</div>
         </button>
