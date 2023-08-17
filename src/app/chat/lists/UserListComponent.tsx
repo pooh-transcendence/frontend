@@ -5,7 +5,7 @@ import React, { useContext } from "react";
 import { UserContext } from "@/app/UserContext";
 
 interface UserListCompProps {
-  userId: string,
+  userId: number,
   nick: string,
   type: "list_block" | "GAMING" | "ONLINE" | "OFFLINE" | "ONCHAT" | "inviteFriend_1" | "inviteFriend_0" | "addFriend",
   profileImg: string,

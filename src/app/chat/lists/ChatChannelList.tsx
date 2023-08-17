@@ -72,8 +72,8 @@ export const ChatChannelList = (): JSX.Element => {
             console.log("change to channelChat", channel.id);
         }
         return (
-            <button key={channel.id} onClick={gotoChat}>
-                <ChannelListComponent channelName={channel.channelName} channelOwner={channel.ownerId} channelPeopleCnt={42/* channel.channelUser.length */} channelProfileImg="https://via.placeholder.com/32x32" />
+            <button key={channel.id+""} onClick={gotoChat}>
+                <ChannelListComponent channelName={channel.channelName} channelOwner={channel.ownerId+""} channelPeopleCnt={42/* channel.channelUser.length */} channelProfileImg="https://via.placeholder.com/32x32" />
             </button>
         )
     }
@@ -94,7 +94,7 @@ export const ChatChannelList = (): JSX.Element => {
             </div>
             {/* TitleSection */}
             <div className="w-[300px] h-[50px] left-0 top-0 absolute">
-                <ChatTitle title="" type="channelList" id={"-1"} />
+                <ChatTitle title="" type="channelList" id={-1} />
             </div>
         </div>
     )

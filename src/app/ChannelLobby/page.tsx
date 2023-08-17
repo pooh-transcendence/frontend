@@ -6,10 +6,13 @@ import LeftSideButtons from "../ChannelLobby/button/leftSideButtons";
 import MyPageButton from "./button/myPageButton";
 import ChannelRoomList from "./channelRoom/channelRoomList";
 
-import CreateListFrame from "./frame/createListFrame";
+import CreateListFrame, { CreateChannelModal } from "./frame/createListFrame";
 import FriendList from "./friendList/friendList";
+import { useContext } from "react";
+import { UserContext } from "../UserContext";
 
 const ChannelLobby: NextPage = () => {
+  const {state, actions}=useContext(UserContext);
 
   return (
     <div className="absolute w-[50rem] h-[40.63rem] text-[1.25rem] text-[#555555]">
@@ -18,6 +21,14 @@ const ChannelLobby: NextPage = () => {
         <ChannelRoomList />
         <CreateListFrame />
       </div>
+      {
+        state.showCreateChannel && (
+          <div className="flex items-center justify-center h-[100%]">
+            <CreateChannelModal />
+          </div>
+        )
+
+      }
     </div>
   );
   return (

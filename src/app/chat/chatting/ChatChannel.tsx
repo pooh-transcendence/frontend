@@ -20,7 +20,7 @@ export const ChatChannel = ({
     const { state, actions } = useContext(UserContext);
     const scrollRef = useRef<HTMLDivElement | null>(null);
 
-    const openUserInfo = (id: string) => {
+    const openUserInfo = (id: number) => {
         console.log("open " + id + "'s userinfo");
         actions.setShowChatUserInfo(true);
         actions.setChatTargetUser(id);

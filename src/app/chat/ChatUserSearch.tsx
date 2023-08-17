@@ -6,7 +6,7 @@ import { UserContext } from "@/app/UserContext"
 import { api_get, api_patch, socket } from "../api";
 
 interface friend {
-    id: string,
+    id: number,
     nickname: string,
     avatar: string,
     userState: string,

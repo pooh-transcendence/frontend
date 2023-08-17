@@ -54,8 +54,8 @@ export default function MainFrame() {
   useEffect(() => {
     // auth bypass
     if (!getAuth()) {
-      // setAuth("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsIm5pY2tuYW1lIjoidGVzdDYiLCJmdElkIjoiYWRzZmFzc2Rkc2RmIiwiaWF0IjoxNjkyMDA2OTU5LCJleHAiOjE2OTQ1OTg5NTl9.7z3DFG0O6bGPaQb5Wu99bBGoyIiqjW9Y5NYBSqSPGVw");
-      // updateSocket();
+      setAuth("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsIm5pY2tuYW1lIjoidGVzdDYiLCJmdElkIjoiYWRzZmFzc2Rkc2RmIiwiaWF0IjoxNjkyMDA2OTU5LCJleHAiOjE2OTQ1OTg5NTl9.7z3DFG0O6bGPaQb5Wu99bBGoyIiqjW9Y5NYBSqSPGVw");
+      updateSocket();
     }
 
     const connectionHandler = () => {
@@ -89,11 +89,9 @@ export default function MainFrame() {
         </div>
         {
           // check whether this user is registered
-          (!getAuth()) &&
-          <div>
-            two-factor auth modal activated
+          !getAuth() && (
             <TwoFactor />
-          </div>
+          )
         }
         {
           (getAuth()) &&

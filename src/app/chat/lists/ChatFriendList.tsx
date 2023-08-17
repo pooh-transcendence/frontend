@@ -24,14 +24,14 @@ const BigSeparater = (props: { str: string }): JSX.Element => {
 }
 
 interface friend {
-    id: string;
+    id: number;
     nickname: string;
     avatar: string;
     userState: "ONLINE" | "OFFLINE" | "GAMING";
 }
 
 interface block {
-    id: string;
+    id: number;
     nickname: string;
     avatar: string;
 }
@@ -93,7 +93,7 @@ export const ChatFriendList = (): JSX.Element => {
                 </div>
                 {/* TitleSection */}
                 <div className="w-[18.75rem] h-[3.125rem] left-0 top-0 absolute">
-                    <ChatTitle title="" type="friendList" id={"-1"} />
+                    <ChatTitle title="" type="friendList" id={-1} />
                 </div>
                 {/* ContentsSection */}
                 <div className="w-[16.25rem] py-2 left-[1.25rem] top-[3.625rem] absolute flex-col justify-start items-start gap-[0.4375rem] inline-flex">
