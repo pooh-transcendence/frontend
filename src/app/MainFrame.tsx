@@ -54,8 +54,8 @@ export default function MainFrame() {
   useEffect(() => {
     // auth bypass
     if (!getAuth()) {
-      setAuth("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsIm5pY2tuYW1lIjoidGVzdDYiLCJmdElkIjoiYWRzZmFzc2Rkc2RmIiwiaWF0IjoxNjkyMDA2OTU5LCJleHAiOjE2OTQ1OTg5NTl9.7z3DFG0O6bGPaQb5Wu99bBGoyIiqjW9Y5NYBSqSPGVw");
-      updateSocket();
+      // setAuth("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsIm5pY2tuYW1lIjoidGVzdDYiLCJmdElkIjoiYWRzZmFzc2Rkc2RmIiwiaWF0IjoxNjkyMDA2OTU5LCJleHAiOjE2OTQ1OTg5NTl9.7z3DFG0O6bGPaQb5Wu99bBGoyIiqjW9Y5NYBSqSPGVw");
+      // updateSocket();
     }
 
     const connectionHandler = () => {
@@ -118,7 +118,7 @@ export default function MainFrame() {
                     )
                   }
                 </div>
-                <div className="w-[300px] h-[650px] rounded-[10px] rounded-3xs box-border border-[3px] border-solid border-dimgray">
+                <div className="w-[300px] h-[650px] rounded-3xs box-border border-[3px] border-solid border-dimgray">
                   <Chat />
                 </div>
               </div>

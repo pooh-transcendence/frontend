@@ -1,46 +1,44 @@
 'use client'
 
-import React, {useContext, useState} from "react";
+import React, { useContext, useState } from "react";
 import { UserContext, chatStates } from "@/app/UserContext";
 import { socket } from "@/app/api"
 
 export default function RoomSettings(props: { userType: "DEFAULT" | "MODERATOR" | "OWNER", roomType: "PUBLIC" | "PRIVATE" | "PROTECTED" }) {
-    const {state, actions}=useContext(UserContext);
-    const [text, setText]=useState("");
-    // const onChange=(e: any)=>{setText(e.target.value);}
+    const { state, actions } = useContext(UserContext);
+    const [text, setText] = useState("");
+    const onChange=(e: any)=>{setText(e.target.value);}
 
-    const exitButtonHandler=() => {
+    const exitButtonHandler = () => {
         actions.setShowChatSetting(false);
     };
-    const exitChannelHandler=() => {
+    const exitChannelHandler = () => {
         exitButtonHandler();
-        socket.emit("leaveChannel", {channelId: Number(state.channelChattingInfo.id)}, (ack: any) => {console.log("exited channel", ack)});
+        socket.emit("leaveChannel", { channelId: Number(state.channelChattingInfo.id) }, (ack: any) => { console.log("exited channel", ack) });
         actions.setChatState(chatStates.channelList);
     };
-    const passwordChangeHandler=() => {
-        if(state.channelChattingInfo.channelType === "PROTECTED")
-        {
+    const passwordChangeHandler = () => {
+        if (state.channelChattingInfo.channelType === "PROTECTED") {
             // console.log("change pw to", text);
-            socket.emit("password", {"channelId": state.channelChattingInfo.id, "password": text});
+            socket.emit("password", { "channelId": state.channelChattingInfo.id, "password": text });
         }
-        else if(state.channelChattingInfo.channelType === "PUBLIC")
-        {
+        else if (state.channelChattingInfo.channelType === "PUBLIC") {
             // console.log("pub to pri");
-            socket.emit("password", {"channelId": state.channelChattingInfo.id, "password": "defaultPw"});
-            actions.setChannelChattingInfo({...state.channelChattingInfo, channelType: "PROTECTED"});
+            socket.emit("password", { "channelId": state.channelChattingInfo.id, "password": "defaultPw" });
+            actions.setChannelChattingInfo({ ...state.channelChattingInfo, channelType: "PROTECTED" });
             console.log(state);
         }
         setText("");
     };
-    const passwordChangeApplyHandler=() => {
+    const passwordChangeApplyHandler = () => {
         // console.log("apply clicked", text);
-        if(text==="") return;
+        if (text === "") return;
         else passwordChangeHandler();
         actions.setShowChatSetting(false);
     };
-    const changeToPublicHandler=() => {
-        socket.emit("password", {"channelId": state.channelChattingInfo.id});
-        actions.setChannelChattingInfo({...state.channelChattingInfo, channelType: "PUBLIC"});
+    const changeToPublicHandler = () => {
+        socket.emit("password", { "channelId": state.channelChattingInfo.id });
+        actions.setChannelChattingInfo({ ...state.channelChattingInfo, channelType: "PUBLIC" });
     }
     if (props.roomType === "PROTECTED" && props.userType === "MODERATOR" || props.userType === "OWNER") {
         return (
@@ -81,7 +79,7 @@ export default function RoomSettings(props: { userType: "DEFAULT" | "MODERATOR" 
             </div>
         )
     }
-    else if (props.roomType === "PUBLIC" && props.userType === "MODERATOR" || props.userType === "OWNER") {
+    else if (props.roomType === "PUBLIC" && props.userType === "MODERATOR") {
         return (
             <div className="w-[276px] h-[84px] relative shadow">
                 <div className="w-[276px] h-[84px] left-0 top-0 absolute bg-[#FEFEFE] rounded-[10px]" />

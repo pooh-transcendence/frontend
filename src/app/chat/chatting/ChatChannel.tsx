@@ -9,50 +9,48 @@ import UserInfo from "@/app/chat/lists/UserInfo";
 import RoomSettings from "@/app/chat/chatting/RoomSettings";
 import ChatUserSearch from "@/app/chat/ChatUserSearch";
 
-interface Props{
+interface Props {
     title: string,
 }
 
 export const ChatChannel = ({
     title,
 }: Props): JSX.Element => {
-    
-    const {state, actions}=useContext(UserContext);
+
+    const { state, actions } = useContext(UserContext);
     const scrollRef = useRef<HTMLDivElement | null>(null);
-    
-    const openUserInfo=(id: string) => {
-        console.log("open "+id+"'s userinfo");
+
+    const openUserInfo = (id: string) => {
+        console.log("open " + id + "'s userinfo");
         actions.setShowChatUserInfo(true);
         actions.setChatTargetUser(id);
     };
-    const closeUserInfo=() => {
+    const closeUserInfo = () => {
         actions.setShowChatUserInfo(false);
     };
 
-    useEffect(() => {            
+    useEffect(() => {
         scrollRef.current?.scrollIntoView();
         renderMessage();
-      }, [state.channelChat]); // 어떻게 해야 보고있는 채팅이 업데이트 될때만 리랜더할 수 있을까?
-      
-    const onChange=(e: any)=>{setText(e.target.value);}
-    const handleOnKeyPress=(e: any)=>{
-        if(e.key === 'Enter')
-        {
+    }, [state.channelChat]); // 어떻게 해야 보고있는 채팅이 업데이트 될때만 리랜더할 수 있을까?
+
+    const onChange = (e: any) => { setText(e.target.value); }
+    const handleOnKeyPress = (e: any) => {
+        if (e.key === 'Enter') {
             e.preventDefault();
             submitText();
         }
     }
 
-    function renderMessage(): Array<JSX.Element>
-    {
+    function renderMessage(): Array<JSX.Element> {
         // console.log("render", state.channelChat[state.channelChattingInfo.id]);
-        const res: Array<JSX.Element>=[];
-        if(!state.channelChat[state.channelChattingInfo.id]) return res;
+        const res: Array<JSX.Element> = [];
+        if (!state.channelChat[state.channelChattingInfo.id]) return res;
         state.channelChat[state.channelChattingInfo.id].forEach((msg, idx) => {
-            const {nickname, message, userId}=msg;
-            if(nickname!==state.userInfo.nickname)
+            const { nickname, message, userId } = msg;
+            if (nickname !== state.userInfo.nickname)
                 res.push(
-                    <button onClick={()=>openUserInfo(userId)} className="text-left" key={idx}>
+                    <button onClick={() => openUserInfo(userId)} className="text-left" key={idx}>
                         <ChatBubble
                             side={"left"}
                             nickname={nickname}
@@ -63,24 +61,24 @@ export const ChatChannel = ({
             else
                 res.push(
                     <ChatBubble
-                    side={"right"}
-                    nickname={nickname}
-                    messageText={message}
-                    key={idx} />
+                        side={"right"}
+                        nickname={nickname}
+                        messageText={message}
+                        key={idx} />
                 )
         });
         return res;
     }
-    
-    const [text, setText]=useState("");
-    const submitText=()=>{
-        if(text==="") return;
+
+    const [text, setText] = useState("");
+    const submitText = () => {
+        if (text === "") return;
         // sender side
-        actions.setChannelChat({channelId: state.channelChattingInfo.id, userId: state.userInfo.id, nickname: state.userInfo.nickname, message: text});
+        actions.setChannelChat({ channelId: state.channelChattingInfo.id, userId: state.userInfo.id, nickname: state.userInfo.nickname, message: text });
 
         // opponent side
         // console.log("send to", Number(state.channelChattingInfo.id));
-        socket.emit("message", {channelId : Number(state.channelChattingInfo.id), message: text+' '});
+        socket.emit("message", { channelId: Number(state.channelChattingInfo.id), message: text + ' ' });
         setText("");
     }
 
@@ -100,10 +98,10 @@ export const ChatChannel = ({
                 {/* <div className="w-[270px] h-[511px] left-[15px] top-[59px] absolute flex-col justify-start items-end gap-[5px] inline-flex"> */}
                 <div className="scrollbar-hide overflow-auto z-10 w-[270px] h-[511px] left-[15px] top-[59px] absolute flex-col justify-start items-end gap-[6px] inline-flex">
                     {renderMessage()}
-                    <div ref={scrollRef}/>
+                    <div ref={scrollRef} />
                 </div>
                 {/* title section */}
-                <ChatTitle type="channelChat" title={title} id={state.channelChattingInfo.id}/>
+                <ChatTitle type="channelChat" title={title} id={state.channelChattingInfo.id} />
                 {/* frame */}
                 <div className="w-[300px] h-[650px] left-0 top-0 absolute rounded-[10px] border border-neutral-600" />
 
@@ -111,24 +109,24 @@ export const ChatChannel = ({
                 {
                     state.showChatUserInfo &&
                     <div className="absolute z-20 top-[256px] left-[12px]">
-                        <UserInfo type="default"/>
+                        <UserInfo type="default" />
                     </div>
-                }   
+                }
                 {/* chatSettingModal */}
                 {
                     state.showChatSetting && (
-                        state.channelChattingInfo.userType == "MODERATOR" && state.channelChattingInfo.channelType == "PROTECTED" ? 
-                        <div className="z-20 absolute top-[16.44rem] left-[0.75rem]">
-                            <RoomSettings roomType={state.channelChattingInfo.channelType} userType={state.channelChattingInfo.userType}/>
-                        </div> : 
-                        state.channelChattingInfo.userType == "MODERATOR" && state.channelChattingInfo.channelType == "PUBLIC" ?
-                        <div className="z-20 absolute top-[17.69rem] left-[0.75rem]">
-                            <RoomSettings roomType={state.channelChattingInfo.channelType} userType={state.channelChattingInfo.userType}/>
-                        </div> :
-                        // default
-                        <div className="z-20 absolute top-[19.06rem] left-[0.75rem]">
-                            <RoomSettings roomType={state.channelChattingInfo.channelType} userType={state.channelChattingInfo.userType}/>
-                        </div>
+                        state.channelChattingInfo.userType == "MODERATOR" && state.channelChattingInfo.channelType == "PROTECTED" ?
+                            <div className="z-20 absolute top-[16.44rem] left-[0.75rem]">
+                                <RoomSettings roomType={state.channelChattingInfo.channelType} userType={state.channelChattingInfo.userType} />
+                            </div> :
+                            state.channelChattingInfo.userType == "MODERATOR" && state.channelChattingInfo.channelType == "PUBLIC" ?
+                                <div className="z-20 absolute top-[17.69rem] left-[0.75rem]">
+                                    <RoomSettings roomType={state.channelChattingInfo.channelType} userType={state.channelChattingInfo.userType} />
+                                </div> :
+                                // default
+                                <div className="z-20 absolute top-[19.06rem] left-[0.75rem]">
+                                    <RoomSettings roomType={state.channelChattingInfo.channelType} userType={state.channelChattingInfo.userType} />
+                                </div>
                     )
                 }
                 {/* chatInviteModal */}

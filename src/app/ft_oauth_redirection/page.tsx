@@ -9,11 +9,11 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 
 export default function Oauth() {
-    const params=useSearchParams();
-    const {state, actions}=useContext(UserContext);
-    const router=useRouter();
+    const params = useSearchParams();
+    const { state, actions } = useContext(UserContext);
+    const router = useRouter();
 
-    const postFtOauth=(codeRes: any) => {
+    const postFtOauth = (codeRes: any) => {
         axios.post("https://api.intra.42.fr/oauth/token", {
             "grant_type": "authorization_code",
             "client_id": process.env.FT_CLIENT_ID,
@@ -22,7 +22,7 @@ export default function Oauth() {
             "redirect_uri": "http://localhost:6002/ft_oauth_redirection",
         }).then(async (res) => {
             console.log("oauth res", res);
-            await api_post("/auth/signIn", {ftToken: res.data.access_token}).then(async (res) => {
+            await api_post("/auth/signIn", { ftToken: res.data.access_token }).then(async (res) => {
                 console.log("internal token res", res);
                 setUserId(res.data.data.userId);
                 sessionStorage.setItem("qrCodeURL", res.data.data.qrCodeURL);
@@ -36,7 +36,7 @@ export default function Oauth() {
             router.push("/"); //if failed, it may retry all procedures.
         });
     };
-    
+
     useEffect(() => {
         postFtOauth(params.get("code"));
     }, []);

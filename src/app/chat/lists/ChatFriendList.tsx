@@ -9,7 +9,7 @@ import { UserContext, chatStates } from "@/app/UserContext";
 import ChatUserSearch from "../ChatUserSearch";
 import FriendList from "@/app/ChannelLobby/friendList/friendList";
 
-const SmallSeparater=(props: {str: string}): JSX.Element => {
+const SmallSeparater = (props: { str: string }): JSX.Element => {
     return (
         <div className="flex-col justify-center items-center gap-[5px] flex">
             <div className="text-center text-neutral-600 text-xs font-normal">{props.str}</div>
@@ -17,50 +17,48 @@ const SmallSeparater=(props: {str: string}): JSX.Element => {
     );
 }
 
-const BigSeparater=(props: {str: string}): JSX.Element => {
+const BigSeparater = (props: { str: string }): JSX.Element => {
     return (
         <div className="w-[69.59px] h-[21px] text-neutral-600 text-base font-normal">{props.str}</div>
     );
 }
 
-interface friend
-{
+interface friend {
     id: string;
     nickname: string;
     avatar: string;
     userState: "ONLINE" | "OFFLINE" | "GAMING";
 }
 
-interface block
-{
+interface block {
     id: string;
     nickname: string;
     avatar: string;
 }
 
-function makeUserListComp(friend: friend){
-    const {state, actions} = useContext(UserContext);
+function makeUserListComp(friend: friend) {
+    const { state, actions } = useContext(UserContext);
     // console.log("makeUserListComp", friend);
-    const gotoChat= () => {
+    const gotoChat = () => {
         actions.setChatState(chatStates.friendChat);
         actions.setFriendChattingInfo(friend);
         console.log("change to friendChat", friend.id);
     }
     return (
         <button key={friend.id} onClick={gotoChat}>
-            <UserListComponent userId={friend.id} nick={friend.nickname} type={friend.userState} profileImg={friend.avatar}/>
+            <UserListComponent userId={friend.id} nick={friend.nickname} type={friend.userState} profileImg={friend.avatar} />
         </button>
     )
 }
 
-function makeBlockListComp(block: block){
+function makeBlockListComp(block: block) {
     return (
-            <UserListComponent key={block.id} userId={block.id} nick={block.nickname} type="list_block" profileImg={block.avatar}/>
+        <UserListComponent key={block.id} userId={block.id} nick={block.nickname} type="list_block" profileImg={block.avatar} />
     )
 }
 
 export const ChatFriendList = (): JSX.Element => {
-    const {state, actions} = useContext(UserContext);
+    const { state, actions } = useContext(UserContext);
     const [friendList, setFriendList] = useState<friend[]>([]);
     const [blockList, setBlockList] = useState<block[]>([]);
 
@@ -68,22 +66,22 @@ export const ChatFriendList = (): JSX.Element => {
         socket.emit("getFriendList");
         socket.emit("getBlockList");
         console.log("ChatFriendList state", state);
-        
-        const friendListListener=(friendList: friend[]) => {
+
+        const friendListListener = (friendList: friend[]) => {
             setFriendList(friendList);
             console.log("friendListListener", friendList);
-        } 
-        const blockListListener=(blockList: block[]) => {
+        }
+        const blockListListener = (blockList: block[]) => {
             setBlockList(blockList);
             console.log("blockListListener", blockList);
-        } 
+        }
         socket.on("getFriendList", friendListListener);
         socket.on("getBlockList", blockListListener);
 
         return () => {
             socket.off("getFriendList", friendListListener);
             socket.off("getBlockList", blockListListener);
-          };
+        };
     }, []);
 
     return (
@@ -103,24 +101,24 @@ export const ChatFriendList = (): JSX.Element => {
                     <BigSeparater str="friends" />
                     <SmallSeparater str="online" />
                     {
-                        Object.entries(friendList.filter(friend => friend.userState === "ONLINE" || friend.userState === "ONCHAT" || friend.userState === "GAMING") ?? [{}]).map(
+                        Object.entries(friendList.filter(friend => friend.userState === "ONLINE" || friend.userState === "GAMING") ?? [{}]).map(
                             ([idx, friend]) => makeUserListComp(friend))
-                        }
+                    }
                     <SmallSeparater str="offline" />
                     {
                         Object.entries(friendList.filter(friend => friend.userState === "OFFLINE") ?? [{}]).map(
                             ([idx, friend]) => makeUserListComp(friend))
-                        }
+                    }
                     <BigSeparater str="blocks" />
                     {
                         Object.entries(blockList).map(
                             ([idx, block]) => makeBlockListComp(block))
-                        }
+                    }
                 </div>
                 <div className="top-[87px] left-[12px] absolute">
-                {
-                    (state.showChatAddFriend && <ChatUserSearch type="add_friend"/>)
-                }
+                    {
+                        (state.showChatAddFriend && <ChatUserSearch type="add_friend" />)
+                    }
                 </div>
             </div>
         </>
