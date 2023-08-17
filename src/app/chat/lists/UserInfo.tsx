@@ -43,13 +43,16 @@ const UserInfo = ({
     }; // http 400 
     const infoHandler = () => { console.log("info button", state.chatTargetUser) };
     const banHandler = () => {
-        socket.emit("updateChannelUser", { userId: state.chatTargetUser, channelId: state.channelChattingInfo.id, isBanned: true });
+        console.log("ban", state.chatTargetUser, state.channelChattingInfo.id);
+        socket.emit("updateChannelUser", { userId: Number(state.chatTargetUser), channelId: Number(state.channelChattingInfo.id), isBanned: true });
     };
     const addModHandler = () => {
-        socket.emit("kickChannelUser", { userId: state.chatTargetUser, channelId: state.channelChattingInfo.id });
+        console.log("addMod", state.chatTargetUser, state.channelChattingInfo.id);
+        socket.emit("admin", { userId: Number(state.chatTargetUser), channelId: Number(state.channelChattingInfo.id), isBanned: true }, (data : any) =>{console.log(data);});
     };
     const kickHandler = () => {
-        socket.emit("admin", { userId: state.chatTargetUser, channelId: state.channelChattingInfo.id });
+        console.log("kick", state.chatTargetUser, state.channelChattingInfo.id);
+        socket.emit("kickChannelUser", { userId: Number(state.chatTargetUser), channelId: Number(state.channelChattingInfo.id), isBanned: true });
     };
 
     // if(type === "mod")

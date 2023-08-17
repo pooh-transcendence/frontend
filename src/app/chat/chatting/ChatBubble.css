@@ -6,17 +6,17 @@
     justify-content: center;
     position: relative;
     width: 270px;
-  }
-  
-  .right .main-frame {
+}
+
+.right .main-frame {
     align-items: flex-end;
     display: inline-flex;
     flex: 0 0 auto;
     flex-direction: column;
     position: relative;
-  }
-  
-  .right .msg-frame {
+}
+
+.right .msg-frame {
     align-items: flex-start;
     display: inline-flex;
     flex: 0 0 auto;
@@ -24,9 +24,9 @@
     gap: 10px;
     padding: 0px 7px;
     position: relative;
-  }
-  
-  .right .text-frame {
+}
+
+.right .text-frame {
     align-items: center;
     background-color: #7649bb;
     border-radius: 25px;
@@ -36,9 +36,9 @@
     justify-content: center;
     padding: 10px 20px;
     position: relative;
-  }
-  
-  .right .text-wrapper {
+}
+
+.right .text-wrapper {
     color: #fdfdfd;
     font-family: "Inria Sans", Helvetica;
     font-size: 15px;
@@ -49,9 +49,9 @@
     position: relative;
     width: 170px;
     word-break: break-all;
-  }
-  
-  .right .tail-frame {
+}
+
+.right .tail-frame {
     align-items: flex-start;
     display: inline-flex;
     flex: 0 0 auto;
@@ -60,9 +60,9 @@
     margin-top: -17px;
     padding: 4px 0px;
     position: relative;
-  }
-  
-  .right .union {
+}
+
+.right .union {
     height: 11.55px;
     margin-bottom: -0.5px;
     margin-left: -0.52px;
@@ -70,27 +70,27 @@
     margin-top: -1.03px;
     position: relative;
     width: 23.41px;
-  }
-  
+}
 
-  .left {
+
+.left {
     align-items: flex-start;
     display: flex;
     flex-direction: column;
     gap: 1px;
     position: relative;
     width: 270px;
-  }
-  
-  .left .name {
+}
+
+.left .name {
     align-items: flex-start;
     display: inline-flex;
     flex: 0 0 auto;
     padding: 0px 0px 0px 24px;
     position: relative;
-  }
-  
-  .left .text-wrapper {
+}
+
+.left .text-wrapper {
     color: #8a898e;
     font-family: "Inria Sans", Helvetica;
     font-size: 12px;
@@ -102,17 +102,17 @@
     white-space: nowrap;
     width: fit-content;
     word-break: break-all;
-  }
-  
-  .left .main-frame {
+}
+
+.left .main-frame {
     align-items: flex-start;
     display: inline-flex;
     flex: 0 0 auto;
     flex-direction: column;
     position: relative;
-  }
-  
-  .left .msg-frame {
+}
+
+.left .msg-frame {
     align-items: flex-start;
     display: inline-flex;
     flex: 0 0 auto;
@@ -120,9 +120,9 @@
     gap: 10px;
     padding: 0px 7px;
     position: relative;
-  }
-  
-  .left .text-frame {
+}
+
+.left .text-frame {
     align-items: center;
     background-color: #e9e9eb;
     border-radius: 25px;
@@ -132,9 +132,9 @@
     justify-content: center;
     padding: 10px 20px;
     position: relative;
-  }
-  
-  .left .your-message-goes {
+}
+
+.left .your-message-goes {
     color: #555555;
     font-family: "Inria Sans", Helvetica;
     font-size: 15px;
@@ -144,9 +144,9 @@
     margin-top: -1px;
     position: relative;
     width: 170px;
-  }
-  
-  .left .tail-frame {
+}
+
+.left .tail-frame {
     align-items: flex-start;
     display: inline-flex;
     flex: 0 0 auto;
@@ -155,9 +155,9 @@
     margin-top: -17px;
     padding: 4px 0px;
     position: relative;
-  }
-  
-  .left .union {
+}
+
+.left .union {
     height: 11.55px;
     margin-bottom: -0.5px;
     margin-left: -0.12px;
@@ -165,5 +165,4 @@
     margin-top: -1.05px;
     position: relative;
     width: 22.63px;
-  }
-  
+}

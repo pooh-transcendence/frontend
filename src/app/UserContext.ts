@@ -14,7 +14,7 @@ export enum mainStates {
 
 export interface friendInfo
 {
-    id: string;
+    id: number;
     nickname: string;
     avatar: string;
     userState: "ONLINE" | "OFFLINE" | "GAMING";
@@ -22,20 +22,20 @@ export interface friendInfo
 
 export interface channelInfo
 {
-    id: string;
+    id: number;
     channelType: "PRIVATE" | "PROTECTED" | "PUBLIC";
     channelName: string;
-    ownerId: string;
+    ownerId: number;
     channelUser: Object[];
     userType: "DEFAULT" | "MODERATOR" | "OWNER";
-    inviteSelectedList: string[];
+    inviteSelectedList: number[];
 };
 
 export interface userInfo
 {
   nickname: string;
   avatar: string;
-  id: string;
+  id: number;
   token: string; // this value is our backend's token 
   registered: boolean; // this value would be true after two-factor auth
   winnerGame: Object[];
@@ -43,14 +43,14 @@ export interface userInfo
 };
 
 export interface targetChannelInfo {
-  id: string,
+  id: number,
   channelType: "PRIVATE" | "PROTECTED" | "PUBLIC",
   ownerNickname: string,
   channelName: string,
-  ownerId: string,
+  ownerId: number,
   userCount: number,
   channelUser: object[],
-}
+};
 
 export const UserContext = React.createContext({
   state: {
@@ -66,12 +66,13 @@ export const UserContext = React.createContext({
     showChatInvite: false,
     showChatAddFriend: false,
     showChannelPassword: false,
+    showCreateChannel: false,
 
-    chatTargetUser: "",
+    chatTargetUser: -1,
     targetChannel: {} as targetChannelInfo,
-    mutedUser: {} as Record<string, { until: number }>,
-    userChat: {} as Record<string, { userId: string, nickname: string, message: string }[]>,
-    channelChat: {} as Record<string, { channelId: string, userId: string, nickname: string, message: string }[]>,
+    mutedUser: {} as Record<number, { until: number }>,
+    userChat: {} as Record<number, { userId: number, nickname: string, message: string }[]>,
+    channelChat: {} as Record<number, { channelId: number, userId: number, nickname: string, message: string }[]>,
   },
   actions: {
     setConnectionState: (newState: boolean) => {},
@@ -86,11 +87,12 @@ export const UserContext = React.createContext({
     setShowChatInvite: (newState: boolean) => {},
     setShowChatAddFriend: (newState: boolean) => {},
     setShowChannelPassword: (newState: boolean) => {},
+    setShowCreateChannel: (newState: boolean) => {},
     
-    setChatTargetUser: (newState: string) => {},
+    setChatTargetUser: (newState: number) => {},
     setTargetChannel: (newState: targetChannelInfo) => {},
-    setMutedUser: (newState: {userId: string, until: number}) => {},
-    setUserChat: (newState: {userId: string, nickname: string, message: string}) => {},
-    setChannelChat: (newState: {channelId: string, userId: string, nickname: string, message: string}) => {},
+    setMutedUser: (newState: {userId: number, until: number}) => {},
+    setUserChat: (newState: {userId: number, nickname: string, message: string}) => {},
+    setChannelChat: (newState: {channelId: number, userId: number, nickname: string, message: string}) => {},
   },
 });

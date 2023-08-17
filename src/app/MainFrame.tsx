@@ -89,11 +89,9 @@ export default function MainFrame() {
         </div>
         {
           // check whether this user is registered
-          (!getAuth()) &&
-          <div>
-            two-factor auth modal activated
+          !getAuth() && (
             <TwoFactor />
-          </div>
+          )
         }
         {
           (getAuth()) &&
@@ -118,7 +116,7 @@ export default function MainFrame() {
                     )
                   }
                 </div>
-                <div className="w-[300px] h-[650px] rounded-[10px] rounded-3xs box-border border-[3px] border-solid border-dimgray">
+                <div className="w-[300px] h-[650px] rounded-3xs box-border border-[3px] border-solid border-dimgray">
                   <Chat />
                 </div>
               </div>

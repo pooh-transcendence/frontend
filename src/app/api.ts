@@ -43,11 +43,13 @@ export let socket = io(baseUrl+"/channel",
     path: "/socket.io", 
     transports: ['websocket'],
     auth: {
-        "authorization": auth,
+        "authorization": null,
     },
 });
 
 export const updateSocket=() => {
+    socket.disconnect();
+
     socket = io(baseUrl+"/channel",
     {
         path: "/socket.io", 
@@ -56,7 +58,7 @@ export const updateSocket=() => {
             "authorization": auth,
         },
     });
-    // console.log("socket updated using", auth, socket);
+    // console.log("socket connected using", auth, socket);
 };
 
 export const api_get=(url: string, params: Object | void) => {

@@ -24,7 +24,7 @@ export default function Chat() {
         });
       }
     };
-  
+
     const channelMessageListener = (data: any) => {
       const renderTime = new Date().getTime();
       if (!state.mutedUser[data[0].userId] || state.mutedUser[data[0].userId].until < renderTime) {
@@ -37,10 +37,10 @@ export default function Chat() {
         });
       }
     };
-  
+
     socket.on("userMessage", userMessageListener);
     socket.on("channelMessage", channelMessageListener);
-  
+
     return () => {
       socket.off("userMessage", userMessageListener);
       socket.off("channelMessage", channelMessageListener);

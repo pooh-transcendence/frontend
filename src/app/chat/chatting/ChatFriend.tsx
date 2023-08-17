@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect, useContext, useRef } from "react";
-import { ChatTitle } from '../frame/ChatTitle' 
+import { ChatTitle } from '../frame/ChatTitle'
 import { ChatBubble } from './ChatBubble'
 import { socket } from "@/app/api";
 import { UserContext } from "@/app/UserContext";
@@ -9,50 +9,48 @@ import UserInfo from "@/app/chat/lists/UserInfo";
 import RoomSettings from "./RoomSettings";
 import ChatUserSearch from "../ChatUserSearch";
 
-interface Props{
+interface Props {
     title: string,
 }
 
 export const ChatFriend = ({
     title,
 }: Props): JSX.Element => {
-    
-    const {state, actions}=useContext(UserContext);
+
+    const { state, actions } = useContext(UserContext);
     const scrollRef = useRef<HTMLDivElement | null>(null);
-    
-    const openUserInfo=(id: string) => {
-        console.log("open "+id+"'s userinfo");
+
+    const openUserInfo = (id: number) => {
+        console.log("open " + id + "'s userinfo");
         actions.setShowChatUserInfo(true);
         actions.setChatTargetUser(id);
     };
-    const closeUserInfo=() => {
+    const closeUserInfo = () => {
         actions.setShowChatUserInfo(false);
     };
 
-    useEffect(() => {            
+    useEffect(() => {
         scrollRef.current?.scrollIntoView();
         renderMessage();
-      }, [state.userChat]); // 어떻게 해야 보고있는 채팅이 업데이트 될때만 리랜더할 수 있을까?
-      
-    const onChange=(e: any)=>{setText(e.target.value);}
-    const handleOnKeyPress=(e: any)=>{
-        if(e.key === 'Enter')
-        {
+    }, [state.userChat]); // 어떻게 해야 보고있는 채팅이 업데이트 될때만 리랜더할 수 있을까?
+
+    const onChange = (e: any) => { setText(e.target.value); }
+    const handleOnKeyPress = (e: any) => {
+        if (e.key === 'Enter') {
             e.preventDefault();
             submitText();
         }
     }
 
-    function renderMessage(): Array<JSX.Element>
-    {
+    function renderMessage(): Array<JSX.Element> {
         console.log("render", state.userChat[state.friendChattingInfo.id] ?? []);
-        const res: Array<JSX.Element>=[];
-        if(!state.userChat[state.friendChattingInfo.id]) return res;
+        const res: Array<JSX.Element> = [];
+        if (!state.userChat[state.friendChattingInfo.id]) return res;
         state.userChat[state.friendChattingInfo.id].forEach((msg, idx) => {
-            const {nickname, message, userId}=msg;
-            if(nickname!==state.userInfo.nickname)
+            const { nickname, message, userId } = msg;
+            if (nickname !== state.userInfo.nickname)
                 res.push(
-                    <button onClick={()=>openUserInfo(userId)} className="text-left" key={idx}>
+                    <button onClick={() => openUserInfo(userId)} className="text-left" key={idx}>
                         <ChatBubble
                             side={"left"}
                             nickname={nickname}
@@ -63,24 +61,24 @@ export const ChatFriend = ({
             else
                 res.push(
                     <ChatBubble
-                    side={"right"}
-                    nickname={nickname}
-                    messageText={message}
-                    key={idx} />
+                        side={"right"}
+                        nickname={nickname}
+                        messageText={message}
+                        key={idx} />
                 )
         });
         return res;
     }
-    
-    const [text, setText]=useState("");
-    const submitText=()=>{
-        if(text==="") return;
+
+    const [text, setText] = useState("");
+    const submitText = () => {
+        if (text === "") return;
         // sender side
-        actions.setUserChat({userId: state.friendChattingInfo.id, nickname: state.userInfo.nickname, message: text});
+        actions.setUserChat({ userId: state.friendChattingInfo.id, nickname: state.userInfo.nickname, message: text });
 
         // opponent side
         console.log("send to", Number(state.friendChattingInfo.id));
-        socket.emit("message", {userId : state.friendChattingInfo.id, message: text});
+        socket.emit("message", { userId: state.friendChattingInfo.id, message: text });
         setText("");
     }
 
@@ -100,18 +98,18 @@ export const ChatFriend = ({
                 {/* <div className="w-[270px] h-[511px] left-[15px] top-[59px] absolute flex-col justify-start items-end gap-[5px] inline-flex"> */}
                 <div className="scrollbar-hide overflow-auto z-10 w-[270px] h-[511px] left-[15px] top-[59px] absolute flex-col justify-start items-end gap-[6px] inline-flex">
                     {renderMessage()}
-                    <div ref={scrollRef}/>
+                    <div ref={scrollRef} />
                 </div>
                 {/* title section */}
-                <ChatTitle type="friendChat" title={title} id={state.friendChattingInfo.id}/>
+                <ChatTitle type="friendChat" title={title} id={state.friendChattingInfo.id} />
                 {/* frame */}
 
                 {/* userInfoModal */}
                 <div className="z-20 absolute top-[256px] left-[12px]">
-                {
-                    state.showChatUserInfo && 
-                        <UserInfo type="default"/>
-                    }   
+                    {
+                        state.showChatUserInfo &&
+                        <UserInfo type="default" />
+                    }
                 </div>
             </div>
         </>
