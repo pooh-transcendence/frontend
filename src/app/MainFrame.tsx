@@ -26,8 +26,8 @@ export default function MainFrame() {
   useEffect(() => {
     {
       // auth bypass
-      setAuth("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsIm5pY2tuYW1lIjoidGVzdDYiLCJmdElkIjoiYWRzZmFzc2Rkc2RmIiwiaWF0IjoxNjkyMDA2OTU5LCJleHAiOjE2OTQ1OTg5NTl9.7z3DFG0O6bGPaQb5Wu99bBGoyIiqjW9Y5NYBSqSPGVw");
-      updateSocket();
+      // setAuth("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsIm5pY2tuYW1lIjoidGVzdDYiLCJmdElkIjoiYWRzZmFzc2Rkc2RmIiwiaWF0IjoxNjkyMDA2OTU5LCJleHAiOjE2OTQ1OTg5NTl9.7z3DFG0O6bGPaQb5Wu99bBGoyIiqjW9Y5NYBSqSPGVw");
+      // updateSocket();
 
       // setAuth("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwibmlja25hbWUiOiJ0ZXN0MiIsImZ0SWQiOiJ0am9hc2RmIiwiaWF0IjoxNjkxOTcyODc1LCJleHAiOjE2OTQ1NjQ4NzV9.hMSX82U4JZtvw9QpXyDpXI5jIwDsKIDKIbQ3uLKYbnk");
       // updateSocket();
