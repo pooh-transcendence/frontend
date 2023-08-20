@@ -62,30 +62,43 @@ export const ChatFriendList = (): JSX.Element => {
     const [friendList, setFriendList] = useState<friend[]>([]);
     const [blockList, setBlockList] = useState<block[]>([]);
 
-    useEffect(() => {
+    useEffect(() => { // only first render
         socket.emit("getFriendList");
         socket.emit("getBlockList");
         // console.log("ChatFriendList state", state);
 
         const friendListListener = (friendList: friend[]) => {
+            
             setFriendList(friendList);
-            // console.log("friendListListener", friendList);
+            console.log("friendListListener", friendList);
         }
         const blockListListener = (blockList: block[]) => {
             setBlockList(blockList);
-            // console.log("blockListListener", blockList);
+            console.log("blockListListener", blockList);
         }
         socket.once("getFriendList", friendListListener);
         socket.once("getBlockList", blockListListener);
+    }, []);
 
-        const appendFriendList = (newFriend) => {
-            console.log(newFriend);
+    useEffect(() => {
+        const addFriendToFriendList = (newFriend: friend) => {
+            console.log("addFriendToFriendList", newFriend, friendList);
+            setFriendList([...friendList, {id: newFriend.id, nickname: String(newFriend.id), avatar: "testavatar", userState: "GAMING"}]);
         }
-        socket.on("addFriendToFriendList", appendFriendList);
+        const deleteFriendToFriendList = (blockedFriend: block) => { // <- what is this
+            console.log("deleteFriendToFriendList", blockedFriend);
+            setBlockList([...blockList, blockedFriend]);
+        }
+
+        // only for rerendering
+        socket.on("addFriendToFriendList", addFriendToFriendList);
+        socket.on("deleteFriendToFriendList", deleteFriendToFriendList);
 
         return () => {
-            socket.off("addFriendToFriendList", appendFriendList);
+            socket.off("addFriendToFriendList", addFriendToFriendList);
+            socket.off("deleteFriendToFriendList", deleteFriendToFriendList);
         };
+
     }, [friendList, blockList]);
 
     return (

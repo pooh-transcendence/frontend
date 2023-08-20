@@ -112,7 +112,7 @@ export const UserListComponent = ({
             <img className="w-8 h-8" src={profileImg} />
             <div className="text-neutral-600 text-base font-normal">{nick}</div>
           </div>
-          <button onClick={() => { socket.emit("deleteBlock", { "blockedUserId": Number(userId) }) }}>
+          <button onClick={() => { socket.emit("deleteBlock", { "blockedUserId": Number(userId) }); }}>
             <img className="w-5 h-5 left-[241px] top-[8px] absolute" src="unblock.svg" />
           </button>
         </div>
