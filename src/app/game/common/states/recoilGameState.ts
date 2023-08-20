@@ -1,5 +1,5 @@
 import { atom } from "recoil";
-import { sizes } from "../../common/configData";
+import { sizes } from "../gameData";
 import * as T from "../../common/types/Game";
 
 export const gameState = atom<T.gamePosInfo>({

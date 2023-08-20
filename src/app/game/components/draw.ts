@@ -1,4 +1,4 @@
-import {colors, sizes} from "../../common/gameData";
+import {colors, sizes} from "../common/gameData";
 
 export function drawNet(ctx: CanvasRenderingContext2D) {
     ctx.beginPath(); 
