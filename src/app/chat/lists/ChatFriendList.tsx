@@ -42,7 +42,7 @@ function makeUserListComp(friend: friend) {
     const gotoChat = () => {
         actions.setChatState(chatStates.friendChat);
         actions.setFriendChattingInfo(friend);
-        console.log("change to friendChat", friend.id);
+        // console.log("change to friendChat", friend.id);
     }
     return (
         <button key={friend.id} onClick={gotoChat}>
@@ -65,24 +65,28 @@ export const ChatFriendList = (): JSX.Element => {
     useEffect(() => {
         socket.emit("getFriendList");
         socket.emit("getBlockList");
-        console.log("ChatFriendList state", state);
+        // console.log("ChatFriendList state", state);
 
         const friendListListener = (friendList: friend[]) => {
             setFriendList(friendList);
-            console.log("friendListListener", friendList);
+            // console.log("friendListListener", friendList);
         }
         const blockListListener = (blockList: block[]) => {
             setBlockList(blockList);
-            console.log("blockListListener", blockList);
+            // console.log("blockListListener", blockList);
         }
-        socket.on("getFriendList", friendListListener);
-        socket.on("getBlockList", blockListListener);
+        socket.once("getFriendList", friendListListener);
+        socket.once("getBlockList", blockListListener);
+
+        const appendFriendList = (newFriend) => {
+            console.log(newFriend);
+        }
+        socket.on("addFriendToFriendList", appendFriendList);
 
         return () => {
-            socket.off("getFriendList", friendListListener);
-            socket.off("getBlockList", blockListListener);
+            socket.off("addFriendToFriendList", appendFriendList);
         };
-    }, []);
+    }, [friendList, blockList]);
 
     return (
         <>

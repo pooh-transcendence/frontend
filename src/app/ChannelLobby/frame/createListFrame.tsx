@@ -87,7 +87,7 @@ export const CreateChannelModal = () => {
 
         {/* checkboxes */}
         <div className="left-[93px] top-[127px] absolute justify-center items-center gap-[29px] inline-flex">
-          <button onClick={toggleProtected} className="Protectedbutton w-[94px] h-6 relative">
+          <button onClick={toggleProtected}  className="Protectedbutton w-[94px] h-6 relative">
             <img src={channelMode === ChannelModeEnum.Protected ? "checkmarks1.svg":"checkmarks0.svg"} className="Checkmarks w-6 h-6 left-0 top-0 absolute flex-col justify-center items-center gap-2.5 inline-flex" />
             <div className="Protected left-[24px] top-0 absolute text-neutral-600 text-base font-bold">protected</div>
           </button>

@@ -42,7 +42,7 @@ export const ChatChannelList = (): JSX.Element => {
 
     useEffect(() => {
         api_get("/user/channel").then(async (data) => {
-            console.log("/user/channel", data.data.data);
+            // console.log("/user/channel", data.data.data);
             const res: channel[] = data.data.data;
             const ret: channel[] = [];
             for (const elem of res) {
@@ -64,12 +64,10 @@ export const ChatChannelList = (): JSX.Element => {
     }, []);
 
     function makeChannelListComp(channel: channel) {
-        const { state, actions } = useContext(UserContext);
-
         const gotoChat = () => {
             actions.setChatState(chatStates.channelChat);
             actions.setChannelChattingInfo(channel);
-            console.log("change to channelChat", channel.id);
+            // console.log("change to channelChat", channel.id);
         }
         return (
             <button key={channel.id+""} onClick={gotoChat}>

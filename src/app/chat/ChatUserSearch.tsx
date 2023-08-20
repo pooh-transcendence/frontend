@@ -28,6 +28,7 @@ const ChatUserSearch = (props: { type: "add_friend" | "invite" }): JSX.Element =
         // TODO: 더 나은 검색결과를 위해 정렬하는거 조을듯
         if (state.showChatAddFriend)
             socket.emit("allUser", (data: friend[]) => {
+                console.log(data);
                 const tmpList = data.filter((elem) => elem.id != state.userInfo.id);
                 setOriginalList(tmpList);
                 setUserList(tmpList)
