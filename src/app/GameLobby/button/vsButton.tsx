@@ -1,7 +1,15 @@
+'use cilent'
 
-
+import { UserContext } from "@/app/UserContext";
+import { useContext } from "react";
 
 export default function VsButton() {
+    const {state, actions}=useContext(UserContext);
+    const customMatchingHandler=() => {
+        console.log("customMatchingHandler");
+        actions.setShowMakeGame(true);
+    }
+    
     return (
             <div className="absolute h-[7.54%] w-[28.13%] top-[20.46%] right-[9.25%] bottom-[72%] left-[62.63%]">
                 <img
@@ -12,7 +20,7 @@ export default function VsButton() {
                 <i className="absolute top-[0rem] left-[0.06rem] inline-block w-[11.44rem] h-[1rem]">
                     create custom game
                 </i>
-                <button>
+                <button onClick={customMatchingHandler}>
                 <i className="flex-row absolute top-[0.69rem] text-[1.5rem] w-[14rem] font-bold text-right text-slateblue">
                     <span>1 vs 1</span>
                     <span className="text-dimgray"> Matching</span>

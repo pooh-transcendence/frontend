@@ -6,7 +6,7 @@ export const redirectUri=() => {
 }
 
 let auth: string | null =null;
-export function setAuth(newToken: string)
+export function setAuth(newToken: string | null)
 {
     auth=newToken;
 }
@@ -26,7 +26,7 @@ export function getRefToken():string | null
 }
 
 let userId: string | null=null;
-export function setUserId(newToken: string)
+export function setUserId(newToken: string | null)
 {
     userId=newToken;
 }
@@ -43,11 +43,13 @@ export let socket = io(baseUrl+"/channel",
     path: "/socket.io", 
     transports: ['websocket'],
     auth: {
-        "authorization": auth,
+        "authorization": null,
     },
 });
 
 export const updateSocket=() => {
+    socket.disconnect();
+
     socket = io(baseUrl+"/channel",
     {
         path: "/socket.io", 
@@ -56,7 +58,7 @@ export const updateSocket=() => {
             "authorization": auth,
         },
     });
-    // console.log("socket updated using", auth, socket);
+    // console.log("socket connected using", auth, socket);
 };
 
 export const api_get=(url: string, params: Object | void) => {
@@ -67,5 +69,10 @@ export const api_get=(url: string, params: Object | void) => {
 
 export const api_post=(url: string, body: object) => {
     return axios.post(baseUrl+url, 
+        body, { headers: {Authorization: `Bearer ${auth!}`}});
+}
+
+export const api_patch=(url: string, body: object) => {
+    return axios.patch(baseUrl+url, 
         body, { headers: {Authorization: `Bearer ${auth!}`}});
 }

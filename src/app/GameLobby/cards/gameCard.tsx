@@ -1,14 +1,43 @@
 'use client';
 
 import type { NextPage } from "next";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import MyPageFrame from "@/components/my-page-frame";
 import PortalPopup from "@/components/portal-popup";
 
 import Image from "next/image";
+import { userInfo } from "@/app/UserContext";
+import { api_get } from "@/app/api";
 
+interface GameInfo{
+    opponentId: string,
+    gameId: string,
+    gameSettings: string[],
+}
 
-export default function ChannelCards() {
+export default function GameCard({game}: {game: GameInfo}):JSX.Element {
+    const [opponent, setOpponent]=useState<userInfo>();
+
+    useEffect(() => {
+        api_get(`/user/${game.opponentId}`).then((res) => {
+            setOpponent(res.data.data);
+        });
+    }, []);
+
+    const getWinRate=(win: Object[], lose: Object[]): string => {
+        const numerator = win.length;
+        const denominator = win.length + lose.length;
+        if (denominator === 0) {
+          return '0.00%';
+        }
+        const rate = (numerator / denominator) * 100;
+        return `${rate.toFixed(2)}%`;
+      };
+
+    const gameEnterHandler=() => {
+        console.log("enter to ", game.gameId);
+    }
+
     return (
         <>
         <div className="relative w-[43.56rem] h-[2.56rem]">
@@ -23,17 +52,17 @@ export default function ChannelCards() {
                 src="/pngegg-4@2x.png"
             />
             <div className="absolute top-[0.94rem] left-[30.94rem] inline-block w-[9.31rem] h-[1.31rem]">
-                3 balls, speed high
+                3 balls, speed high {/*TODO*/}
             </div>
             <div className="absolute top-[0.06rem] left-[3.19rem] flex flex-row flex-wrap items-end justify-center gap-[0.75rem] text-left text-[1.5rem]">
-                <div className="relative">tjo</div>
+                <div className="relative">{opponent ? opponent.nickname : "loading"}</div>
                 <div className="flex flex-row items-end justify-center gap-[0.19rem] text-[0.81rem]">
                     <div className="relative">winrate</div>
-                    <div className="relative">58.7%</div>
+                    <div className="relative">{getWinRate(opponent ? opponent.winnerGame : [], opponent ? opponent.loserGame : [])}</div>
                 </div>
             </div>
 
-            <button>
+            <button onClick={gameEnterHandler}>
                 <img
                     className="absolute h-[78.05%] w-[4.59%] top-[9.76%] right-[1%] bottom-[12.2%] left-[94.4%] max-w-full overflow-hidden max-h-full"
                     alt=""

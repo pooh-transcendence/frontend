@@ -9,6 +9,8 @@ import ChatFrame from "./frame/chatFrame";
 
 const GameLobby: NextPage = () => {
 
+  return <MyInfoFrame />;
+  
   return (
     <>
       <div className="relative w-full h-[52rem] text-left text-[2rem] text-dimgray font-inria-sans">

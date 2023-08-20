@@ -3,7 +3,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { ChatBottomBar } from "../frame/ChatBottomBar";
 import { ChatTitle } from "../frame/ChatTitle";
-import { UserContext, chatStates, channelInfo as channel  } from "@/app/UserContext";
+import { UserContext, chatStates, channelInfo as channel } from "@/app/UserContext";
 import { api_get, api_post, socket } from "@/app/api";
 
 interface ChannelListProps {
@@ -13,12 +13,12 @@ interface ChannelListProps {
     channelProfileImg: string,
 };
 
-const ChannelListComponent=({
+const ChannelListComponent = ({
     channelName,
     channelOwner,
     channelPeopleCnt,
     channelProfileImg = "https://via.placeholder.com/28x28",
-    }: ChannelListProps): JSX.Element => {
+}: ChannelListProps): JSX.Element => {
     return (
         <>
             <div className="w-[260px] h-[42px] relative">
@@ -37,43 +37,65 @@ const ChannelListComponent=({
 
 export const ChatChannelList = (): JSX.Element => {
 
-    const {state, actions} = useContext(UserContext);
-    const [channelList, setChannelList]=useState<channel[]>([]);
+    const { state, actions } = useContext(UserContext);
+    const [channelList, setChannelList] = useState<channel[]>([]);
 
     useEffect(() => {
-        api_get("/user/channel").then((data) => {
-            console.log("/user/channel", data.data.data);
-            const res: channel[]=data.data.data;
-            const ret: channel[]=[];
-            for(const elem of res)
-            {
-                let tmp=elem;
-                api_get(`/channel/admin/${elem.id}`).then((data) => {
-                    console.log(data.data.data.filter(
-                        (it: any) => state.userInfo.id == it.id));
-                    tmp.userType=data.data.data.filter(
+        api_get("/user/channel").then(async (data) => {
+            // console.log("/user/channel", data.data.data);
+            const res: channel[] = data.data.data;
+            const ret: channel[] = [];
+            for (const elem of res) {
+                let tmp = elem;
+                await api_get(`/channel/admin/${elem.id}`).then((data) => {
+                    // console.log(data.data.data.filter(
+                    //     (it: any) => state.userInfo.id == it.id));
+                    tmp.userType = data.data.data.filter(
                         (it: any) => state.userInfo.id == it.id).length ? "MODERATOR" : "DEFAULT";
                 });
-                api_get(`/user/${elem.ownerId}`).then((data) => {
-                    tmp.ownerId=data.data.data.nickname;
+                await api_get(`/user/${elem.ownerId}`).then((data) => {
+                    tmp.ownerId = data.data.data.nickname;
                 });
-                ret.push(tmp);
+                ret.push({ ...tmp, inviteSelectedList: [], channelUser: [] });
             }
             setChannelList(ret);
         });
     }, []);
 
-    function makeChannelListComp(channel: channel){
-        const {state, actions} = useContext(UserContext);
+    useEffect(() => {
+        const addChannelToUserChannelList = async (newChannel: channel) => { // <- what is this
+            await api_get(`/channel/admin/${newChannel.id}`).then((data) => {
+                // console.log(data.data.data.filter(
+                //     (it: any) => state.userInfo.id == it.id));
+                newChannel.userType = data.data.data.filter(
+                    (it: any) => state.userInfo.id == it.id).length ? "MODERATOR" : "DEFAULT";
+            });
+            await api_get(`/user/${newChannel.ownerId}`).then((data) => {
+                newChannel.ownerId = data.data.data.nickname;
+            });
+            console.log("addChannelToUserChannelList", newChannel);
+            setChannelList([...channelList, newChannel]);
+        }
 
-        const gotoChat= () => {
+        // only for rerendering
+        socket.on("addChannelToUserChannelList", addChannelToUserChannelList);
+        // socket.on("deleteChannelToAllChannelList", deleteChannelToAllChannelList);
+
+        return () => {
+            socket.off("addChannelToUserChannelList", addChannelToUserChannelList);
+            // socket.off("deleteChannelToAllChannelList", deleteChannelToAllChannelList);
+        };
+    }, [channelList]);
+
+    function makeChannelListComp(channel: channel) {
+        const gotoChat = () => {
             actions.setChatState(chatStates.channelChat);
             actions.setChannelChattingInfo(channel);
-            console.log("change to channelChat", channel.id);
+            // console.log("change to channelChat", channel.id);
         }
         return (
-            <button onClick={gotoChat}>
-                <ChannelListComponent channelName={channel.channelName} channelOwner={channel.ownerId} channelPeopleCnt={42/* channel.channelUser.length */} channelProfileImg="https://via.placeholder.com/32x32"/>
+            <button key={channel.id+""} onClick={gotoChat}>
+                <ChannelListComponent channelName={channel.channelName} channelOwner={channel.ownerId+""} channelPeopleCnt={42/* channel.channelUser.length */} channelProfileImg="https://via.placeholder.com/32x32" />
             </button>
         )
     }
@@ -94,7 +116,7 @@ export const ChatChannelList = (): JSX.Element => {
             </div>
             {/* TitleSection */}
             <div className="w-[300px] h-[50px] left-0 top-0 absolute">
-                <ChatTitle title="" type="channelList" id={"-1"} />
+                <ChatTitle title="" type="channelList" id={-1} />
             </div>
         </div>
     )

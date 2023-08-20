@@ -1,18 +1,18 @@
 import React, { useContext, useEffect, useState } from "react";
 import { api_get, api_post, socket } from "@/app/api";
-import { UserContext } from "@/app/UserContext";
+import { UserContext, chatStates } from "@/app/UserContext";
 
-interface Props{
+interface Props {
     type: "mod" | "default",
 };
 
 const UserInfo = ({
     type,
-    }: Props): JSX.Element => {
+}: Props): JSX.Element => {
 
-    const [userName, setUserName]=useState<string>("loading");
-    const [profileImg, setProfileImg]=useState<string>("https://via.placeholder.com/32x32");
-    const {state, actions}=useContext(UserContext);
+    const [userName, setUserName] = useState<string>("loading");
+    const [profileImg, setProfileImg] = useState<string>("https://via.placeholder.com/32x32");
+    const { state, actions } = useContext(UserContext);
     useEffect(() => {
         console.log(state.chatTargetUser);
         api_get(`/user/${state.chatTargetUser}`).then((res) => {
@@ -21,56 +21,79 @@ const UserInfo = ({
         })
     }, []);
 
-    const gameHandler=() => {};
-    const followHandler=() => {socket.emit("createFriend", {
-        followingUserId: state.chatTargetUser
-    })};
-    const muteHandler = () => {actions.setMutedUser({
-          userId: state.chatTargetUser,
-          until: new Date().getTime() + 1000 * 10, // 10초간 음소거
-    })};
+    const gameHandler = () => { };
+    const followHandler = () => {
+        socket.emit("createFriend", {
+            followingUserId: state.chatTargetUser
+        })
+    };
+    const muteHandler = () => {
+        actions.setMutedUser({
+            userId: state.chatTargetUser,
+            until: new Date().getTime() + 1000 * 10, // 10초간 음소거
+        })
+    };
     // const blockHandler=() => {socket.emit("createBlock", Number(state.chatTargetUser), (ack: any) => {console.log(ack)})}; // ?
-    const blockHandler=() => {
-        console.log("block", state.chatTargetUser); 
-        api_post("/block", {"bannedUserId": state.chatTargetUser})
+    const blockHandler = () => {
+        api_post("/block", { "bannedUserId": state.chatTargetUser })
+        if (state.chatState === chatStates.friendChat)
+        {
+            actions.setChatState(chatStates.friendList);
+            actions.setShowChatUserInfo(false);
+        }
+        // else
+        //     actions.setChatState(chatStates.channelList);
     }; // http 400 
-    const infoHandler=() => {console.log("info button")};
+    const infoHandler = () => { console.log("info button", state.chatTargetUser) };
+    const banHandler = () => {
+        console.log("ban", state.chatTargetUser, state.channelChattingInfo.id);
+        socket.emit("updateChannelUser", { userId: Number(state.chatTargetUser), channelId: Number(state.channelChattingInfo.id), isBanned: true });
+    };
+    const addModHandler = () => {
+        console.log("addMod", state.chatTargetUser, state.channelChattingInfo.id);
+        socket.emit("admin", { userId: Number(state.chatTargetUser), channelId: Number(state.channelChattingInfo.id), isBanned: true }, (data : any) =>{console.log(data);});
+    };
+    const kickHandler = () => {
+        console.log("kick", state.chatTargetUser, state.channelChattingInfo.id);
+        socket.emit("kickChannelUser", { userId: Number(state.chatTargetUser), channelId: Number(state.channelChattingInfo.id), isBanned: true });
+    };
 
-    if(type === "mod")
+    // if(type === "mod")
+    if (state.channelChattingInfo.userType == "MODERATOR")
         return (
             <div className="z-100 w-[276px] h-[205px] bg-[#FEFEFE] relative">
                 {/* mod buttons */}
                 <div className="left-[56px] top-[136px] absolute justify-start items-start gap-8 inline-flex italic">
-                    <div className="w-8 h-12 flex-col justify-start items-center inline-flex">
+                    <button onClick={banHandler} className="w-8 h-12 flex-col justify-start items-center inline-flex">
                         <img className="w-8 h-8 relative" src="ban.svg" />
-                        <div className="text-neutral-600 text-[13px] font-bold">ban</div>
-                    </div>
-                    <div className="w-8 h-12 flex-col justify-start items-center inline-flex">
+                        <div className="text-neutral-600 text-[13px] font-bold italic">ban</div>
+                    </button>
+                    <button onClick={addModHandler} className="w-8 h-12 flex-col justify-start items-center inline-flex">
                         <img className="w-8 h-8 relative" src="addMod.svg" />
-                        <div className="text-neutral-600 text-[13px] font-bold">addMod</div>
-                    </div>
-                    <div className="w-8 h-12 flex-col justify-start items-center inline-flex">
+                        <div className="text-neutral-600 text-[13px] font-bold italic">addMod</div>
+                    </button>
+                    <button onClick={kickHandler} className="w-8 h-12 flex-col justify-start items-center inline-flex">
                         <img className="w-8 h-8 relative" src="kick.svg" />
-                        <div className="text-neutral-600 text-[13px] font-bold">kick</div>
-                    </div>
+                        <div className="text-neutral-600 text-[13px] font-bold italic">kick</div>
+                    </button>
                 </div>
                 {/* default buttons */}
                 <div className="left-[37px] top-[69px] absolute justify-start items-start gap-[23px] inline-flex italic">
                     <button onClick={gameHandler} className="flex-col justify-start items-center inline-flex">
                         <img className="w-8 h-8 relative" src="mark_as_unread.svg" />
-                        <div className="text-neutral-600 text-[13px] font-bold">1 vs 1</div>
+                        <div className="text-neutral-600 text-[13px] font-bold italic">1 vs 1</div>
                     </button>
                     <button onClick={followHandler} className="flex-col justify-start items-start inline-flex">
                         <img className="w-8 h-8 relative" src="person_add.svg" />
-                        <div className="text-neutral-600 text-[13px] font-bold">follow</div>
+                        <div className="text-neutral-600 text-[13px] font-bold italic">follow</div>
                     </button>
                     <button onClick={muteHandler} className="flex-col justify-start items-start inline-flex">
                         <img className="w-8 h-8 relative" src="mute.svg" />
-                        <div className="text-neutral-600 text-[13px] font-bold">mute</div>
+                        <div className="text-neutral-600 text-[13px] font-bold italic">mute</div>
                     </button>
                     <button onClick={blockHandler} className="flex-col justify-start items-start inline-flex">
                         <img className="w-8 h-8 relative" src="block.svg" />
-                        <div className="text-neutral-600 text-[13px] font-bold">block</div>
+                        <div className="text-neutral-600 text-[13px] font-bold italic">block</div>
                     </button>
                 </div>
                 {/* title section */}
@@ -79,7 +102,7 @@ const UserInfo = ({
                 <button onClick={infoHandler}>
                     <img className="w-7 h-7 left-[200px] top-[22px] absolute" src="info.svg" />
                 </button>
-                <button onClick={()=>{actions.setShowChatUserInfo(false)}} className="z-10">
+                <button onClick={() => { actions.setShowChatUserInfo(false) }} className="z-10">
                     <img className="w-6 h-6 left-[238px] top-[24px] absolute" src="cancel.svg" />
                 </button>
             </div>
@@ -91,19 +114,19 @@ const UserInfo = ({
                 <div className="left-[37px] top-[69px] absolute justify-start items-start gap-[23px] inline-flex italic">
                     <button onClick={gameHandler} className="flex-col justify-start items-center inline-flex">
                         <img className="w-8 h-8 relative" src="mark_as_unread.svg" />
-                        <div className="text-neutral-600 text-[13px] font-bold">1 vs 1</div>
+                        <div className="text-neutral-600 text-[13px] font-bold italic">1 vs 1</div>
                     </button>
                     <button onClick={followHandler} className="flex-col justify-start items-start inline-flex">
                         <img className="w-8 h-8 relative" src="person_add.svg" />
-                        <div className="text-neutral-600 text-[13px] font-bold">follow</div>
+                        <div className="text-neutral-600 text-[13px] font-bold italic">follow</div>
                     </button>
                     <button onClick={muteHandler} className="flex-col justify-start items-start inline-flex">
                         <img className="w-8 h-8 relative" src="mute.svg" />
-                        <div className="text-neutral-600 text-[13px] font-bold">mute</div>
+                        <div className="text-neutral-600 text-[13px] font-bold italic">mute</div>
                     </button>
                     <button onClick={blockHandler} className="flex-col justify-start items-start inline-flex">
                         <img className="w-8 h-8 relative" src="block.svg" />
-                        <div className="text-neutral-600 text-[13px] font-bold">block</div>
+                        <div className="text-neutral-600 text-[13px] font-bold italic">block</div>
                     </button>
                 </div>
                 {/* title section */}
@@ -112,11 +135,11 @@ const UserInfo = ({
                 <button onClick={infoHandler}>
                     <img className="w-7 h-7 left-[200px] top-[22px] absolute" src="info.svg" />
                 </button>
-                <button onClick={()=>{actions.setShowChatUserInfo(false)}}>
+                <button onClick={() => { actions.setShowChatUserInfo(false) }}>
                     <img className="w-6 h-6 left-[238px] top-[24px] absolute" src="cancel.svg" />
                 </button>
             </div>
         );
-    }
+}
 
 export default UserInfo;

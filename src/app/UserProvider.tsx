@@ -1,11 +1,20 @@
 'use client'
 
-import React, { useState } from 'react';
-import { UserContext, chatStates, mainStates, friendInfo, channelInfo, userInfo as userInfoInterface, userInfo } from './UserContext';
+import React, { useEffect, useState } from 'react';
+import { UserContext, chatStates, mainStates, friendInfo, channelInfo, userInfo as userInfoInterface, targetChannelInfo } from './UserContext';
+import { getAuth } from './api';
+
+export interface savedContext {
+  userInfo: userInfoInterface,
+  authToken: string,
+  mutedUser: Record<number, { until: number }>,
+  userChat: Record<number, { userId: number, nickname: string, message: string }[]>,
+  channelChat: Record<number, { channelId: number, userId: number, nickname: string, message: string }[]>,
+};
 
 export default function UserProvider({ children }: { children: React.ReactNode }) {
   const [isConnected, setConnectionState] = useState<boolean>(false);
-  const [userInfo, setUserInfo] = useState<userInfoInterface>({token: "-1", registered: false, nickname: "defaultNick", avatar: "https://via.placeholder.com/32x32", id: "-1"});
+  const [userInfo, setUserInfo] = useState<userInfoInterface>({token: "-1", registered: false, nickname: "defaultNick", avatar: "https://via.placeholder.com/32x32", id: -1, winnerGame: [], loserGame: []});
   const [chatState, setChatState] = useState(chatStates.friendList);
   const [mainState, setMainState] = useState(mainStates.gameLobby);
   const [friendChattingInfo, setFriendChattingInfo] = useState<friendInfo>({} as friendInfo);
@@ -15,11 +24,27 @@ export default function UserProvider({ children }: { children: React.ReactNode }
   const [showChatSetting, setShowChatSetting] = useState<boolean>(false);
   const [showChatInvite, setShowChatInvite] = useState<boolean>(false);
   const [showChatAddFriend, setShowChatAddFriend] = useState<boolean>(false);
+  const [showChannelPassword, setShowChannelPassword] = useState<boolean>(false);
+  const [showCreateChannel, setShowCreateChannel] = useState<boolean>(false);
+  const [showMakeGame, setShowMakeGame] = useState<boolean>(false);
+  const [showMatching, setShowMatching] = useState<boolean>(false);
 
-  const [chatTargetUser, setChatTargetUser] = useState<string>("");
-  const [mutedUser, setMutedUser] = useState<Record<string, { until: number }>>({});
-  const [userChat, setUserChat] = useState<Record<string, { userId: string, nickname: string, message: string }[]>>({});
-  const [channelChat, setChannelChat] = useState<Record<string, { channelId: string, userId: string, nickname: string, message: string }[]>>({});
+
+  const [chatTargetUser, setChatTargetUser] = useState<number>(-1);
+  const [targetChannel, setTargetChannel] = useState<targetChannelInfo>({} as targetChannelInfo);
+  const [mutedUser, setMutedUser] = useState<Record<number, { until: number }>>({});
+  const [userChat, setUserChat] = useState<Record<number, { userId: number, nickname: string, message: string }[]>>({});
+  const [channelChat, setChannelChat] = useState<Record<number, { channelId: number, userId: number, nickname: string, message: string }[]>>({});
+
+  useEffect(() => {
+    sessionStorage.setItem("userContext", JSON.stringify({
+      userInfo: userInfo,
+      authToken: getAuth(),
+      mutedUser: mutedUser,
+      userChat: userChat,
+      channelChat: channelChat,
+    }));
+  });
 
   const userContextValue = {
     state: {
@@ -34,8 +59,13 @@ export default function UserProvider({ children }: { children: React.ReactNode }
       showChatSetting,
       showChatInvite, 
       showChatAddFriend,
+      showChannelPassword,
+      showCreateChannel,
+      showMakeGame,
+      showMatching,
 
       chatTargetUser,
+      targetChannel,
       mutedUser,
       userChat,
       channelChat,
@@ -43,10 +73,7 @@ export default function UserProvider({ children }: { children: React.ReactNode }
     actions: {
       setConnectionState: (newState: boolean) => setConnectionState(newState),
       setChatState: (newState: chatStates) => setChatState(newState),
-      setUserInfo: (newState: userInfoInterface) => {
-        console.log("state changed to", newState);
-        setUserInfo(newState);
-      },
+      setUserInfo: (newState: userInfoInterface) => setUserInfo(newState),
       setMainState: (newState: mainStates) => setMainState(newState),
       setFriendChattingInfo: (newState: any) => setFriendChattingInfo(newState),
       setChannelChattingInfo: (newState: any) => setChannelChattingInfo(newState),
@@ -55,16 +82,21 @@ export default function UserProvider({ children }: { children: React.ReactNode }
       setShowChatSetting: (newState: boolean) => setShowChatSetting(newState),
       setShowChatInvite: (newState: boolean) => setShowChatInvite(newState),
       setShowChatAddFriend: (newState: boolean) => setShowChatAddFriend(newState),
+      setShowChannelPassword: (newState: boolean) => setShowChannelPassword(newState),
+      setShowCreateChannel: (newState: boolean) => setShowCreateChannel(newState),
+      setShowMakeGame: (newState: boolean) => setShowMakeGame(newState),
+      setShowMatching: (newState: boolean) => setShowMatching(newState),
 
-      setChatTargetUser: (newState: string) => setChatTargetUser(newState),
-      setMutedUser: (newState: { userId: string, until: number }) => setMutedUser({ ...mutedUser, [newState.userId]: { until: newState.until } }),
-      setUserChat: (newState: { userId: string, nickname: string, message: string }) => setUserChat(prevUserChat => {
+      setChatTargetUser: (newState: number) => setChatTargetUser(newState),
+      setTargetChannel: (newState: targetChannelInfo) => setTargetChannel(newState),
+      setMutedUser: (newState: { userId: number, until: number }) => setMutedUser({ ...mutedUser, [newState.userId]: { until: newState.until } }),
+      setUserChat: (newState: { userId: number, nickname: string, message: string }) => setUserChat(prevUserChat => {
         const newChat = { ...prevUserChat };
         if (!newChat[newState.userId]) newChat[newState.userId] = [];
-        newChat[newState.userId].push({ userId: newState.userId, nickname: newState.nickname, message: newState.message });
+        newChat[newState.userId].push(newState);
         return newChat;
       }),
-      setChannelChat: (newState: { channelId: string, userId: string, nickname: string, message: string }) => setChannelChat(prevChannelChat => {
+      setChannelChat: (newState: { channelId: number, userId: number, nickname: string, message: string }) => setChannelChat(prevChannelChat => {
         const newChat = { ...prevChannelChat };
         if (!newChat[newState.channelId]) newChat[newState.channelId] = [];
         newChat[newState.channelId].push(newState);
