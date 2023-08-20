@@ -9,7 +9,7 @@ import TwoFactor from "./TwoFactor/page";
 import ChannelLobby from "./ChannelLobby/page";
 import GameLobby from "./GameLobby/page";
 
-function SideButton(props: {type: mainStates}) {
+function SideButton(props: { type: mainStates }) {
   const { state, actions } = useContext(UserContext);
 
   const imgSrc = props.type === mainStates.ChannelLobby ? "sidebutton31.svg" : "sidebutton2.svg";
@@ -33,6 +33,16 @@ function SideButton(props: {type: mainStates}) {
   )
 }
 
+function UserProfile() {
+  return (
+    <div className="Userprofile w-[228px] h-[46px] px-px justify-start items-center gap-2 inline-flex">
+      <img className="Pngegg1 w-10 h-10" src="https://via.placeholder.com/40x40" />
+      <div className="Nickname w-[178px] h-[46px] text-neutral-600 text-[32px] font-normal">mynameis2</div>
+      <div className="Line1 w-[228px] h-[0px] left-[-1px] top-[50.94px] absolute border border-neutral-600"></div>
+    </div>
+  );
+}
+
 export default function MainFrame() {
   const { state, actions } = useContext(UserContext);
 
@@ -51,36 +61,34 @@ export default function MainFrame() {
       });
     });
   };
-  const logout= () => {
+  const logout = () => {
     sessionStorage.clear();
     window.location.reload();
-  } 
+  }
 
   useEffect(() => {
     // auth bypass
-    const loadedContext: string | null=sessionStorage.getItem("userContext");
-    if(loadedContext)
-    {
-      const target: savedContext=JSON.parse(loadedContext);
+    const loadedContext: string | null = sessionStorage.getItem("userContext");
+    if (loadedContext) {
+      const target: savedContext = JSON.parse(loadedContext);
       // restore auth
       setAuth(target.authToken);
       updateSocket();
       actions.setUserInfo(target.userInfo);
 
       // restore chat states
-      for(const userIds in target.mutedUser)
-      {
-        const userId=parseInt(userIds);
-        actions.setMutedUser({userId, until: target.mutedUser[userIds].until});
+      for (const userIds in target.mutedUser) {
+        const userId = parseInt(userIds);
+        actions.setMutedUser({ userId, until: target.mutedUser[userIds].until });
         console.log("muted ", userIds, target.mutedUser[userIds]);
       }
-      for(const userIds in target.userChat)
+      for (const userIds in target.userChat)
         target.userChat[userIds].map((msg) => { actions.setUserChat(msg); });
-      for(const channelIds in target.channelChat)
+      for (const channelIds in target.channelChat)
         target.channelChat[channelIds].map((msg) => { actions.setChannelChat(msg); });
-        console.log("restore complete", target);
+      console.log("restore complete", target);
     }
-    
+
     if (!getAuth()) {
       // setAuth("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsIm5pY2tuYW1lIjoidGVzdDYiLCJmdElkIjoiYWRzZmFzc2Rkc2RmIiwiaWF0IjoxNjkyMDA2OTU5LCJleHAiOjE2OTQ1OTg5NTl9.7z3DFG0O6bGPaQb5Wu99bBGoyIiqjW9Y5NYBSqSPGVw");
       // updateSocket();
@@ -113,7 +121,7 @@ export default function MainFrame() {
         <pre>{JSON.stringify(state.userInfo)}</pre>
         <div className="flex-auto gap-5">
           <button onClick={bypassMe}>bypassMe</button>
-          <br/>
+          <br />
           <button onClick={logout}>logout</button>
 
         </div>
@@ -126,29 +134,39 @@ export default function MainFrame() {
         {
           (getAuth()) &&
           <>
-            <div className="flex justify-center items-center h-screen bg-gradient-to-bl from-neutral-100 to-slate-50">
-              
-              {/* sideButtons */}
-              <div className="Sidebutton2 w-[70px] h-[70px] left-[52px] top-[238px] absolute rounded-tl-[10px] border">
-                <SideButton type={mainStates.ChannelLobby}/>
-              </div>
-              <div className="Sidebutton2 w-[70px] h-[70px] left-[52px] top-[171px] absolute rounded-tl-[10px] border">
-              <SideButton type={mainStates.gameLobby}/>
-              </div>
+            {/* <div className="flex justify-center items-center h-screen bg-gradient-to-bl from-neutral-100 to-slate-50"> */}
+            <div className="h-screen flex justify-center items-center">
 
-              <div className="flex justify-center items-center w-[1280px] h-[832px] relative gap-[12px]" >
-                <div className="w-[800px] h-[650px] z-1 rounded-[10px]">
+              {/* <div className="flex justify-center items-center w-[1280px] h-[832px] relative gap-[12px]" > */}
+              <div className="w-[1280px] h-[832px] absolute">
+                
+                {/* userProfile */}
+                <div className="top-[3.13rem] left-[60.38rem] absolute w-[14.25rem] h-[2.875rem]">
+                  <UserProfile />
+                </div>
+
+                {/* sidebuttons */}
+                <div className="w-[4.38rem] h-[4.38rem] top-[10.69rem] left-[3.25rem] absolute rounded-tl-[10px] border">
+                  <SideButton type={mainStates.ChannelLobby} />
+                </div>
+                <div className="w-[4.38rem] h-[4.38rem] top-[14.88rem] left-[3.25rem] absolute rounded-tl-[10px] border">
+                  <SideButton type={mainStates.gameLobby} />
+                </div>
+
+                <div className="absolute w-[800px] h-[650px] top-[8.13rem] left-[7.44rem] z-10 rounded-[10px]">
                   {
                     state.mainState === mainStates.gameLobby ? (
-                      <GameLobby/>
+                      <GameLobby />
                     ) : (
-                      <ChannelLobby/>
+                      <ChannelLobby />
                     )
                   }
                 </div>
-                <div className="w-[300px] h-[650px] rounded-3xs box-border border-[3px] border-solid border-dimgray">
+
+                <div className="w-[300px] h-[650px] absolute top-[8.13rem] left-[58.19rem] border-solid border-dimgray rounded-3xs box-border border-[3px]">
                   <Chat />
                 </div>
+
               </div>
             </div>
           </>
