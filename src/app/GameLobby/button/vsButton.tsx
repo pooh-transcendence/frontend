@@ -1,10 +1,13 @@
+'use cilent'
 
-
+import { UserContext } from "@/app/UserContext";
+import { useContext } from "react";
 
 export default function VsButton() {
-
+    const {state, actions}=useContext(UserContext);
     const customMatchingHandler=() => {
         console.log("customMatchingHandler");
+        actions.setShowMakeGame(true);
     }
     
     return (

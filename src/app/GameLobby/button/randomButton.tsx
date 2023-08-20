@@ -1,10 +1,13 @@
-
-
+'use cilent'
+import { UserContext } from "@/app/UserContext";
+import { useContext } from "react";
 
 export default function RandomButton() {
+    const {state, actions}=useContext(UserContext);
 
     const randomMatchingHandler=() => {
         console.log("randomMatchingHandler");
+        actions.setShowMatching(true);
     }
 
     return (
