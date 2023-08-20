@@ -62,14 +62,32 @@ export default function ChannelRoomList() {
 
   useEffect(() => {
     socket.emit("visibleChannel");
-    socket.on("visibleChannel", (res: targetChannelInfo[]) => {
+    socket.once("visibleChannel", (res: targetChannelInfo[]) => {
       setChannels(res);
     });
 
     return () => {
-      socket.off("visibleChannel");
+      // socket.off("visibleChannel");
     }
   }, []);
+
+  useEffect(() => {
+    const addChannelToAllChannelList = (newChannel : targetChannelInfo) => {  
+      console.log("addChannelToAllChannelList", newChannel);
+      setChannels([...channels, newChannel]);
+    }
+    const deleteChannelToAllChannelList = (deletedChannel: targetChannelInfo) => {
+      console.log("deleteChannelToAllChannelList", deletedChannel);
+      setChannels(channels.filter((chan) => chan.id != deletedChannel.id));
+    }
+    socket.on("addChannelToAllChannelList", addChannelToAllChannelList);
+    socket.on("deleteChannelToAllChannelList", deleteChannelToAllChannelList);
+    
+    return () => {
+      socket.off("addChannelToAllChannelList", addChannelToAllChannelList);
+      socket.off("deleteChannelToAllChannelList", deleteChannelToAllChannelList);
+    }
+  }, [channels])
 
   return (
     <>

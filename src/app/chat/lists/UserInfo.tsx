@@ -37,7 +37,10 @@ const UserInfo = ({
     const blockHandler = () => {
         api_post("/block", { "bannedUserId": state.chatTargetUser })
         if (state.chatState === chatStates.friendChat)
+        {
             actions.setChatState(chatStates.friendList);
+            actions.setShowChatUserInfo(false);
+        }
         // else
         //     actions.setChatState(chatStates.channelList);
     }; // http 400 

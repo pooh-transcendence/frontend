@@ -2,7 +2,8 @@
 import React, { useContext, useEffect } from "react"
 import Chat from "./chat/page"
 
-import { UserContext, mainStates, userInfo } from "@/app/UserContext"
+import { savedContext } from "./UserProvider"
+import { UserContext, mainStates, targetChannelInfo, userInfo } from "@/app/UserContext"
 import { getAuth, setUserId, getUserId, redirectUri, setAuth, socket, updateSocket, api_get } from '@/app/api';
 import TwoFactor from "./TwoFactor/page";
 import ChannelLobby from "./ChannelLobby/page";
@@ -49,13 +50,40 @@ export default function MainFrame() {
         loserGame: data.loserGame,
       });
     });
-  }
+  };
+  const logout= () => {
+    sessionStorage.clear();
+    window.location.reload();
+  } 
 
   useEffect(() => {
     // auth bypass
-    if (!getAuth()) {
-      setAuth("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsIm5pY2tuYW1lIjoidGVzdDYiLCJmdElkIjoiYWRzZmFzc2Rkc2RmIiwiaWF0IjoxNjkyMDA2OTU5LCJleHAiOjE2OTQ1OTg5NTl9.7z3DFG0O6bGPaQb5Wu99bBGoyIiqjW9Y5NYBSqSPGVw");
+    const loadedContext: string | null=sessionStorage.getItem("userContext");
+    if(loadedContext)
+    {
+      const target: savedContext=JSON.parse(loadedContext);
+      // restore auth
+      setAuth(target.authToken);
       updateSocket();
+      actions.setUserInfo(target.userInfo);
+
+      // restore chat states
+      for(const userIds in target.mutedUser)
+      {
+        const userId=parseInt(userIds);
+        actions.setMutedUser({userId, until: target.mutedUser[userIds].until});
+        console.log("muted ", userIds, target.mutedUser[userIds]);
+      }
+      for(const userIds in target.userChat)
+        target.userChat[userIds].map((msg) => { actions.setUserChat(msg); });
+      for(const channelIds in target.channelChat)
+        target.channelChat[channelIds].map((msg) => { actions.setChannelChat(msg); });
+        console.log("restore complete", target);
+    }
+    
+    if (!getAuth()) {
+      // setAuth("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsIm5pY2tuYW1lIjoidGVzdDYiLCJmdElkIjoiYWRzZmFzc2Rkc2RmIiwiaWF0IjoxNjkyMDA2OTU5LCJleHAiOjE2OTQ1OTg5NTl9.7z3DFG0O6bGPaQb5Wu99bBGoyIiqjW9Y5NYBSqSPGVw");
+      // updateSocket();
     }
 
     const connectionHandler = () => {
@@ -79,13 +107,15 @@ export default function MainFrame() {
     }
   }, []);
 
-
   if (getUserId())
     return (
       <>
         <pre>{JSON.stringify(state.userInfo)}</pre>
         <div className="flex-auto gap-5">
           <button onClick={bypassMe}>bypassMe</button>
+          <br/>
+          <button onClick={logout}>logout</button>
+
         </div>
         {
           // check whether this user is registered

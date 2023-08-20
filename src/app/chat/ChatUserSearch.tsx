@@ -28,6 +28,7 @@ const ChatUserSearch = (props: { type: "add_friend" | "invite" }): JSX.Element =
         // TODO: 더 나은 검색결과를 위해 정렬하는거 조을듯
         if (state.showChatAddFriend)
             socket.emit("allUser", (data: friend[]) => {
+                console.log(data);
                 const tmpList = data.filter((elem) => elem.id != state.userInfo.id);
                 setOriginalList(tmpList);
                 setUserList(tmpList)
@@ -69,7 +70,7 @@ const ChatUserSearch = (props: { type: "add_friend" | "invite" }): JSX.Element =
                     {
                         Object.entries(userList).map(
                             ([idx, friend]) => {
-                                return <UserListComponent userId={friend.id} nick={friend.nickname} profileImg={friend.avatar} type="addFriend" />
+                                return <UserListComponent key={idx} userId={friend.id} nick={friend.nickname} profileImg={friend.avatar} type="addFriend" />
                             })
                     }
 
@@ -100,7 +101,7 @@ const ChatUserSearch = (props: { type: "add_friend" | "invite" }): JSX.Element =
                     {
                         Object.entries(userList).map(
                             ([idx, friend]) => {
-                                return <UserListComponent userId={friend.id} nick={friend.nickname} profileImg={friend.avatar} type={state.channelChattingInfo.inviteSelectedList.includes(friend.id) ? "inviteFriend_1" : "inviteFriend_0"} />
+                                return <UserListComponent key={idx} userId={friend.id} nick={friend.nickname} profileImg={friend.avatar} type={state.channelChattingInfo.inviteSelectedList.includes(friend.id) ? "inviteFriend_1" : "inviteFriend_0"} />
                             })
                     }
                 </div>
