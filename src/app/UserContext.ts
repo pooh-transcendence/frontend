@@ -67,6 +67,8 @@ export const UserContext = React.createContext({
     showChatAddFriend: false,
     showChannelPassword: false,
     showCreateChannel: false,
+    showMakeGame: false,
+    showMatching: false,
 
     chatTargetUser: -1,
     targetChannel: {} as targetChannelInfo,
@@ -88,6 +90,8 @@ export const UserContext = React.createContext({
     setShowChatAddFriend: (newState: boolean) => {},
     setShowChannelPassword: (newState: boolean) => {},
     setShowCreateChannel: (newState: boolean) => {},
+    setShowMakeGame: (newState: boolean) => {},
+    setShowMatching: (newState: boolean) => {},
     
     setChatTargetUser: (newState: number) => {},
     setTargetChannel: (newState: targetChannelInfo) => {},

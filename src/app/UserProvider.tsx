@@ -26,6 +26,9 @@ export default function UserProvider({ children }: { children: React.ReactNode }
   const [showChatAddFriend, setShowChatAddFriend] = useState<boolean>(false);
   const [showChannelPassword, setShowChannelPassword] = useState<boolean>(false);
   const [showCreateChannel, setShowCreateChannel] = useState<boolean>(false);
+  const [showMakeGame, setShowMakeGame] = useState<boolean>(false);
+  const [showMatching, setShowMatching] = useState<boolean>(false);
+
 
   const [chatTargetUser, setChatTargetUser] = useState<number>(-1);
   const [targetChannel, setTargetChannel] = useState<targetChannelInfo>({} as targetChannelInfo);
@@ -58,6 +61,8 @@ export default function UserProvider({ children }: { children: React.ReactNode }
       showChatAddFriend,
       showChannelPassword,
       showCreateChannel,
+      showMakeGame,
+      showMatching,
 
       chatTargetUser,
       targetChannel,
@@ -79,6 +84,8 @@ export default function UserProvider({ children }: { children: React.ReactNode }
       setShowChatAddFriend: (newState: boolean) => setShowChatAddFriend(newState),
       setShowChannelPassword: (newState: boolean) => setShowChannelPassword(newState),
       setShowCreateChannel: (newState: boolean) => setShowCreateChannel(newState),
+      setShowMakeGame: (newState: boolean) => setShowMakeGame(newState),
+      setShowMatching: (newState: boolean) => setShowMatching(newState),
 
       setChatTargetUser: (newState: number) => setChatTargetUser(newState),
       setTargetChannel: (newState: targetChannelInfo) => setTargetChannel(newState),
