@@ -1,7 +1,9 @@
+'use client'
+
 import { Modal, Stack, Typography, Box, Button } from "@mui/material";
 import { useEffect, useState, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { SocketContext } from "../../common/states/contextSocket";
+import { SocketContext } from "./common/states/contextSocket";
 import GameRoom from "./GameRoom";
 
 function GamePlayRoom() {
@@ -10,8 +12,10 @@ function GamePlayRoom() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const player1 = location.state.player1;
-    const player2 = location.state.player2;
+    // const player1 = location.state.player1;
+    // const player2 = location.state.player2;
+    const player1 = "klew";
+    const player2 = "tjo";
     const gameRoomName = `${player1}vs${player2}`;
 
     function readyHandler(e: React.MouseEvent<HTMLElement>) {
@@ -21,7 +25,8 @@ function GamePlayRoom() {
     return (
         <>
             <Stack>
-                <GameRoom p1="klew" p2="tjo"/>
+                {/* <GameRoom p1="klew" p2="tjo"/> */}
+                <GameRoom/>
                 <Button onClick={readyHandler}>
                     GET READY FOR THE NEXT BATTLE
                 </Button>
