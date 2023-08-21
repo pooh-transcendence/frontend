@@ -77,13 +77,16 @@ export const ChatChannelList = (): JSX.Element => {
             setChannelList([...channelList, newChannel]);
         }
 
+        const deleteChannelToUserChannelList = (deletedChannel: channel) => {
+            setChannelList(channelList.filter((elem) => elem.id != deletedChannel.id));
+        }
         // only for rerendering
         socket.on("addChannelToUserChannelList", addChannelToUserChannelList);
-        // socket.on("deleteChannelToAllChannelList", deleteChannelToAllChannelList);
+        socket.on("deleteChannelToUserChannelList", deleteChannelToUserChannelList);
 
         return () => {
             socket.off("addChannelToUserChannelList", addChannelToUserChannelList);
-            // socket.off("deleteChannelToAllChannelList", deleteChannelToAllChannelList);
+            socket.off("deleteChannelToUserChannelList", deleteChannelToUserChannelList);
         };
     }, [channelList]);
 
