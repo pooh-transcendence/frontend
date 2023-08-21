@@ -33,17 +33,9 @@ const UserInfo = ({
             until: new Date().getTime() + 1000 * 10, // 10초간 음소거
         })
     };
-    // const blockHandler=() => {socket.emit("createBlock", Number(state.chatTargetUser), (ack: any) => {console.log(ack)})}; // ?
-    const blockHandler = () => {
-        api_post("/block", { "bannedUserId": state.chatTargetUser })
-        if (state.chatState === chatStates.friendChat)
-        {
-            actions.setChatState(chatStates.friendList);
-            actions.setShowChatUserInfo(false);
-        }
-        // else
-        //     actions.setChatState(chatStates.channelList);
-    }; // http 400 
+    const blockHandler=() => {
+        socket.emit("createBlock", {"blockUserId": Number(state.chatTargetUser) 
+    }, (ack: any) => {console.log(ack)})};
     const infoHandler = () => { console.log("info button", state.chatTargetUser) };
     const banHandler = () => {
         console.log("ban", state.chatTargetUser, state.channelChattingInfo.id);
