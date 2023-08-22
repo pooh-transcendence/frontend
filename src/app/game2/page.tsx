@@ -18,9 +18,6 @@ const GamePage: React.FC = () => {
         <PingPongCanvas width={canvasWidth} height={canvasHeight} />
       </main>
 
-      <footer>
-        {/* Add any relevant footer content */}
-      </footer>
     </div>
   );
 };
