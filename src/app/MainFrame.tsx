@@ -146,10 +146,10 @@ export default function MainFrame() {
                 </div>
 
                 {/* sidebuttons */}
-                <div className="w-[4.38rem] h-[4.38rem] top-[10.69rem] left-[3.25rem] absolute rounded-tl-[10px] border">
+                <div className="w-[4.38rem] h-[4.38rem] top-[14.88rem] left-[3.25rem] absolute rounded-tl-[10px] border">
                   <SideButton type={mainStates.ChannelLobby} />
                 </div>
-                <div className="w-[4.38rem] h-[4.38rem] top-[14.88rem] left-[3.25rem] absolute rounded-tl-[10px] border">
+                <div className="w-[4.38rem] h-[4.38rem] top-[10.69rem] left-[3.25rem] absolute rounded-tl-[10px] border">
                   <SideButton type={mainStates.gameLobby} />
                 </div>
 
