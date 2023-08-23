@@ -1,13 +1,16 @@
 import { useEffect, useRef } from "react";
-import {colors, sizes} from "../../common/gameData";
+import {colors, sizes} from "./common/gameData";
 import {useRecoilValue} from "recoil";
-import {gameState} from "../../common/states/recoilGameState";
+import {gameState} from "./common/states/recoilGameState";
 
-import * as types from "../../common/types/Game";
-import {drawNet,drawPaddle, drawBall} from "./draw";
+import * as types from "./common/types/Game";
+import {drawNet,drawPaddle, drawBall} from "./components/draw";
 import { Grid, Stack, Typography} from "@mui/material";
 
-const GameRoom = (props: {p1: string, p2: string}) => {
+// const GameRoom = (props: {p1: string, p2: string}) => {
+const GameRoom = () => {
+    const p1 = "klew";
+    const p2 = "tjo";
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     /* state */
@@ -41,10 +44,10 @@ const GameRoom = (props: {p1: string, p2: string}) => {
             alignItems="center"
         >
             <Grid item xs={6}>
-                <Typography className="player-name" variant="subtitle2" align="center">{props.p1}</Typography>
+                <Typography className="player-name" variant="subtitle2" align="center">{p1}</Typography>
             </Grid>
             <Grid item xs={6}>
-                <Typography className="player-name" variant="subtitle2" align="center">{props.p2}</Typography>
+                <Typography className="player-name" variant="subtitle2" align="center">{p2}</Typography>
             </Grid>
             <Grid item xs={6}>
                 <Typography className="score" variant="h3" align="center">{game.score.player1}</Typography>

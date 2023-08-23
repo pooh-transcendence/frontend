@@ -1,0 +1,21 @@
+.gameCanvas {
+    position: relative;
+    width: 800px;
+    height: 600px;
+    border: 1px solid black;
+    margin: 0 auto;
+  }
+  .paddle {
+    position: absolute;
+    width: 10px;
+    height: 100px;
+    background-color: blue;
+  }
+  .ball {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: green;
+    border-radius: 50%;
+  }
+  
