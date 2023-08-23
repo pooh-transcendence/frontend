@@ -63,7 +63,7 @@ export const ChatChannelList = (): JSX.Element => {
     }, []);
 
     useEffect(() => {
-        const addChannelToUserChannelList = async (newChannel: channel) => { // <- what is this
+        const addChannelToUserChannelList = async (newChannel: channel) => { 
             await api_get(`/channel/admin/${newChannel.id}`).then((data) => {
                 // console.log(data.data.data.filter(
                 //     (it: any) => state.userInfo.id == it.id));
@@ -73,20 +73,34 @@ export const ChatChannelList = (): JSX.Element => {
             await api_get(`/user/${newChannel.ownerId}`).then((data) => {
                 newChannel.ownerId = data.data.data.nickname;
             });
-            console.log("addChannelToUserChannelList", newChannel);
             setChannelList([...channelList, newChannel]);
+            console.log("addChannelToUserChannelList", newChannel, channelList);
         }
 
         const deleteChannelToUserChannelList = (deletedChannel: channel) => {
+            console.log("deleteChannelToUserChannelList", deletedChannel);
             setChannelList(channelList.filter((elem) => elem.id != deletedChannel.id));
         }
+
+        const changeUserTypeToMod = (changedChannel: channel) => {
+            console.log("changeUserTypeToMod", changedChannel);
+            if(state.channelChattingInfo.id == changedChannel.id)
+                actions.setChannelChattingInfo({...state.channelChattingInfo, userType: "MODERATOR"});
+            channelList.forEach(elem => {
+                if(elem.id == changedChannel.id)
+                    elem.userType="MODERATOR";
+            });
+        };
+
         // only for rerendering
         socket.on("addChannelToUserChannelList", addChannelToUserChannelList);
         socket.on("deleteChannelToUserChannelList", deleteChannelToUserChannelList);
+        socket.on("changeUserTypeToMod", changeUserTypeToMod);
 
         return () => {
             socket.off("addChannelToUserChannelList", addChannelToUserChannelList);
             socket.off("deleteChannelToUserChannelList", deleteChannelToUserChannelList);
+            socket.off("changeUserTypeToMod", changeUserTypeToMod);
         };
     }, [channelList]);
 

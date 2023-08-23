@@ -53,9 +53,8 @@ const ChatUserSearch = (props: { type: "add_friend" | "invite" }): JSX.Element =
     };
     const inviteHandler = () => {
         state.channelChattingInfo.inviteSelectedList.forEach((elem) => {
-            api_patch("/channel/invite", { userId: elem, channelId: state.channelChattingInfo.id });
+            socket.emit("inviteUser", { userId: elem, channelId: state.channelChattingInfo.id }, (data) => {console.log(data)});
         })
-        api_patch("/channel/invite", {}).catch((e) => {/* */ });
         actions.setShowChatInvite(false);
         actions.setChannelChattingInfo({ ...state.channelChattingInfo, inviteSelectedList: [] });
     }

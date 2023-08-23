@@ -14,7 +14,7 @@ export default function RoomSettings(props: { userType: "DEFAULT" | "MODERATOR" 
     };
     const exitChannelHandler = () => {
         exitButtonHandler();
-        socket.emit("leaveChannel", { channelId: Number(state.channelChattingInfo.id) }, (ack: any) => { console.log("exited channel", ack) });
+        socket.emit("leaveChannel", { channelId: Number(state.channelChattingInfo.id) }, (ack: any) => { console.log("leaveChannel", ack) });
         actions.setChatState(chatStates.channelList);
     };
     const passwordChangeHandler = () => {

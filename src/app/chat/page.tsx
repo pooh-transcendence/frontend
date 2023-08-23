@@ -26,6 +26,7 @@ export default function Chat() {
     };
 
     const channelMessageListener = (data: any) => {
+      console.log("channelMessageListener", data);
       const renderTime = new Date().getTime();
       if (!state.mutedUser[data[0].userId] || state.mutedUser[data[0].userId].until < renderTime) {
         console.log("added", data);

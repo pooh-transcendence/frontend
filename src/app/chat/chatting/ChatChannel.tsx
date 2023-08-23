@@ -58,13 +58,21 @@ export const ChatChannel = ({
                             key={idx} />
                     </button>
                 );
-            else
+            else if(nickname)
                 res.push(
                     <ChatBubble
                         side={"right"}
                         nickname={nickname}
                         messageText={message}
                         key={idx} />
+                )
+            else
+                res.push(
+                <ChatBubble
+                    side={"center"}
+                    nickname={"systemMessage"}
+                    messageText={message}
+                    key={idx} />
                 )
         });
         return res;
