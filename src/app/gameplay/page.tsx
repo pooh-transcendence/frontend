@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 
 interface ball {
     new: (incrementedSpeed?: number) => {
@@ -46,7 +46,15 @@ type game = GameObject &{
 
 function GamePlayRoomPage() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
+
     console.log(canvasRef);
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        if (canvas) {
+            Pong.initialize();
+        }
+    }, [canvasRef]);
+
     const DIRECTION = {
         IDLE: 0,
         UP: 1,
@@ -100,8 +108,8 @@ function GamePlayRoomPage() {
             this.canvas.width = 1400;
             this.canvas.height = 1000;
         
-            this.canvas.style.width = (this.canvas.width / 2) + 'px';
-            this.canvas.style.height = (this.canvas.height / 2) + 'px';
+            // this.canvas.style.width = (this.canvas.width / 2) + 'px';
+            // this.canvas.style.height = (this.canvas.height / 2) + 'px';
             
             this.player = Ai.new.call(this, 'left');
             this.ai = Ai.new.call(this, 'right');
@@ -410,7 +418,6 @@ function GamePlayRoomPage() {
     };
 
     let Pong = Object.assign({}, Game);
-    Pong.initialize();
 
     return (
         <>
