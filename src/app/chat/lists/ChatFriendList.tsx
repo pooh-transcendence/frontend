@@ -1,5 +1,5 @@
 'use client'
-
+// 안 읽은 채널에 알림 못 띄우나?
 import React, { useState, useEffect, useContext } from "react";
 import { ChatBottomBar } from "../frame/ChatBottomBar";
 import { ChatTitle } from "../frame/ChatTitle";

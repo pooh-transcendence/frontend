@@ -14,6 +14,7 @@ function InputPassword() {
     }
   }
   const submitPassword = () => {
+    console.log("submitPassword", text);
     api_post("/channel/join", {userId: Number(state.userInfo.id), channelId: Number(state.targetChannel.id), password: text}).then(() => {
       actions.setShowChannelPassword(false);
     }).catch((e) => {console.log("wrongPw", e)});
@@ -73,7 +74,7 @@ export default function ChannelRoomList() {
 
   useEffect(() => {
     const addChannelToAllChannelList = (newChannel : targetChannelInfo) => {  
-      console.log("addChannelToAllChannelList", newChannel);
+      console.log("addChannelToAllChannelList", newChannel); // <- need to check
       setChannels([...channels, newChannel]);
     }
     const deleteChannelToAllChannelList = (deletedChannel: targetChannelInfo) => {
@@ -87,7 +88,7 @@ export default function ChannelRoomList() {
       socket.off("addChannelToAllChannelList", addChannelToAllChannelList);
       socket.off("deleteChannelToAllChannelList", deleteChannelToAllChannelList);
     }
-  }, [channels])
+  }, [channels]);
 
   return (
     <>
