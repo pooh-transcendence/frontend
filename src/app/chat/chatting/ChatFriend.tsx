@@ -43,7 +43,7 @@ export const ChatFriend = ({
     }
 
     function renderMessage(): Array<JSX.Element> {
-        console.log("render", state.userChat[state.friendChattingInfo.id] ?? []);
+        // console.log("render", state.userChat[state.friendChattingInfo.id] ?? []);
         const res: Array<JSX.Element> = [];
         if (!state.userChat[state.friendChattingInfo.id]) return res;
         state.userChat[state.friendChattingInfo.id].forEach((msg, idx) => {
@@ -77,7 +77,7 @@ export const ChatFriend = ({
         actions.setUserChat({ userId: state.friendChattingInfo.id, nickname: state.userInfo.nickname, message: text });
 
         // opponent side
-        console.log("send to", Number(state.friendChattingInfo.id));
+        // console.log("send to", Number(state.friendChattingInfo.id));
         socket.emit("message", { userId: state.friendChattingInfo.id, message: text });
         setText("");
     }
