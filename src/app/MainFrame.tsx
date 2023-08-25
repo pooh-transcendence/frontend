@@ -118,7 +118,7 @@ export default function MainFrame() {
   if (getUserId())
     return (
       <>
-        <pre>{JSON.stringify(state.userInfo)}</pre>
+        {/* <pre>{JSON.stringify(state.userInfo)}</pre> */}
         <div className="flex-auto gap-5">
           <button onClick={bypassMe}>bypassMe</button>
           <br />

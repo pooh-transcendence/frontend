@@ -124,7 +124,8 @@ export const ChatChannelList = (): JSX.Element => {
                 <ChatBottomBar />
             </div>
             {/* ContentsSection */}
-            <div className="w-[260px] py-2 left-[20px] top-[58px] absolute flex-col justify-start items-start gap-[7px] inline-flex">
+
+            <div className="scrollbar-hide overflow-auto w-[260px] h-[33.5rem] py-2 left-[20px] top-[58px] absolute flex-col justify-start items-start gap-[7px] inline-flex">
                 {
                     channelList.map((channel, idx) => {
                         return makeChannelListComp(channel);
