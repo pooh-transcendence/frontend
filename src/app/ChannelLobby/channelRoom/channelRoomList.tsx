@@ -122,7 +122,7 @@ export default function ChannelRoomList() {
         alt=""
         src="/vector1.svg"
       />
-      <div className="absolute h-[33.1rem] w-[43.6rem] top-[3.31rem] left-[1.69rem] overflow-auto flex flex-col items-start justify-start gap-[0.81rem] text-right text-[0.81rem] text-[#555555]">
+      <div className="scrollbar-hide absolute h-[33.1rem] w-[43.6rem] top-[3.31rem] left-[1.69rem] overflow-auto flex flex-col items-start justify-start gap-[0.81rem] text-right text-[0.81rem] text-[#555555]">
         <div className="flex flex-col items-center justify-center text-center text-[1rem]">
           <div className="relative">public</div>
         </div>

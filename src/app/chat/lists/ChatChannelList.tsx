@@ -41,8 +41,7 @@ export const ChatChannelList = (): JSX.Element => {
 
     useEffect(() => {
         api_get("/user/channel").then(async (data) => {
-            // console.log("/user/channel", data.data.data);
-            console.log("getting channel", data);
+            console.log("/user/channel", data.data.data);
             const res: channel[] = data.data.data;
             const ret: channel[] = [];
             for (const elem of res) {
