@@ -80,7 +80,7 @@ export const ChatChannelList = (): JSX.Element => {
         const deleteChannelToUserChannelList = (deletedChannel: channel) => {
             console.log("deleteChannelToUserChannelList", deletedChannel, channelList);
             setChannelList(channelList.filter((elem) => elem.id != deletedChannel.id));
-            console.log("deleted channel ->", channelList);
+            actions.setChatState(chatStates.channelList);
         }
 
         const changeUserTypeToMod = (changedChannel: channel) => {
