@@ -43,9 +43,9 @@ export const CreateChannelModal = () => {
 
     api_post("/channel", {
       "channelInfo": {
-        "channelType": channelMode,
+        "channelType": channelMode==ChannelModeEnum.Protected ? ChannelModeEnum.Protected : channelMode,
         "channelName": name,
-        "ownerId": state.userInfo.id
+        "ownerId": state.userInfo.id,
       },
       "channelUserIds": [
         state.userInfo.id
