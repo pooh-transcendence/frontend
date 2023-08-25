@@ -19,7 +19,7 @@ export default function ChannelListComponent({ channel }: { channel: targetChann
   return (
     <div className="relative w-[697px] h-[41px]">
         <img
-          className="relative top-[2.38rem] left-[2.75rem] w-[40.88rem] h-[0.13rem]"
+          className="relative top-[2.38rem] left-[2.75rem] w-[40.88rem]"
           alt=""
           src="/line-2.svg"
         />
