@@ -43,7 +43,7 @@ export const CreateChannelModal = () => {
 
     api_post("/channel", {
       "channelInfo": {
-        "channelType": "PUBLIC",
+        "channelType": channelMode,
         "channelName": name,
         "ownerId": state.userInfo.id
       },
