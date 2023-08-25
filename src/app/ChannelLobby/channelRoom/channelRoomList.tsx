@@ -122,11 +122,11 @@ export default function ChannelRoomList() {
         alt=""
         src="/vector1.svg"
       />
-      {/* <div className="scrollbar-hide overflow-auto w-[33.1rem] h-[43.6rem] absolute flex-col justify-start text-right items-end gap-[0.81rem] text-[0.81rem] text-[#555555] inline-flex"> */}
-      <div className="absolute h-[33.1rem] w-[43.6rem] top-[10.24%] right-[2.82%] bottom-[3.3%] left-[3.62%] overflow-y-auto flex flex-col items-start justify-start gap-[0.81rem] text-right text-[0.81rem] text-[#555555]">
+      <div className="absolute h-[33.1rem] w-[43.6rem] top-[3.31rem] left-[1.69rem] overflow-auto flex flex-col items-start justify-start gap-[0.81rem] text-right text-[0.81rem] text-[#555555]">
         <div className="flex flex-col items-center justify-center text-center text-[1rem]">
           <div className="relative">public</div>
         </div>
+
         {
           channels.filter((elem) => elem.channelType === "PUBLIC").map((elem) => {
             return <ChannelListComponent key={elem.id} channel={elem} />

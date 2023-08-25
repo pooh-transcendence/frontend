@@ -1,11 +1,7 @@
 'use client';
 
-import type { NextPage } from "next";
 import { useState, useCallback, useEffect } from "react";
-import MyPageFrame from "@/components/my-page-frame";
-import PortalPopup from "@/components/portal-popup";
 
-import Image from "next/image";
 import { userInfo } from "@/app/UserContext";
 import { api_get } from "@/app/api";
 

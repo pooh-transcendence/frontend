@@ -116,6 +116,7 @@ export default function MainFrame() {
   }, []);
 
   if (getUserId())
+  // if (sessionStorage.getItem("userContext"))
     return (
       <>
         {/* <pre>{JSON.stringify(state.userInfo)}</pre> */}
@@ -123,7 +124,6 @@ export default function MainFrame() {
           <button onClick={bypassMe}>bypassMe</button>
           <br />
           <button onClick={logout}>logout</button>
-
         </div>
         {
           // check whether this user is registered
