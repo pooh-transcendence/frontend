@@ -115,7 +115,8 @@ export default function MainFrame() {
     }
   }, []);
 
-  if (sessionStorage.getItem("userContext"))
+  if (getUserId())
+  // if (sessionStorage.getItem("userContext"))
     return (
       <>
         {/* <pre>{JSON.stringify(state.userInfo)}</pre> */}

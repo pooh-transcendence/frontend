@@ -36,13 +36,13 @@ const ChannelListComponent = ({
 };
 
 export const ChatChannelList = (): JSX.Element => {
-
     const { state, actions } = useContext(UserContext);
     const [channelList, setChannelList] = useState<channel[]>([]);
 
     useEffect(() => {
         api_get("/user/channel").then(async (data) => {
             // console.log("/user/channel", data.data.data);
+            console.log("getting channel", data);
             const res: channel[] = data.data.data;
             const ret: channel[] = [];
             for (const elem of res) {
@@ -58,6 +58,8 @@ export const ChatChannelList = (): JSX.Element => {
                 });
                 ret.push({ ...tmp, inviteSelectedList: [], channelUser: [] });
             }
+            return ret;
+        }).then((ret) => {
             setChannelList(ret);
         });
     }, []);
@@ -65,8 +67,6 @@ export const ChatChannelList = (): JSX.Element => {
     useEffect(() => {
         const addChannelToUserChannelList = async (newChannel: channel) => { 
             await api_get(`/channel/admin/${newChannel.id}`).then((data) => {
-                // console.log(data.data.data.filter(
-                //     (it: any) => state.userInfo.id == it.id));
                 newChannel.userType = data.data.data.filter(
                     (it: any) => state.userInfo.id == it.id).length ? "MODERATOR" : "DEFAULT";
             });
@@ -78,8 +78,9 @@ export const ChatChannelList = (): JSX.Element => {
         }
 
         const deleteChannelToUserChannelList = (deletedChannel: channel) => {
-            console.log("deleteChannelToUserChannelList", deletedChannel);
+            console.log("deleteChannelToUserChannelList", deletedChannel, channelList);
             setChannelList(channelList.filter((elem) => elem.id != deletedChannel.id));
+            console.log("deleted channel ->", channelList);
         }
 
         const changeUserTypeToMod = (changedChannel: channel) => {
@@ -112,7 +113,7 @@ export const ChatChannelList = (): JSX.Element => {
         }
         return (
             <button key={channel.id+""} onClick={gotoChat}>
-                <ChannelListComponent channelName={channel.channelName} channelOwner={channel.ownerId+""} channelPeopleCnt={42/* channel.channelUser.length */} channelProfileImg="https://via.placeholder.com/32x32" />
+                <ChannelListComponent channelName={channel.channelName} channelOwner={channel.ownerId+""} channelPeopleCnt={channel.channelUser.length} channelProfileImg="https://via.placeholder.com/32x32" />
             </button>
         )
     }
