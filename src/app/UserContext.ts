@@ -69,8 +69,10 @@ export const UserContext = React.createContext({
     showCreateChannel: false,
     showMakeGame: false,
     showMatching: false,
+    showInfo: false,
 
     chatTargetUser: -1,
+    infoTargetUser: -1,
     targetChannel: {} as targetChannelInfo,
     mutedUser: {} as Record<number, { until: number }>,
     userChat: {} as Record<number, { userId: number, nickname: string, message: string }[]>,
@@ -92,8 +94,10 @@ export const UserContext = React.createContext({
     setShowCreateChannel: (newState: boolean) => {},
     setShowMakeGame: (newState: boolean) => {},
     setShowMatching: (newState: boolean) => {},
+    setShowInfo: (newState: boolean) => {},
     
     setChatTargetUser: (newState: number) => {},
+    setInfoTargetUser: (newState: number) => {},
     setTargetChannel: (newState: targetChannelInfo) => {},
     setMutedUser: (newState: {userId: number, until: number}) => {},
     setUserChat: (newState: {userId: number, nickname: string, message: string}) => {},

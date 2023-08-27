@@ -10,6 +10,12 @@ export default function MatchHistory() {
           <MatchCard />
           <MatchCard />
           <MatchCard />
+          <MatchCard />
+          <MatchCard />
+          <MatchCard />
+          <MatchCard />
+          <MatchCard />
+          <MatchCard />
         </div>
         <div className="absolute h-[4%] w-[15.8%] top-[32.92%] right-[79.6%] bottom-[63.08%] left-[4.6%] text-[1.25rem]">
           <div className="absolute h-full w-[99.76%] top-[0%] right-[0%] bottom-[0%] left-[0.24%]">
@@ -19,7 +25,7 @@ export default function MatchHistory() {
             <img
               className="absolute h-[82.49%] w-[13.47%] top-[16.05%] right-[86.53%] bottom-[1.47%] left-[0%] max-w-full overflow-hidden max-h-full"
               alt=""
-              src="/vector.svg"
+              src="/match_history.svg"
             />
           </div>
         </div>

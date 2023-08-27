@@ -8,6 +8,7 @@ import { getAuth, setUserId, getUserId, redirectUri, setAuth, socket, updateSock
 import TwoFactor from "./TwoFactor/page";
 import ChannelLobby from "./ChannelLobby/page";
 import GameLobby from "./GameLobby/page";
+import MyPageFrame from "./MyPageLobby/page"
 
 function SideButton(props: { type: mainStates }) {
   const { state, actions } = useContext(UserContext);
@@ -34,12 +35,19 @@ function SideButton(props: { type: mainStates }) {
 }
 
 function UserProfile() {
+  const { state, actions } = useContext(UserContext);
+  const clickHandler = () => {
+    actions.setInfoTargetUser(state.userInfo.id);
+    actions.setShowInfo(true);
+    console.log(state);
+  }
+
   return (
-    <div className="Userprofile w-[228px] h-[46px] px-px justify-start items-center gap-2 inline-flex">
-      <img className="Pngegg1 w-10 h-10" src="https://via.placeholder.com/40x40" />
-      <div className="Nickname w-[178px] h-[46px] text-neutral-600 text-[32px] font-normal">mynameis2</div>
+    <button onClick={clickHandler} className="Userprofile w-[228px] h-[46px] px-px justify-start items-center gap-2 inline-flex">
+      <img className="w-10 h-10" src={state.userInfo.avatar} />
+      <div className="Nickname w-[178px] h-[46px] text-neutral-600 text-[32px] font-normal">{state.userInfo.nickname}</div>
       <div className="Line1 w-[228px] h-[0px] left-[-1px] top-[50.94px] absolute border border-neutral-600"></div>
-    </div>
+    </button>
   );
 }
 
@@ -116,7 +124,7 @@ export default function MainFrame() {
   }, []);
 
   if (getUserId())
-  // if (sessionStorage.getItem("userContext"))
+    // if (sessionStorage.getItem("userContext"))
     return (
       <>
         {/* <pre>{JSON.stringify(state.userInfo)}</pre> */}
@@ -137,9 +145,20 @@ export default function MainFrame() {
             {/* <div className="flex justify-center items-center h-screen bg-gradient-to-bl from-neutral-100 to-slate-50"> */}
             <div className="h-screen flex justify-center items-center">
 
+              {
+                state.showInfo && (
+                  <div className="z-20 flex justify-center items-center">
+                    <div className="z-30 w-[62.5rem] h-[40.63rem]">
+                      <MyPageFrame />
+                    </div>
+                    <div className="z-10 absolute top-0 left-0 w-[100vw] h-[100vh] bg-black opacity-20 backdrop-blur-xl" />
+                  </div>
+                )
+              }
+
               {/* <div className="flex justify-center items-center w-[1280px] h-[832px] relative gap-[12px]" > */}
               <div className="w-[1280px] h-[832px] absolute">
-                
+
                 {/* userProfile */}
                 <div className="top-[3.13rem] left-[60.38rem] absolute w-[14.25rem] h-[2.875rem]">
                   <UserProfile />
@@ -166,7 +185,6 @@ export default function MainFrame() {
                 <div className="w-[300px] h-[650px] absolute top-[8.13rem] left-[58.19rem] border-solid border-dimgray rounded-3xs box-border border-[3px]">
                   <Chat />
                 </div>
-
               </div>
             </div>
           </>

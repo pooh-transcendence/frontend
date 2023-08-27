@@ -1,4 +1,4 @@
-'use client'
+ 'use client'
 
 import React, { useContext, useState, useEffect } from "react";
 import { UserListComponent } from "./lists/UserListComponent";
@@ -53,7 +53,7 @@ const ChatUserSearch = (props: { type: "add_friend" | "invite" }): JSX.Element =
     };
     const inviteHandler = () => {
         state.channelChattingInfo.inviteSelectedList.forEach((elem) => {
-            socket.emit("inviteUser", { userId: elem, channelId: state.channelChattingInfo.id }, (data) => {console.log(data)});
+            socket.emit("inviteUser", { userId: elem, channelId: state.channelChattingInfo.id });
         })
         actions.setShowChatInvite(false);
         actions.setChannelChattingInfo({ ...state.channelChattingInfo, inviteSelectedList: [] });
