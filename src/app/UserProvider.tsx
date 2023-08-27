@@ -28,9 +28,10 @@ export default function UserProvider({ children }: { children: React.ReactNode }
   const [showCreateChannel, setShowCreateChannel] = useState<boolean>(false);
   const [showMakeGame, setShowMakeGame] = useState<boolean>(false);
   const [showMatching, setShowMatching] = useState<boolean>(false);
-
+  const [showInfo, setShowInfo] = useState<boolean>(false);
 
   const [chatTargetUser, setChatTargetUser] = useState<number>(-1);
+  const [infoTargetUser, setInfoTargetUser] = useState<number>(-1);
   const [targetChannel, setTargetChannel] = useState<targetChannelInfo>({} as targetChannelInfo);
   const [mutedUser, setMutedUser] = useState<Record<number, { until: number }>>({});
   const [userChat, setUserChat] = useState<Record<number, { userId: number, nickname: string, message: string }[]>>({});
@@ -63,8 +64,10 @@ export default function UserProvider({ children }: { children: React.ReactNode }
       showCreateChannel,
       showMakeGame,
       showMatching,
+      showInfo,
 
       chatTargetUser,
+      infoTargetUser,
       targetChannel,
       mutedUser,
       userChat,
@@ -86,8 +89,10 @@ export default function UserProvider({ children }: { children: React.ReactNode }
       setShowCreateChannel: (newState: boolean) => setShowCreateChannel(newState),
       setShowMakeGame: (newState: boolean) => setShowMakeGame(newState),
       setShowMatching: (newState: boolean) => setShowMatching(newState),
+      setShowInfo: (newState: boolean) => setShowInfo(newState),
 
       setChatTargetUser: (newState: number) => setChatTargetUser(newState),
+      setInfoTargetUser: (newState: number) => setInfoTargetUser(newState),
       setTargetChannel: (newState: targetChannelInfo) => setTargetChannel(newState),
       setMutedUser: (newState: { userId: number, until: number }) => setMutedUser({ ...mutedUser, [newState.userId]: { until: newState.until } }),
       setUserChat: (newState: { userId: number, nickname: string, message: string }) => setUserChat(prevUserChat => {
