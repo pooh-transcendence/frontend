@@ -1,7 +1,8 @@
 import { useContext, useEffect, useState, useRef } from "react";
 import SearchUsers from "./searchUsers";
 import { UserContext, userInfo } from "@/app/UserContext";
-import { api_get } from "@/app/api";
+import { api_get, api_patch, api_post } from "@/app/api";
+import ImageUploading from 'react-images-uploading';
 
 export default function MyInfo() {
   const { state, actions } = useContext(UserContext);
@@ -10,6 +11,7 @@ export default function MyInfo() {
   const [avatarHover, setAvatarHover] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
+  const [images, setImages] = useState([]);
 
   useEffect(() => {
     api_get(`/user/${state.infoTargetUser}`).then((data) => {
@@ -41,23 +43,37 @@ export default function MyInfo() {
     else
       return a.length + '';
   };
-  const onChange = (e: any) => {
+  const onChangeNickname = (e: any) => {
     setNewNickname(e.target.value);
   };
+  const onChangeImage = (imageList, addUpdateIndex) => {
+    // data for submit
+    console.log(imageList, addUpdateIndex);
+    setImages(imageList);
+    api_post("/user/avatarUpload", {
+      file: imageList[addUpdateIndex].data_url
+    }).then((res) => {
+      actions.setUserInfo({...state.userInfo, avatar: imageList[addUpdateIndex].data_url});
+      console.log("onChangeImage", res);
+    });
+  };
   const changeNicknameHandler = () => {
-    // todo 
+    console.log("change nickname to ", newNickname);
+    api_patch("/user/nickname", {nickname: newNickname}).then((res) => {
+      // console.log(res); // OK
+      actions.setUserInfo({...state.userInfo, nickname: newNickname!});
+    });
   }
-  const changeAvatarHandler = () => {
-    // todo
-  }
+  // const changeAvatarHandler = () => {
+  //   // todo
+  // }
   const handleHover = () => {
-    console.log("hovered");
+    // console.log("hovered");
     setAvatarHover(true);
   }
   const handleMouseLeave = () => {
     setAvatarHover(false);
   }
-
   return (
     <>
       <div className="absolute top-[1.5rem] left-[1.75rem] w-[59rem] flex flex-row items-center justify-center gap-[3.75rem] text-[0.94rem]">
@@ -111,7 +127,7 @@ export default function MyInfo() {
                   <span ref={textRef} style={{ opacity: 0, position: 'absolute', whiteSpace: 'nowrap' }}>
                     {newNickname || target.nickname}
                   </span>
-                  <input ref={inputRef} onChange={onChange} type="text" maxLength={12} className="relative placeholder:text-[#555555] bg-transparent" placeholder={target.nickname} />
+                  <input ref={inputRef} onChange={onChangeNickname} type="text" maxLength={12} className="relative placeholder:text-[#555555] bg-transparent" placeholder={target.nickname} />
                   <button onClick={changeNicknameHandler}>
                     <img
                       className="relative w-[1.25rem] h-[1.25rem] overflow-hidden shrink-0"
@@ -132,7 +148,7 @@ export default function MyInfo() {
             <img
               className="rounded-[70%] absolute h-full w-full top-[0%] right-[0%] bottom-[0%] left-[0%] max-w-full overflow-hidden max-h-full object-cover"
               alt=""
-              src={target.avatar}
+              src={target.id == state.userInfo.id ? state.userInfo.avatar : target.avatar}
             />
           </div>
           {
@@ -145,15 +161,50 @@ export default function MyInfo() {
               >
                 {
                   avatarHover && (
-                    <button onClick={changeAvatarHandler}>
-                      <div className="rounded-[70%] bg-black opacity-10 absolute h-full w-full" />
-                      <img src="avatar.svg"/>
-                    </button>
+                      <ImageUploading
+                        multiple
+                        value={images}
+                        onChange={onChangeImage}
+                        maxNumber={42}
+                        dataURLKey="data_url"
+                      >
+                        {({
+                          imageList,
+                          onImageUpload,
+                          onImageRemoveAll,
+                          onImageUpdate,
+                          onImageRemove,
+                          isDragging,
+                          dragProps,
+                        }) => (
+                          // write your building UI
+                          <div className="upload__image-wrapper">
+                            <button
+                              style={isDragging ? { color: 'red' } : undefined}
+                              onClick={onImageUpload}
+                              {...dragProps}
+                            >
+                              <div className="rounded-[70%] bg-black opacity-10 absolute h-full w-full" />
+                              <img src="avatar.svg"/>
+                            </button>
+                            &nbsp;
+                            {/* <button onClick={onImageRemoveAll}>Remove all images</button> */}
+                            {/* {imageList.map((image, index) => (
+                              <div key={index} className="image-item">
+                                <img src={image['data_url']} alt="" width="100" />
+                                <div className="image-item__btn-wrapper">
+                                  <button onClick={() => onImageUpdate(index)}>Update</button>
+                                  <button onClick={() => onImageRemove(index)}>Remove</button>
+                                </div>
+                              </div>
+                            ))} */}
+                          </div>
+                        )}
+                      </ImageUploading>
                   )
                 }
               </div>
             )
-
           }
         </div>
         <img
