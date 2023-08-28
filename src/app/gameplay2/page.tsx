@@ -1,12 +1,17 @@
 'use client'
 
-import { useRef, useEffect } from 'react';
+import { useContext, useRef, useState, useEffect } from 'react';
 import { socket } from '@/app/api';
+import { get } from 'http';
+import { io } from 'socket.io-client';
+import { baseUrl } from '@/app/api';
+import { staticGenerationAsyncStorage } from 'next/dist/client/components/static-generation-async-storage';
+import { UserContext } from '../UserContext';
 
 interface userInfo {
     nickname: string;
-
 }
+
 
 interface ball {
     new: (incrementedSpeed?: number) => {
@@ -52,7 +57,18 @@ type game = GameObject &{
 
 function GamePlayRoomPage() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
-
+    const {state, actions} = useContext(UserContext);
+    const [gameSocket, updateGameSocket] = useState<any>(
+        io(baseUrl+"/game",
+        {
+            path: "/socket.io", 
+            transports: ['websocket'],
+            auth: {
+                // "authorization": state.userInfo.token,
+                "authorization" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmlja25hbWUiOiJrbGV3IiwiZnRJZCI6MTAzODkyLCJpYXQiOjE2OTMyMTM3MTcsImV4cCI6MTY5NTgwNTcxN30.4pDUvHof2VBDrB50ptM4bC7_Sh9xjOw0S1qZhJWCa7Y",
+            },
+        })
+    );
     // console.log(canvasRef);
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -62,25 +78,66 @@ function GamePlayRoomPage() {
     }, [canvasRef]);
 
     useEffect(() => {
-        console.log("asdf");
+        console.log("PRev");
+        console.log(gameSocket);
+        const getGameUpdateListener =  (data: any) => {
+            console.log("getGameUpdate");
+            console.log(data);
+        };
+        console.log("POST");
+        // gameSocket.on("getGameUpdate",getGameUpdateListener);
+        console.log("POST ON");
         const ready=(data : any) => {
             console.log("ready");
             console.log(data);
         };
+        // const getPaddleSizeLisnter = (data: any) => {
+        //     console.log("getPaddleSize");
+        //     console.log(data);
+        // }
+        // socket.on("getPaddleSize", getPaddleSizeLisnter);
+        // socket.emit("socketTest", {
+        //     event: "getPaddleSize",
+        //     data: {
+        //         paddleSize: {x: 100, y: 100}
+        //     }
+        // });
+        console.log("PREV EMIT");
+        // gameSocket.emit("socketTest", {
+        //     event: "getGameUpdate",
+        //     data: {
+        //         participants: ["klew", "tjo"],
+        //         gameType: "LADDER",
+        //         racket: [[10, 10], [800, 800]],
+        //         ball: [[400, 400], [400, 400]],
+        //         score: [0, 0],
+        //         isGetScore: false,
+        //     }
+        // })
+        console.log("POST EMIT");
+
+        // socket.emit("joinQueue", (ack: any) => {
+        //     console.log("joinQueue");
+        // });
+        // socket.on("joinQueue", ready);
+        socket.emit("joinQueue");
+        socket.on("joinQueue", ready);
         socket.on("gameReady", ready);
-        socket.emit("gameReady", (ack: any) => console.log(ack));
+        socket.emit("gameStart", (ack: any) => console.log("gameStart"));
     
-        socket.on("gameStart", (data: any) => {
-            console.log("gameStart");
-            // this.ball.x = data.ball[0].x;
-        });
+        // socket.on("gameStart", (data: any) => {
+        //     console.log("gameStart");
+        //     // this.ball.x = data.ball[0].x;
+        // });
 
         return (() => {
             socket.off("gameReady", ready);
-            socket.off("gameStart");
+            
+            // socket.off("getPaddleSize", getPaddleSizeLisnter);
+            // gameSocket.off("getGameUpdate", getGameUpdateListener);
+            // socket.off("joinQueue", ready);
         });
     }, []);
-
 
     const DIRECTION = {
         IDLE: 0,
