@@ -112,7 +112,7 @@ export const ChatChannelList = (): JSX.Element => {
         }
         return (
             <button key={channel.id+""} onClick={gotoChat}>
-                <ChannelListComponent channelName={channel.channelName} channelOwner={channel.ownerId+""} channelPeopleCnt={channel.channelUser.length} channelProfileImg="https://via.placeholder.com/32x32" />
+                <ChannelListComponent channelName={channel.channelName} channelOwner={channel.ownerId+""} channelPeopleCnt={channel.userCount ? channel.userCount : channel.channelUser.length} channelProfileImg="https://via.placeholder.com/32x32" />
             </button>
         )
     }
