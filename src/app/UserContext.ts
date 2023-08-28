@@ -29,6 +29,7 @@ export interface channelInfo
     channelUser: Object[];
     userType: "DEFAULT" | "MODERATOR" | "OWNER";
     inviteSelectedList: number[];
+    userCount: number;
 };
 
 export interface userInfo

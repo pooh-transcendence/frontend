@@ -58,7 +58,6 @@ export const updateSocket=() => {
             "authorization": auth,
         },
     });
-    // console.log("socket connected using", auth, socket);
 };
 
 export const api_get=(url: string, params: Object | void) => {
