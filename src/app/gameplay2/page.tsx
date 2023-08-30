@@ -1,20 +1,20 @@
 'use client'
 
-import { useContext, useRef, useState, useEffect } from 'react';
+import { useContext, useRef, useState, useEffect, use } from 'react';
 import { socket } from '@/app/api';
-import { get } from 'http';
 import { io } from 'socket.io-client';
 import { baseUrl } from '@/app/api';
-import { staticGenerationAsyncStorage } from 'next/dist/client/components/static-generation-async-storage';
 import { UserContext } from '../UserContext';
 
 interface gameReadyInfo {
-    participants: number[],
-    gameType: String,
-    racket: number[][],
-    score: number[],
-    ball: number[],
-    isGetScore: boolean,
+    gameInfo: {
+        participants: number[],
+        gameType: String,
+        racket: any,
+        score: any,
+        ball: number[],
+        isGetScore: boolean,
+    },
     whoAmI: string,
     nickname: string,
 }
@@ -52,8 +52,6 @@ interface gameOverInfo {
     ballSpeed: number,
     racketSize: number,
 }
-
-
 
 interface ball {
     new: (incrementedSpeed?: number) => {
@@ -103,17 +101,20 @@ function GamePlayRoomPage() {
     // gameData => init game data
     const [gameData, gameReadyData] = useState<gameReadyInfo>(
         {
-            participants: [1, 2],
-            gameType: "LADDER",
-            racket: [[10, 10], [800, 800]],
-            score: [0, 0],
-            ball: [400, 400, 30],
-            isGetScore: false,
+            gameInfo: {
+                participants: [1, 2],
+                gameType: "LADDER",
+                racket: {},//[[10, 10], [800, 800]],
+                score: {1: 0, 2: 0},
+                ball: [400, 400, 30],
+                isGetScore: false,
+            },
             whoAmI: "left",
             nickname: "klew",
-        });
+        },
+        );
     // gameReady => update game data
-    const [gameReady, updateGameReady] = useState<gameUpdateInfo>(
+    const [gameUpdate, updateGameReady] = useState<gameUpdateInfo>(
         {
             participants: [1, 2],
             gameType: "LADDER",
@@ -131,33 +132,7 @@ function GamePlayRoomPage() {
         }
     );
 
-    const [gameOverData, updateGameOverData] = useState<gameOverInfo>(
-        {
-            winner: {
-                id: 1,
-                nickname: "klew",
-                winScore: 1,
-                loseScore: 0,
-                avatar: "",
-                email: "asdf@gmail.com",
-                userState: "INGAME",
-            },
-            loser: {
-                id: 2,
-                nickname: "tjo",
-                winScore: 1,
-                loseScore: 0,
-                avatar: "",
-                email: "dddd@gmail.com",
-                userState: "INGAME",
-            },
-            gameType: "LADDER",
-            winScore: 6,
-            loseScore: 3,
-            ballSpeed: 5,
-            racketSize: 100,
-        }
-    );
+    const [gameOverData, updateGameOverData] = useState(null);
 
     const {state, actions} = useContext(UserContext);
     const [gameSocket, updateGameSocket] = useState<any>(
@@ -171,18 +146,19 @@ function GamePlayRoomPage() {
             },
         })
     );
-    
+
     useEffect(() => {
-        socket.on("getGameUpdate", (data: gameReadyInfo) => {
-            console.log("getGameUpdate");
-            console.log(data);
-            gameReadyData(data);
-        });
+        console.log("New GameData: ", gameData);
     }, [gameData]);
 
-    //const gameInfo: gameInfo;
+    useEffect(() => {
+        console.log("New GameData: ", gameUpdate);
+    }, [gameUpdate]);
 
-    // console.log(canvasRef);
+    useEffect(() => {
+        console.log("New GameData: ", gameOverData);
+    }, [gameOverData]);
+
     useEffect(() => {
         const canvas = canvasRef.current;
         if (canvas) {
@@ -194,64 +170,37 @@ function GamePlayRoomPage() {
         console.log("PRev");
         console.log(gameSocket);
 
-        const getGameUpdateListener =  (data: any) => {
-            console.log("getGameUpdate");
-            console.log(data);
-        };
-        console.log("POST");
-        // gameSocket.on("getGameUpdate",getGameUpdateListener);
-        console.log("POST ON");
         const ready=(data : any) => {
             console.log("ready");
             console.log(data);
         };
-        const ready2=(data : any) => {
-            console.log("ready222222");
-            console.log(data);
+
+        const gameReadyListener = (data: any) => {
+            console.log('gameReady');
+            gameReadyData(data);
+            console.log("gameData", gameData);
+            console.log('data', data);
+            gameSocket.emit('gameStart');
         };
 
-        // const getPaddleSizeLisnter = (data: any) => {
-        //     console.log("getPaddleSize");
-        //     console.log(data);
-        // }
-        // socket.on("getPaddleSize", getPaddleSizeLisnter);
-        // socket.emit("socketTest", {
-        //     event: "getPaddleSize",
-        //     data: {
-        //         paddleSize: {x: 100, y: 100}
-        //     }
-        // });
-        console.log("PREV EMIT");
-        // gameSocket.emit("socketTest", {
-        //     event: "getGameUpdate",
-        //     data: {
-        //         participants: ["klew", "tjo"],
-        //         gameType: "LADDER",
-        //         racket: [[10, 10], [800, 800]],
-        //         ball: [[400, 400], [400, 400]],
-        //         score: [0, 0],
-        //         isGetScore: false,
-        //     }
-        // })
-        console.log("POST EMIT");
+        const gameUpdateListener = (data: any) => {
+            console.log('gameUpdate');
+            updateGameReady(data);
+            console.log("gameUpdate", gameUpdate);
+            console.log('data', data);
+        };
 
-        // socket.emit("joinQueue", (ack: any) => {
-        //     console.log("joinQueue");
-        // });
-        // socket.on("joinQueue", ready);
         gameSocket.emit("joinQueue");
         gameSocket.on("joinQueue", ready);
-        gameSocket.on("gameReady", gameData);
-        gameSocket.emit("gameStart", (ack: any) => console.log("gameStart"));
+        gameSocket.on("gameReady", gameReadyListener);
+        gameSocket.on("gameUpdate", gameUpdateListener);
+        gameSocket.emit("gameStart");
         gameSocket.on("gameOver", gameOverData);
 
         return (() => {
-            gameSocket.off("gameReady", gameData);
             gameSocket.off("joinQueue", ready);
-            
-            // socket.off("getPaddleSize", getPaddleSizeLisnter);
-            // gameSocket.off("getGameUpdate", getGameUpdateListener);
-            // socket.off("joinQueue", ready);
+            gameSocket.off("gameReady", gameReadyListener);
+            gameSocket.off("gameOver", gameOverData);
         });
     }, []);
 
@@ -385,7 +334,7 @@ function GamePlayRoomPage() {
      
         // Update all objects (move the player, ai, ball, increment the score, etc.)
         update: function () {
-            if (!this.over) {
+            if (gameOverData === null) {
                 // If the ball collides with the bound limits - correct the x and y coords.
                 if (this.ball.x <= 0) Pong._resetTurn.call(this, this.ai, this.player);
                 if (this.ball.x >= this.canvas.width - this.ball.width) Pong._resetTurn.call(this, this.player, this.ai);
@@ -539,14 +488,16 @@ function GamePlayRoomPage() {
      
             // Draw the players score (left)
             this.context.fillText(
-                gameReady.score[0].toString(),
+                this.player.score.toString(),
+                //gameReady.score[0].toString(),
                 (this.canvas.width / 2) - 300,
                 200
             );
      
             // Draw the paddles score (right)
             this.context.fillText(
-                gameReady.score[1].toString(),
+                this.ai.score.toString(),
+                //gameReady.score[1].toString(),
                 (this.canvas.width / 2) + 300,
                 200
             );
