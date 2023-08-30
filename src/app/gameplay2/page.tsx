@@ -5,6 +5,8 @@ import { socket } from '@/app/api';
 import { io } from 'socket.io-client';
 import { baseUrl } from '@/app/api';
 import { UserContext } from '../UserContext';
+import { Anybody } from 'next/font/google';
+import { log } from 'console';
 
 interface gameReadyInfo {
     gameInfo: {
@@ -114,7 +116,7 @@ function GamePlayRoomPage() {
         },
         );
     // gameReady => update game data
-    const [gameUpdate, updateGameReady] = useState<gameUpdateInfo>(
+    const [gameUpdate, updateGameReady] = useState(
         {
             participants: [1, 2],
             gameType: "LADDER",
@@ -147,17 +149,19 @@ function GamePlayRoomPage() {
         })
     );
 
-    useEffect(() => {
-        console.log("New GameData: ", gameData);
-    }, [gameData]);
+    // useEffect(() => {
+    //     console.log("New GameData: ", gameData);
+    // }, [gameData]);
 
     useEffect(() => {
-        console.log("New GameData: ", gameUpdate);
+        const data = gameData;
+        console.log("New GameUpdate: ", gameUpdate);
+        // Pong.draw(); // 이거 쓰면 .context undefined 에러나옴 .draw() 써도 마찬가지
     }, [gameUpdate]);
 
-    useEffect(() => {
-        console.log("New GameData: ", gameOverData);
-    }, [gameOverData]);
+    // useEffect(() => {
+    //     console.log("New GameData: ", gameOverData);
+    // }, [gameOverData]);
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -167,34 +171,32 @@ function GamePlayRoomPage() {
     }, [canvasRef]);
 
     useEffect(() => {
-        console.log("PRev");
-        console.log(gameSocket);
-
         const ready=(data : any) => {
             console.log("ready");
             console.log(data);
         };
 
         const gameReadyListener = (data: any) => {
-            console.log('gameReady');
+            // console.log('gameReady');
             gameReadyData(data);
-            console.log("gameData", gameData);
-            console.log('data', data);
+            // console.log("gameData", gameData);
+            // console.log('data', data);
             gameSocket.emit('gameStart');
         };
 
         const gameUpdateListener = (data: any) => {
             console.log('gameUpdate');
             updateGameReady(data);
-            console.log("gameUpdate", gameUpdate);
-            console.log('data', data);
+            // console.log("gameUpdate:         ", gameUpdate); // 이거 400 고정임 why? 근데 new gamedata는 갱신됨
+            // Pong.draw(gameUpdate);
+            // console.log("gameUpdate", gameUpdate);
+            // console.log('data', data);
         };
 
         gameSocket.emit("joinQueue");
         gameSocket.on("joinQueue", ready);
         gameSocket.on("gameReady", gameReadyListener);
         gameSocket.on("gameUpdate", gameUpdateListener);
-        gameSocket.emit("gameStart");
         gameSocket.on("gameOver", gameOverData);
 
         return (() => {
@@ -273,8 +275,8 @@ function GamePlayRoomPage() {
             this.turn = this.ai;
             this.timer = this.round = 0;
             this.color = '#8c52ff';
-        
             Pong.menu();
+            // requestAnimationFrame(Pong.loop);
             Pong.listen();
         },
 
@@ -309,7 +311,6 @@ function GamePlayRoomPage() {
         menu: function () {
             // Draw all the Pong objects in their current state
             Pong.draw();
-     
             // Change the canvas font size and color
             this.context.font = '50px Courier New';
             this.context.fillStyle = this.color;
@@ -332,100 +333,11 @@ function GamePlayRoomPage() {
             );
         },
      
-        // Update all objects (move the player, ai, ball, increment the score, etc.)
-        update: function () {
-            if (gameOverData === null) {
-                // If the ball collides with the bound limits - correct the x and y coords.
-                if (this.ball.x <= 0) Pong._resetTurn.call(this, this.ai, this.player);
-                if (this.ball.x >= this.canvas.width - this.ball.width) Pong._resetTurn.call(this, this.player, this.ai);
-                if (this.ball.y <= 0) this.ball.moveY = DIRECTION.DOWN;
-                if (this.ball.y >= this.canvas.height - this.ball.height) this.ball.moveY = DIRECTION.UP;
-     
-                // Move player if they player.move value was updated by a keyboard event
-                if (this.player.move === DIRECTION.UP) this.player.y -= this.player.speed;
-                else if (this.player.move === DIRECTION.DOWN) this.player.y += this.player.speed;
-     
-                // On new serve (start of each turn) move the ball to the correct side
-                // and randomize the direction to add some challenge.
-                if (Pong._turnDelayIsOver.call(this) && this.turn) {
-                    this.ball.moveX = this.turn === this.player ? DIRECTION.LEFT : DIRECTION.RIGHT;
-                    this.ball.moveY = [DIRECTION.UP, DIRECTION.DOWN][Math.round(Math.random())];
-                    this.ball.y = Math.floor(Math.random() * this.canvas.height - 200) + 200;
-                    this.turn = null;
-                }
-     
-                // If the player collides with the bound limits, update the x and y coords.
-                if (this.player.y <= 0) this.player.y = 0;
-                else if (this.player.y >= (this.canvas.height - this.player.height)) this.player.y = (this.canvas.height - this.player.height);
-     
-                // Move ball in intended direction based on moveY and moveX values
-                if (this.ball.moveY === DIRECTION.UP) this.ball.y -= (this.ball.speed / 1.5);
-                else if (this.ball.moveY === DIRECTION.DOWN) this.ball.y += (this.ball.speed / 1.5);
-                if (this.ball.moveX === DIRECTION.LEFT) this.ball.x -= this.ball.speed;
-                else if (this.ball.moveX === DIRECTION.RIGHT) this.ball.x += this.ball.speed;
-     
-                // Handle ai (AI) UP and DOWN movement
-                if (this.ai.y > this.ball.y - (this.ai.height / 2)) {
-                    if (this.ball.moveX === DIRECTION.RIGHT) this.ai.y -= this.ai.speed / 1.5;
-                    else this.ai.y -= this.ai.speed / 4;
-                }
-                if (this.ai.y < this.ball.y - (this.ai.height / 2)) {
-                    if (this.ball.moveX === DIRECTION.RIGHT) this.ai.y += this.ai.speed / 1.5;
-                    else this.ai.y += this.ai.speed / 4;
-                }
-     
-                // Handle ai (AI) wall collision
-                if (this.ai.y >= this.canvas.height - this.ai.height) this.ai.y = this.canvas.height - this.ai.height;
-                else if (this.ai.y <= 0) this.ai.y = 0;
-     
-                // Handle Player-Ball collisions
-                if (this.ball.x - this.ball.width <= this.player.x && this.ball.x >= this.player.x - this.player.width) {
-                    if (this.ball.y <= this.player.y + this.player.height && this.ball.y + this.ball.height >= this.player.y) {
-                        this.ball.x = (this.player.x + this.ball.width);
-                        this.ball.moveX = DIRECTION.RIGHT;
-     
-                    }
-                }
-     
-                // Handle ai-ball collision
-                if (this.ball.x - this.ball.width <= this.ai.x && this.ball.x >= this.ai.x - this.ai.width) {
-                    if (this.ball.y <= this.ai.y + this.ai.height && this.ball.y + this.ball.height >= this.ai.y) {
-                        this.ball.x = (this.ai.x - this.ball.width);
-                        this.ball.moveX = DIRECTION.LEFT;
-     
-                    }
-                }
-            }
-     
-            // Handle the end of round transition
-            // Check to see if the player won the round.
-            if (this.player.score === rounds[this.round]) {
-                // Check to see if there are any more rounds/levels left and display the victory screen if
-                // there are not.
-                if (!rounds[this.round + 1]) {
-                    this.over = true;
-                    setTimeout(function () { Pong.endGameMenu('Winner!'); }, 1000);
-                } else {
-                    // If there is another round, reset all the values and increment the round number.
-                    this.color = this._generateRoundColor();
-                    this.player.score = this.ai.score = 0;
-                    this.player.speed += 0.5;
-                    this.ai.speed += 1;
-                    this.ball.speed += 1;
-                    this.round += 1;
-     
-                }
-            }
-            // Check to see if the ai/AI has won the round.
-            else if (this.ai.score === rounds[this.round]) {
-                this.over = true;
-                setTimeout(function () { Pong.endGameMenu('Game Over!'); }, 1000);
-            }
-        },
-     
         // Draw the objects to the canvas element
         draw: function () {
             // Clear the Canvas
+            console.log("drawing!!!!!")
+            // console.log(updateData);
             this.context.clearRect(
                 0,
                 0,
@@ -443,6 +355,7 @@ function GamePlayRoomPage() {
                 this.canvas.width,
                 this.canvas.height
             );
+            console.log("draw2222");
      
             // Set the fill style to white (For the paddles and the ball)
             this.context.fillStyle = '#ffffff';
@@ -454,6 +367,15 @@ function GamePlayRoomPage() {
                 this.player.width,
                 this.player.height
             );
+            console.log("draw33333");
+
+            // this.context.fillRect(
+            //     gameUpdate.racket[0][0],
+            //     gameUpdate.racket[0][1],
+            //     50,
+            //     50
+            // );
+            
      
             // Draw the Ai
             this.context.fillRect(
@@ -462,16 +384,26 @@ function GamePlayRoomPage() {
                 this.ai.width,
                 this.ai.height 
             );
-     
+            console.log("draw444444");
+            this.ball.x = gameUpdate.ball[0];
+            this.ball.y = gameUpdate.ball[1];
+            console.log("balls:   ", gameUpdate.ball[0], gameUpdate.ball[1]);
             // Draw the Ball
-            if (Pong._turnDelayIsOver.call(this)) {
-                this.context.fillRect(
-                    this.ball.x,
-                    this.ball.y,
-                    this.ball.width,
-                    this.ball.height
-                );
-            }
+            
+            this.context.fillRect(
+                this.ball.x,
+                this.ball.y,
+                this.ball.width,
+                this.ball.height
+            );
+            console.log("show me ball")
+            // console.log(gameUpdate.ball[0], gameUpdate.ball[1])
+            // this.context.fillRect(
+            //     gameUpdate.ball[0],
+            //     gameUpdate.ball[1],
+            //     18,
+            //     18
+            // );
      
             // Draw the net (Line in the middle)
             this.context.beginPath();
@@ -526,7 +458,7 @@ function GamePlayRoomPage() {
         loop: function () {
             Pong.update();
             Pong.draw();
-     
+            console.log("loop done!!");
             // If the game is not over, draw the next frame.
             if (!Pong.over) requestAnimationFrame(Pong.loop);
         },
@@ -538,10 +470,10 @@ function GamePlayRoomPage() {
                     Pong.running = true;
                     window.requestAnimationFrame(Pong.loop);
                 }
-     
+
                 // Handle up arrow and w key events
                 if (key.keyCode === 38 || key.keyCode === 87) Pong.player.move = DIRECTION.UP;
-     
+
                 // Handle down arrow and s key events
                 if (key.keyCode === 40 || key.keyCode === 83) Pong.player.move = DIRECTION.DOWN;
             });
@@ -549,27 +481,6 @@ function GamePlayRoomPage() {
             // Stop the player from moving when there are no keys being pressed.
             document.addEventListener('keyup', function (key) { Pong.player.move = DIRECTION.IDLE; });
         },
-     
-        // Reset the ball location, the player turns and set a delay before the next round begins.
-        _resetTurn: function(victor: any, loser: any) {
-            this.ball = Ball.new.call(this, this.ball.speed);
-            this.turn = loser;
-            this.timer = (new Date()).getTime();
-     
-            victor.score++;
-        },
-    
-        // Wait for a delay to have passed after each turn.
-        _turnDelayIsOver: function() {
-            return ((new Date()).getTime() - this.timer >= 1000);
-        },
-     
-        // Select a random color as the background of each level/round.
-        _generateRoundColor: function () {
-            var newColor = colors[Math.floor(Math.random() * colors.length)];
-            if (newColor === this.color) return Pong._generateRoundColor();
-            return newColor;
-        }
     };
 
     let Pong = Object.assign({}, Game);
