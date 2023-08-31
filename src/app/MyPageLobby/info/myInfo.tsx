@@ -43,6 +43,10 @@ export default function MyInfo() {
     else
       return a.length + '';
   };
+  const onChangeNickNameSubmit = (e: any) => {
+    e.preventDefault();
+    changeNicknameHandler();
+  }
   const onChangeNickname = (e: any) => {
     setNewNickname(e.target.value);
   };
@@ -127,7 +131,9 @@ export default function MyInfo() {
                   <span ref={textRef} style={{ opacity: 0, position: 'absolute', whiteSpace: 'nowrap' }}>
                     {newNickname || target.nickname}
                   </span>
-                  <input ref={inputRef} onChange={onChangeNickname} type="text" maxLength={12} className="relative placeholder:text-[#555555] bg-transparent" placeholder={target.nickname} />
+                  <form onSubmit={onChangeNickNameSubmit}>
+                    <input ref={inputRef} onChange={onChangeNickname} type="text" maxLength={12} className="relative placeholder:text-[#555555] bg-transparent" placeholder={target.nickname} />
+                  </form>
                   <button onClick={changeNicknameHandler}>
                     <img
                       className="relative w-[1.25rem] h-[1.25rem] overflow-hidden shrink-0"
