@@ -183,7 +183,7 @@ export default function MainFrame() {
                   }
                 </div>
 
-                <div className="w-[300px] h-[650px] absolute top-[8.13rem] left-[58.19rem] border-solid border-dimgray rounded-3xs box-border border-[3px]">
+                <div className="w-[300px] h-[650px] absolute top-[8.13rem] left-[58.19rem]">
                   <Chat />
                 </div>
               </div>

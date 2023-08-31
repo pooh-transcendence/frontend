@@ -58,7 +58,7 @@ export const ChatChannel = ({
                             key={idx} />
                     </button>
                 );
-            else if(nickname)
+            else if (nickname)
                 res.push(
                     <ChatBubble
                         side={"right"}
@@ -68,11 +68,11 @@ export const ChatChannel = ({
                 )
             else
                 res.push(
-                <ChatBubble
-                    side={"center"}
-                    nickname={"systemMessage"}
-                    messageText={message}
-                    key={idx} />
+                    <ChatBubble
+                        side={"center"}
+                        nickname={"systemMessage"}
+                        messageText={message}
+                        key={idx} />
                 )
         });
         return res;
@@ -111,7 +111,7 @@ export const ChatChannel = ({
                 {/* title section */}
                 <ChatTitle type="channelChat" title={title} id={state.channelChattingInfo.id} />
                 {/* frame */}
-                <div className="w-[300px] h-[650px] left-0 top-0 absolute rounded-[10px] border border-neutral-600" />
+                <div className="w-[300px] h-[650px] left-0 top-0 absolute rounded-[10px] border-neutral-600 border-[3px]" />
 
                 {/* userInfoModal */}
                 {

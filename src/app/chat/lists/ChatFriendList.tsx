@@ -67,7 +67,7 @@ export const ChatFriendList = (): JSX.Element => {
         // console.log("ChatFriendList state", state);
 
         const friendListListener = (friendList: friend[]) => {
-            
+
             setFriendList(friendList);
             console.log("friendListListener", friendList);
         }
@@ -95,10 +95,9 @@ export const ChatFriendList = (): JSX.Element => {
         }
         const changeFriendState = (changedFriend: friend) => {
             setFriendList(friendList.map((elem) => {
-                if(elem.id == changedFriend.id)
-                {
-                    let tmp=elem;
-                    tmp.userState=changedFriend.userState;
+                if (elem.id == changedFriend.id) {
+                    let tmp = elem;
+                    tmp.userState = changedFriend.userState;
                     return tmp;
                 }
                 return elem;
@@ -123,10 +122,14 @@ export const ChatFriendList = (): JSX.Element => {
     return (
         <>
             <div className="w-[18.75rem] h-[40.625rem] relative">
+
+                <div className="w-[300px] h-[650px] left-0 top-0 absolute rounded-[10px] border-neutral-600 border-[3px]" />
+
                 {/* BottomBarSection */}
-                <div className="w-[18.75rem] h-[3.1875rem] left-0 top-[37.4375rem] absolute">
+                <div className="w-[18.75rem] h-[3.125rem] left-0 top-[37.5rem] absolute">
                     <ChatBottomBar />
                 </div>
+
                 {/* TitleSection */}
                 <div className="w-[18.75rem] h-[3.125rem] left-0 top-0 absolute">
                     <ChatTitle title="" type="friendList" id={-1} />
