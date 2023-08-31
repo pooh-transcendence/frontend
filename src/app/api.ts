@@ -35,8 +35,8 @@ export function getUserId():string | null
     return userId;
 }
 
-// export const baseUrl="http://localhost:3000";
-export const baseUrl="http://10.19.233.166:3000";
+export const baseUrl="http://localhost:3000";
+//export const baseUrl="http://10.19.233.166:3000";
 
 export let socket = io(baseUrl+"/channel",
 {

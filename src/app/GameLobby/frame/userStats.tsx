@@ -33,7 +33,7 @@ export default function UserStats() {
                 <div className="absolute top-[0rem] left-[0rem] rounded-3xs bg-blueviolet w-[25rem] h-[0.44rem] overflow-hidden opacity-[0.2]" />
                 <div className="absolute top-[0rem] left-[0rem] rounded-3xs bg-slateblue w-[25rem] h-[0.44rem] overflow-hidden" style={{ width: getWinRate(state.userInfo.winnerGame || [], state.userInfo.loserGame || []) }}/>
               </div>
-              <div className="absolute w-[24.59%] top-[25.81%] left-[0%] leading-[150%] inline-block">
+              <div className="absolute top-[25.81%] left-[0%] leading-[150%] inline-block">
                 winrate {getWinRate(state.userInfo.winnerGame || [], state.userInfo.loserGame || [])}
               </div>
             </div>

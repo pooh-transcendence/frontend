@@ -11,71 +11,61 @@ import { UserContext, channelInfo } from "@/app/UserContext";
 import { socket } from "@/app/api";
 
 function MakeGame() {
-  const {state, actions}=useContext(UserContext);
-  const [ballCount, setBallCount]=useState<number>(0);
-  const [ballSpeed, setBallSpeed]=useState<number>(0);
-  const createButtonHandler=() => {
-    if(ballCount===0 || ballSpeed===0) return;
+  const { state, actions } = useContext(UserContext);
+  const [ballCount, setRacketSize] = useState<number>(0);
+  const [ballSpeed, setBallSpeed] = useState<number>(0);
+  const createButtonHandler = () => {
+    if (ballCount === 0 || ballSpeed === 0) return;
   }; // todo
 
   // #7649BB
   return (
     <div className="Makegame w-[385px] h-[180px] relative">
       <div className="Bg w-[385px] h-[180px] left-0 top-0 absolute bg-white rounded-[10px] shadow" />
-      
+
       <div className="Ballspeedcheck w-[282px] left-[54px] top-[101px] absolute justify-center items-center gap-[5px] inline-flex">
-        <button onClick={() => {setBallSpeed(1)}} className="text-left w-[60.50px] h-6 relative">
-          <img src={ballSpeed === 1 ? "checkmarks1.svg":"checkmarks0.svg"} className="w-6 h-6 left-[0.50px] top-0 absolute flex-col justify-center items-center gap-2.5 inline-flex" />
+        <button onClick={() => { setBallSpeed(1) }} className="text-left w-[60.50px] h-6 relative">
+          <img src={ballSpeed === 1 ? "checkmarks1.svg" : "checkmarks0.svg"} className="w-6 h-6 left-[0.50px] top-0 absolute flex-col justify-center items-center gap-2.5 inline-flex" />
           <div className="Low w-9 h-[19px] left-[24.50px] top-[1px] absolute text-neutral-600 text-lg font-bold">low</div>
         </button>
 
-        <button onClick={() => {setBallSpeed(2)}} className="text-left w-[108.25px] h-6 relative">
-          <img src={ballSpeed === 2 ? "checkmarks1.svg":"checkmarks0.svg"} className="w-6 h-6 left-[0.25px] top-0 absolute flex-col justify-center items-center gap-2.5 inline-flex" />
+        <button onClick={() => { setBallSpeed(2) }} className="text-left w-[108.25px] h-6 relative">
+          <img src={ballSpeed === 2 ? "checkmarks1.svg" : "checkmarks0.svg"} className="w-6 h-6 left-[0.25px] top-0 absolute flex-col justify-center items-center gap-2.5 inline-flex" />
           <div className="Moderate w-[84px] h-[19px] left-[24.25px] top-[1px] absolute text-neutral-600 text-lg font-bold">moderate</div>
         </button>
-        
-        <button onClick={() => {setBallSpeed(3)}} className="text-left w-[109.88px] h-6 relative">
-          <img src={ballSpeed === 3 ? "checkmarks1.svg":"checkmarks0.svg"} className="w-6 h-6 left-[0.88px] top-0 absolute flex-col justify-center items-center gap-2.5 inline-flex" />
+
+        <button onClick={() => { setBallSpeed(3) }} className="text-left w-[109.88px] h-6 relative">
+          <img src={ballSpeed === 3 ? "checkmarks1.svg" : "checkmarks0.svg"} className="w-6 h-6 left-[0.88px] top-0 absolute flex-col justify-center items-center gap-2.5 inline-flex" />
           <div className="High w-[85px] h-[19px] left-[24.88px] top-[1px] absolute text-neutral-600 text-lg font-bold">high</div>
         </button>
       </div>
       <div className="BallSpeed w-[110px] h-5 left-[63px] top-[77px] absolute text-neutral-600 text-base font-normal">ball speed</div>
       <div className="Ballspeedicon w-8 h-8 left-[17px] top-[71px] absolute" />
-      
-      <div className="Ballcountcheck left-[51px] top-[41px] absolute justify-start items-start gap-[22px] inline-flex">
-        <button onClick={() => {setBallCount(1)}} className="text-left w-[39px] h-6 relative">
-          <img src={ballCount === 1 ? "checkmarks1.svg":"checkmarks0.svg"} className="w-6 h-6 left-0 top-0 absolute flex-col justify-center items-center gap-2.5 inline-flex" />
-          <div className=" w-[15px] h-[19px] left-[24px] top-[1px] absolute text-neutral-600 text-lg font-bold">1</div>
-        </button>
 
-        <button onClick={() => {setBallCount(2)}} className="text-left w-[39px] h-6 relative">
-          <img src={ballCount === 2 ? "checkmarks1.svg":"checkmarks0.svg"} className="w-6 h-6 left-0 top-0 absolute flex-col justify-center items-center gap-2.5 inline-flex" />
-          <div className=" w-[15px] h-[19px] left-[24px] top-[1px] absolute text-neutral-600 text-lg font-bold">2</div>
-        </button>
-
-        <button onClick={() => {setBallCount(3)}} className="text-left w-[39px] h-6 relative">
-          <img src={ballCount === 3 ? "checkmarks1.svg":"checkmarks0.svg"} className="w-6 h-6 left-0 top-0 absolute flex-col justify-center items-center gap-2.5 inline-flex" />
-          <div className=" w-[15px] h-[19px] left-[24px] top-[1px] absolute text-neutral-600 text-lg font-bold">3</div>
-        </button>
-
-        <button onClick={() => {setBallCount(4)}} className="text-left w-[39px] h-6 relative">
-          <img src={ballCount === 4 ? "checkmarks1.svg":"checkmarks0.svg"} className="w-6 h-6 left-0 top-0 absolute flex-col justify-center items-center gap-2.5 inline-flex" />
-          <div className=" w-[15px] h-[19px] left-[24px] top-[1px] absolute text-neutral-600 text-lg font-bold">4</div>
-        </button>
-
-        <button onClick={() => {setBallCount(5)}} className="text-left w-[39px] h-6 relative">
-          <img src={ballCount === 5 ? "checkmarks1.svg":"checkmarks0.svg"} className="w-6 h-6 left-0 top-0 absolute flex-col justify-center items-center gap-2.5 inline-flex" />
-          <div className=" w-[15px] h-[19px] left-[24px] top-[1px] absolute text-neutral-600 text-lg font-bold">5</div>
-        </button>
+      <div className="RacketSizeCheck left-[51px] top-[41px] absolute justify-start items-start gap-[22px] inline-flex">
+        <div className="Ballcountcheck w-[243.25px] h-6 justify-start items-start gap-[9px] inline-flex">
+          <button onClick={() => { setRacketSize(1) }} className=" w-[68px] h-6 relative">
+            <img src={ballCount === 1 ? "checkmarks1.svg" : "checkmarks0.svg"} className="w-6 h-6 left-0 top-0 absolute flex-col justify-center items-center gap-2.5 inline-flex" />
+            <div className="Small w-11 h-[19px] left-[24px] top-[1px] absolute text-neutral-600 text-lg font-bold">small</div>
+          </button>
+          <button onClick={() => { setRacketSize(2) }} className=" w-[91.50px] h-6 relative">
+            <img src={ballCount === 2 ? "checkmarks1.svg" : "checkmarks0.svg"} className="w-6 h-6 left-0 top-0 absolute flex-col justify-center items-center gap-2.5 inline-flex" />
+            <div className="Medium w-[67px] h-[19px] left-[24.50px] top-[1px] absolute text-neutral-600 text-lg font-bold">medium</div>
+          </button>
+          <button onClick={() => { setRacketSize(3) }} className=" w-[65.75px] h-6 relative">
+            <img src={ballCount === 3 ? "checkmarks1.svg" : "checkmarks0.svg"} className="w-6 h-6 left-0 top-0 absolute flex-col justify-center items-center gap-2.5 inline-flex" />
+            <div className="Large w-[41px] h-[19px] left-[24.75px] top-[1px] absolute text-neutral-600 text-lg font-bold">large</div>
+          </button>
+        </div>
       </div>
-      <div className="BallCount w-[129px] h-[19px] left-[63px] top-[17px] absolute text-neutral-600 text-base font-normal">ball count</div>
+      <div className="BallCount w-[129px] h-[19px] left-[63px] top-[17px] absolute text-neutral-600 text-base font-normal">racket size</div>
       <div className="Ballcounticon w-[33.39px] h-8 left-[18.78px] top-[14px] absolute" />
 
-      <button onClick={() => {actions.setShowMakeGame(false);}}>
+      <button onClick={() => { actions.setShowMakeGame(false); }}>
         <img src="cancel.svg" className="w-6 h-6 left-[355px] top-[5px] absolute" />
       </button>
-      
-      <button onClick={createButtonHandler}className="Createbutton w-[75px] h-8 left-[155px] top-[136px] absolute">
+
+      <button onClick={createButtonHandler} className="Createbutton w-[75px] h-8 left-[155px] top-[136px] absolute">
         <img src="sweep.svg" className="SweepFill0Wght300Grad0Opsz481 w-8 h-8 left-0 top-0 absolute" />
         <div className="Create left-[29px] top-[7px] absolute text-neutral-600 text-base font-bold">create</div>
       </button>
@@ -84,10 +74,15 @@ function MakeGame() {
 }
 
 function WaitMatch() {
+  const cancelMatchHandler = () => {
+
+  }; // todo
   return (
     <div className="Waitmatch w-[385px] h-[147px] relative">
       <div className="Bg w-[385px] h-[147px] left-0 top-0 absolute bg-white rounded-[10px] shadow" />
-      <div className="CancelFill0Wght300Grad0Opsz481 w-6 h-6 left-[355px] top-[5px] absolute" />
+      <button onClick={cancelMatchHandler}>
+        <img src="cancel.svg" className="CancelFill0Wght300Grad0Opsz481 w-6 h-6 left-[355px] top-[5px] absolute" />
+      </button>
       <div className="Matching w-[121px] h-8 left-[132px] top-[35px] absolute">
         <div className="Matching w-[121px] h-8 left-0 top-0 absolute text-right"><span className="text-neutral-600 text-2xl font-bold">ma</span><span className="text-purple-500 text-2xl font-bold">tch</span><span className="text-neutral-600 text-2xl font-bold">ing...</span></div>
       </div>

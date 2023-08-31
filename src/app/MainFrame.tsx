@@ -9,6 +9,8 @@ import TwoFactor from "./TwoFactor/page";
 import ChannelLobby from "./ChannelLobby/page";
 import GameLobby from "./GameLobby/page";
 import MyPageFrame from "./MyPageLobby/page"
+import GamePlayRoomPage from "./gameplay2/page";
+import GamePlayRoomPages from "./gameplay3/page"
 
 function SideButton(props: { type: mainStates }) {
   const { state, actions } = useContext(UserContext);
@@ -39,7 +41,7 @@ function UserProfile() {
   const clickHandler = () => {
     actions.setInfoTargetUser(state.userInfo.id);
     actions.setShowInfo(true);
-    console.log(state);
+    //console.log(state);
   }
 
   return (
@@ -94,7 +96,7 @@ export default function MainFrame() {
         target.userChat[userIds].map((msg) => { actions.setUserChat(msg); });
       for (const channelIds in target.channelChat)
         target.channelChat[channelIds].map((msg) => { actions.setChannelChat(msg); });
-      console.log("restore complete", target);
+      // console.log("restore complete", target);
     }
 
     if (!getAuth()) {
@@ -103,7 +105,7 @@ export default function MainFrame() {
     }
 
     const connectionHandler = () => {
-      console.log("connected", socket);
+      // console.log("connected", socket);
       actions.setConnectionState(true);
     }
     const disconnectionHandler = () => {
@@ -121,30 +123,34 @@ export default function MainFrame() {
         socket.off('disconnect', disconnectionHandler);
       }
     }
+
   }, []);
 
   if (getUserId())
     // if (sessionStorage.getItem("userContext"))
     return (
       <>
+        {/* {<div className="z-40 w-[1400px] h-[1000px]">
+                <GamePlayRoomPages/>
+              </div>} */}
         {/* <pre>{JSON.stringify(state.userInfo)}</pre> */}
         <div className="flex-auto gap-5">
           <button onClick={bypassMe}>bypassMe</button>
           <br />
           <button onClick={logout}>logout</button>
         </div>
-        {
-          // check whether this user is registered
-          !getAuth() && (
-            <TwoFactor />
-          )
-        }
-        {
-          (getAuth()) &&
-          <>
-            {/* <div className="flex justify-center items-center h-screen bg-gradient-to-bl from-neutral-100 to-slate-50"> */}
-            <div className="h-screen flex justify-center items-center">
+        {/* <div className="flex justify-center items-center h-screen bg-gradient-to-bl from-neutral-100 to-slate-50"> */}
+        <div className="h-screen flex justify-center items-center">
+          {
+            // check whether this user is registered
+            !getAuth() && (
+              <TwoFactor />
+            )
+          }
 
+          {
+            (getAuth()) &&
+            <>
               {
                 state.showInfo && (
                   <div className="z-20 flex justify-center items-center">
@@ -186,9 +192,9 @@ export default function MainFrame() {
                   <Chat />
                 </div>
               </div>
-            </div>
-          </>
-        }
+            </>
+          }
+        </div>
       </>
     )
   else // redirect to oauth uri
