@@ -1,7 +1,7 @@
 "use client";
 
 import { useContext, useRef, useState, useEffect } from "react";
-import { socket } from "@/app/api";
+import { socket, gameSocket } from "@/app/api";
 import { get } from "http";
 import { io } from "socket.io-client";
 import { baseUrl } from "@/app/api";
@@ -66,17 +66,6 @@ type game = GameObject & {
 function GamePlayRoomPages() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { state, actions } = useContext(UserContext);
-  const [gameSocket, updateGameSocket] = useState<any>(
-    io(baseUrl + "/game", {
-      path: "/socket.io",
-      transports: ["websocket"],
-      auth: {
-        // "authorization": state.userInfo.token,
-        authorization:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmlja25hbWUiOiJrbGV3IiwiZnRJZCI6MTAzODkyLCJpYXQiOjE2OTMyMTM3MTcsImV4cCI6MTY5NTgwNTcxN30.4pDUvHof2VBDrB50ptM4bC7_Sh9xjOw0S1qZhJWCa7Y",
-      },
-    })
-  );
   const [gameUpdateDto, setGameUpdateDto] = useState<any>();
 
   useEffect(() => {
@@ -110,14 +99,14 @@ function GamePlayRoomPages() {
         // Handle up arrow and w key events
         if (key.keyCode === 38 || key.keyCode === 87)
           gameSocket.emit("updateRacket", {
-            userId: 3,
+            userId: state.userInfo.id,
             direction: 1,
           });
 
         // Handle down arrow and s key events
         if (key.keyCode === 40 || key.keyCode === 83)
           gameSocket.emit("updateRacket", {
-            userId: 3,
+            userId: state.userInfo.id,
             direction: -1,
           });
       });
@@ -213,8 +202,8 @@ function GamePlayRoomPages() {
       if (this.canvas.current === null) return null;
       this.context = this.canvas.current.getContext("2d");
 
-      this.canvas.width = 1400;
-      this.canvas.height = 1000;
+      // this.canvas.width = 1400;
+      // this.canvas.height = 1000;
 
       // this.canvas.style.width = (this.canvas.width / 2) + 'px';
       // this.canvas.style.height = (this.canvas.height / 2) + 'px';
@@ -477,14 +466,16 @@ function GamePlayRoomPages() {
         // Handle up arrow and w key events
         if (key.keyCode === 38 || key.keyCode === 87)
           gameSocket.emit("updateRacket", {
-            userId: state.userInfo.id,
+            // userId: state.userInfo.id,
+            userId: 3,
             direction: 1,
           });
 
         // Handle down arrow and s key events
         if (key.keyCode === 40 || key.keyCode === 83)
           gameSocket.emit("updateRacket", {
-            userId: state.userInfo.id,
+            // userId: state.userInfo.id,
+            userId: 3,
             direction: -1,
           });
       });
@@ -521,10 +512,9 @@ function GamePlayRoomPages() {
 
   return (
     <>
-      <body className="text-center bg-ghostwhite flex justify-center items-center h-screen flex-col fixed w-full">
-        <h1>This is pingpong</h1>
-        <canvas ref={canvasRef} width={1400} height={1000} />
-      </body>
+        {/* <body className="text-center bg-ghostwhite flex justify-center items-center flex-col"> */}
+          <canvas ref={canvasRef} />
+        {/* </body> */}
     </>
   );
 }
