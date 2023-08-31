@@ -48,7 +48,7 @@ export const ChatChannel = ({
         if (!state.channelChat[state.channelChattingInfo.id]) return res;
         state.channelChat[state.channelChattingInfo.id].forEach((msg, idx) => {
             const { nickname, message, userId } = msg;
-            if (nickname !== state.userInfo.nickname)
+            if (nickname && nickname !== state.userInfo.nickname)
                 res.push(
                     <button onClick={() => openUserInfo(userId)} className="text-left" key={idx}>
                         <ChatBubble
