@@ -91,7 +91,7 @@ export default function ChannelRoomList() {
 
       setChannels(channels.map((elem) => {
         if(elem.id == changedChannel.id)
-          return {...elem, channelType: changedChannel.channelType};
+          return {...elem, channelType: changedChannel.channelType, userCount: changedChannel.userCount, channelUser: changedChannel.channelUser};
         else
           return elem;
       }));
