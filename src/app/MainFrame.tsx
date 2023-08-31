@@ -24,7 +24,7 @@ function SideButton(props: { type: mainStates }) {
 
   if (props.type === state.mainState)
     return (
-      <button onClick={clickhandler} className="bg-[#E1CAFE] w-[70px] h-[70px] relative ">
+      <button onClick={clickhandler} className="bg-[#E1CAFE] rounded-tl-[10px] rounded-bl-[10px] w-[70px] h-[70px] relative ">
         <img src={imgSrc} className="" />
       </button>
     )
@@ -166,10 +166,10 @@ export default function MainFrame() {
                 </div>
 
                 {/* sidebuttons */}
-                <div className="w-[4.38rem] h-[4.38rem] top-[14.88rem] left-[3.25rem] absolute rounded-tl-[10px] border">
+                <div className="w-[4.38rem] h-[4.38rem] top-[14.88rem] left-[3.25rem] absolute rounded-tl-[10px]">
                   <SideButton type={mainStates.ChannelLobby} />
                 </div>
-                <div className="w-[4.38rem] h-[4.38rem] top-[10.69rem] left-[3.25rem] absolute rounded-tl-[10px] border">
+                <div className="w-[4.38rem] h-[4.38rem] top-[10.69rem] left-[3.25rem] absolute rounded-tl-[10px]">
                   <SideButton type={mainStates.gameLobby} />
                 </div>
 
