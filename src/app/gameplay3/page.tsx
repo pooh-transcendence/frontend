@@ -106,6 +106,21 @@ function GamePlayRoomPages() {
       console.log("gameReady");
       setGameUpdateDto(data);
       gameSocket.emit("gameStart");
+      document.addEventListener("keydown", function (key) {
+        // Handle up arrow and w key events
+        if (key.keyCode === 38 || key.keyCode === 87)
+          gameSocket.emit("updateRacket", {
+            userId: 3,
+            direction: 1,
+          });
+
+        // Handle down arrow and s key events
+        if (key.keyCode === 40 || key.keyCode === 83)
+          gameSocket.emit("updateRacket", {
+            userId: 3,
+            direction: -1,
+          });
+      });
     };
     const joinQueueListener = (data: any) => {
       console.log("joinQueue", data);
@@ -122,17 +137,18 @@ function GamePlayRoomPages() {
       //   window.requestAnimationFrame(Pong.loop);
       // }
       console.log("HELLO");
+      console.log(state.userInfo.id);
       // Handle up arrow and w key events
       if (key.keyCode === 38 || key.keyCode === 87)
         gameSocket.emit("updateRacket", {
-          userId: state.userInfo.id,
+          userId: 3,
           direction: 1,
         });
 
       // Handle down arrow and s key events
       if (key.keyCode === 40 || key.keyCode === 83)
         gameSocket.emit("updateRacket", {
-          userId: state.userInfo.id,
+          userId: 3,
           direction: -1,
         });
     });
@@ -215,7 +231,7 @@ function GamePlayRoomPages() {
       this.color = "#8c52ff";
 
       Pong.menu();
-      Pong.listen();
+      //Pong.listen();
     },
 
     endGameMenu: function (text: string) {
@@ -373,7 +389,6 @@ function GamePlayRoomPages() {
 
       // Set the fill style to white (For the paddles and the ball)
       this.context.fillStyle = "#ffffff";
-
       // Draw the Player
       this.context.fillRect(
         data.racket[0][0], //this.player.x,
