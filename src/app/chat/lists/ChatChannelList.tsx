@@ -64,7 +64,7 @@ export const ChatChannelList = (): JSX.Element => {
     }, []);
 
     useEffect(() => {
-        const addChannelToUserChannelList = async (newChannel: channel) => { 
+        const addChannelToUserChannelList = async (newChannel: channel) => {
             await api_get(`/channel/admin/${newChannel.id}`).then((data) => {
                 newChannel.userType = data.data.data.filter(
                     (it: any) => state.userInfo.id == it.id).length ? "MODERATOR" : "DEFAULT";
@@ -84,11 +84,11 @@ export const ChatChannelList = (): JSX.Element => {
 
         const changeUserTypeToMod = (changedChannel: channel) => {
             console.log("changeUserTypeToMod", changedChannel);
-            if(state.channelChattingInfo.id == changedChannel.id)
-                actions.setChannelChattingInfo({...state.channelChattingInfo, userType: "MODERATOR"});
+            if (state.channelChattingInfo.id == changedChannel.id)
+                actions.setChannelChattingInfo({ ...state.channelChattingInfo, userType: "MODERATOR" });
             channelList.forEach(elem => {
-                if(elem.id == changedChannel.id)
-                    elem.userType="MODERATOR";
+                if (elem.id == changedChannel.id)
+                    elem.userType = "MODERATOR";
             });
         };
 
@@ -111,16 +111,19 @@ export const ChatChannelList = (): JSX.Element => {
             // console.log("change to channelChat", channel.id);
         }
         return (
-            <button key={channel.id+""} onClick={gotoChat}>
-                <ChannelListComponent channelName={channel.channelName} channelOwner={channel.ownerId+""} channelPeopleCnt={channel.userCount ? channel.userCount : channel.channelUser.length} channelProfileImg="vercel.svg" /> {/* channel default profile */}
+            <button key={channel.id + ""} onClick={gotoChat}>
+                <ChannelListComponent channelName={channel.channelName} channelOwner={channel.ownerId + ""} channelPeopleCnt={channel.userCount ? channel.userCount : channel.channelUser.length} channelProfileImg="vercel.svg" /> {/* channel default profile */}
             </button>
         )
     }
 
     return (
         <div className="w-[300px] h-[650px] relative">
+
+            <div className="w-[300px] h-[650px] left-0 top-0 absolute rounded-[10px] border-neutral-600 border-[3px]" />
+
             {/* BottomBarSection */}
-            <div className="w-[300px] h-[51px] left-0 top-[599px] absolute">
+            <div className="w-[300px] h-[50px] left-0 top-[600px] absolute">
                 <ChatBottomBar />
             </div>
             {/* ContentsSection */}

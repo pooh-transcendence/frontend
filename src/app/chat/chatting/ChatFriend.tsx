@@ -85,6 +85,7 @@ export const ChatFriend = ({
     return (
         <>
             <div className="w-[300px] h-[650px] relative">
+
                 {/* writing section */}
                 <div className="w-[300px] h-[70px] left-0 top-[580px] absolute">
                     <div className="w-[300px] h-[70px] left-0 top-0 absolute bg-slate-100 rounded-[10px]" />
@@ -100,9 +101,11 @@ export const ChatFriend = ({
                     {renderMessage()}
                     <div ref={scrollRef} />
                 </div>
+
+                { /* frame */}
+                <div className="w-[300px] h-[650px] left-0 top-0 absolute rounded-[10px] border-neutral-600 border-[3px]" />
                 {/* title section */}
                 <ChatTitle type="friendChat" title={title} id={state.friendChattingInfo.id} />
-                {/* frame */}
 
                 {/* userInfoModal */}
                 <div className="z-20 absolute top-[256px] left-[12px]">
@@ -111,6 +114,8 @@ export const ChatFriend = ({
                         <UserInfo type="default" />
                     }
                 </div>
+
+
             </div>
         </>
     )

@@ -41,9 +41,10 @@ export const ChatTitle = ({
 
     return (
         <section>
+
             {type == "channelChat" && (
                 <div className="w-[18.75rem] h-[3.125rem] relative">
-                    <div className="w-[18.75rem] h-[3.125rem] left-[-0.18rem] top-0 absolute bg-slate-100 rounded-tl-[0.625rem] rounded-tr-[0.625rem]" />
+                    <div className="w-[18.75rem] h-[3.125rem] left-0 top-0 absolute bg-slate-100 rounded-tl-[0.625rem] rounded-tr-[0.625rem]" />
                     <div className="w-[12.1875rem] h-6 left-[3.214375rem] top-[1.1875rem] absolute text-neutral-600 text-base font-normal">{title}<br /><br /></div>
                     <button onClick={channelBackHandler} className="z-10 w-[1.4375rem] h-[1.4375rem] left-[1rem] top-[1.0625rem] absolute">
                         <img className="w-[1.4375rem] h-[1.4375rem] left-0 top-0 absolute" src="backButton.svg" />
@@ -58,7 +59,7 @@ export const ChatTitle = ({
             )}
             {type == "channelList" && (
                 <div className="w-[18.75rem] h-[3.125rem] relative">
-                    <div className="w-[18.75rem] h-[3.125rem] left-[-0.18rem] top-0 absolute bg-slate-100 rounded-tl-[0.625rem] rounded-tr-[0.625rem]" />
+                    <div className="w-[18.75rem] h-[3.125rem] left-0 top-0 absolute bg-slate-100 rounded-tl-[0.625rem] rounded-tr-[0.625rem]" />
                     <div className="w-[12.1875rem] h-6 left-[3.214375rem] top-[1.1875rem] absolute text-neutral-600 text-base font-normal">channel<br /><br /></div>
                     <div className="w-[1.4375rem] h-[1.4375rem] left-[1rem] top-[1.0625rem] absolute">
                         <img className="w-[1.4375rem] h-[1.4375rem] left-0 top-0 absolute" src="forum.svg" />
@@ -67,9 +68,10 @@ export const ChatTitle = ({
             )}
             {type == "friendChat" && (
                 <div className="w-[18.75rem] h-[3.125rem] relative">
-                    <div className="w-[18.75rem] h-[3.125rem] left-[-0.18rem] top-0 absolute bg-slate-100 rounded-tl-[0.625rem] rounded-tr-[0.625rem]" />
-                    <button onClick={chatUserInfoHandler} className="text-left">
-                        <div className="w-[12.1875rem] h-6 left-[3.214375rem] top-[1.1875rem] absolute text-neutral-600 text-base font-normal">{title}<br /><br /></div>
+                    <div className="w-[18.75rem] h-[3.125rem] left-0 top-0 absolute rounded-[10px] rounded-b-none border-neutral-600 border-[3px] border-b-0" />
+                    <div className="w-[18.75rem] h-[3.125rem] left-0 top-0 absolute bg-slate-100 rounded-tl-[0.625rem] rounded-tr-[0.625rem]" />
+                    <button onClick={chatUserInfoHandler} className="z-10 text-left">
+                        <div className="z-10 w-[12.1875rem] h-6 left-[3.214375rem] top-[1.1875rem] absolute text-neutral-600 text-base font-normal">{title}<br /><br /></div>
                     </button>
                     <button onClick={chatBackHandler} className="z-10 w-[1.4375rem] h-[1.4375rem] left-[1rem] top-[1.0625rem] absolute">
                         <img className="w-[1.4375rem] h-[1.4375rem] left-0 top-0 absolute" src="backButton.svg" />
@@ -79,7 +81,7 @@ export const ChatTitle = ({
             )}
             {type == "friendList" && (
                 <div className="w-[18.75rem] h-[3.125rem] relative">
-                    <div className="w-[18.75rem] h-[3.125rem] left-[-0.18rem] top-0 absolute bg-slate-100 rounded-tl-[0.625rem] rounded-tr-[0.625rem]" />
+                    <div className="w-[18.75rem] h-[3.125rem] left-0 top-0 absolute bg-slate-100 rounded-tl-[0.625rem] rounded-tr-[0.625rem]" />
                     <div className="w-[12.1875rem] h-6 left-[3.214375rem] top-[1.1875rem] absolute text-neutral-600 text-base font-normal">friends<br /><br /></div>
                     <div className="w-[1.4375rem] h-[1.4375rem] left-[1rem] top-[1.0625rem] absolute">
                         <img className="w-[1.4375rem] h-[1.4375rem] left-0 top-0 absolute" src="group.svg" />
@@ -89,6 +91,7 @@ export const ChatTitle = ({
                     </button>
                 </div>
             )}
+            <div className="w-[18.75rem] h-[3.125rem] left-0 top-0 absolute rounded-[10px] rounded-b-none border-neutral-600 border-[3px] border-b-0" />
         </section>
     )
 };
