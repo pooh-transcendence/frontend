@@ -12,10 +12,10 @@ import { socket } from "@/app/api";
 
 function MakeGame() {
   const { state, actions } = useContext(UserContext);
-  const [ballCount, setRacketSize] = useState<number>(0);
+  const [racketSize, setRacketSize] = useState<number>(0);
   const [ballSpeed, setBallSpeed] = useState<number>(0);
   const createButtonHandler = () => {
-    if (ballCount === 0 || ballSpeed === 0) return;
+    if (racketSize === 0 || ballSpeed === 0) return;
   }; // todo
 
   // #7649BB
@@ -43,23 +43,23 @@ function MakeGame() {
       <div className="Ballspeedicon w-8 h-8 left-[17px] top-[71px] absolute" />
 
       <div className="RacketSizeCheck left-[51px] top-[41px] absolute justify-start items-start gap-[22px] inline-flex">
-        <div className="Ballcountcheck w-[243.25px] h-6 justify-start items-start gap-[9px] inline-flex">
+        <div className="racketSizecheck w-[243.25px] h-6 justify-start items-start gap-[9px] inline-flex">
           <button onClick={() => { setRacketSize(1) }} className=" w-[68px] h-6 relative">
-            <img src={ballCount === 1 ? "checkmarks1.svg" : "checkmarks0.svg"} className="w-6 h-6 left-0 top-0 absolute flex-col justify-center items-center gap-2.5 inline-flex" />
+            <img src={racketSize === 1 ? "checkmarks1.svg" : "checkmarks0.svg"} className="w-6 h-6 left-0 top-0 absolute flex-col justify-center items-center gap-2.5 inline-flex" />
             <div className="Small w-11 h-[19px] left-[24px] top-[1px] absolute text-neutral-600 text-lg font-bold">small</div>
           </button>
           <button onClick={() => { setRacketSize(2) }} className=" w-[91.50px] h-6 relative">
-            <img src={ballCount === 2 ? "checkmarks1.svg" : "checkmarks0.svg"} className="w-6 h-6 left-0 top-0 absolute flex-col justify-center items-center gap-2.5 inline-flex" />
+            <img src={racketSize === 2 ? "checkmarks1.svg" : "checkmarks0.svg"} className="w-6 h-6 left-0 top-0 absolute flex-col justify-center items-center gap-2.5 inline-flex" />
             <div className="Medium w-[67px] h-[19px] left-[24.50px] top-[1px] absolute text-neutral-600 text-lg font-bold">medium</div>
           </button>
           <button onClick={() => { setRacketSize(3) }} className=" w-[65.75px] h-6 relative">
-            <img src={ballCount === 3 ? "checkmarks1.svg" : "checkmarks0.svg"} className="w-6 h-6 left-0 top-0 absolute flex-col justify-center items-center gap-2.5 inline-flex" />
+            <img src={racketSize === 3 ? "checkmarks1.svg" : "checkmarks0.svg"} className="w-6 h-6 left-0 top-0 absolute flex-col justify-center items-center gap-2.5 inline-flex" />
             <div className="Large w-[41px] h-[19px] left-[24.75px] top-[1px] absolute text-neutral-600 text-lg font-bold">large</div>
           </button>
         </div>
       </div>
-      <div className="BallCount w-[129px] h-[19px] left-[63px] top-[17px] absolute text-neutral-600 text-base font-normal">racket size</div>
-      <div className="Ballcounticon w-[33.39px] h-8 left-[18.78px] top-[14px] absolute" />
+      <div className="racketSize w-[129px] h-[19px] left-[63px] top-[17px] absolute text-neutral-600 text-base font-normal">racket size</div>
+      <div className="racketSizeicon w-[33.39px] h-8 left-[18.78px] top-[14px] absolute" />
 
       <button onClick={() => { actions.setShowMakeGame(false); }}>
         <img src="cancel.svg" className="w-6 h-6 left-[355px] top-[5px] absolute" />
@@ -162,7 +162,7 @@ export default function MyInfoFrame() {
 
       {
         state.showMakeGame && (
-          <div className="z-10 flex, items-center justify-center h-[100%]">\
+          <div className="z-10 flex items-center justify-center h-[100%]">
             <MakeGame />
           </div>
         )
