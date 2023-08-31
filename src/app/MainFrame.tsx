@@ -46,7 +46,7 @@ function UserProfile() {
 
   return (
     <button onClick={clickHandler} className="Userprofile w-[228px] h-[46px] px-px justify-start items-center gap-2 inline-flex">
-      <img className="w-10 h-10" src={state.userInfo.avatar} />
+      <img className="w-10 h-10 rounded-[70%]" src={state.userInfo.avatar} />
       <div className="Nickname w-[178px] h-[46px] text-neutral-600 text-[32px] font-normal">{state.userInfo.nickname}</div>
       <div className="Line1 w-[228px] h-[0px] left-[-1px] top-[50.94px] absolute border border-neutral-600"></div>
     </button>
@@ -62,7 +62,7 @@ export default function MainFrame() {
       const data: userInfo = res.data.data;
       actions.setUserInfo({
         nickname: data.nickname,
-        avatar: data.avatar ?? "https://via.placeholder.com/32x32",
+        avatar: data.avatar ?? "pngegg-1@2x.png",
         id: data.id,
         token: getAuth()!,
         registered: true,
@@ -130,10 +130,10 @@ export default function MainFrame() {
     // if (sessionStorage.getItem("userContext"))
     return (
       <>
-        {/* {<div className="z-40 w-[1400px] h-[1000px]">
+        {<div className="z-40 w-[1400px] h-[1000px]">
                 <GamePlayRoomPages/>
-              </div>} */}
-        {/* <pre>{JSON.stringify(state.userInfo)}</pre> */}
+              </div>}
+        <pre>{JSON.stringify(state.userInfo)}</pre>
         <div className="flex-auto gap-5">
           <button onClick={bypassMe}>bypassMe</button>
           <br />

@@ -7,7 +7,6 @@ import { UserListComponent } from "./UserListComponent";
 import { api_get, socket } from "@/app/api";
 import { UserContext, chatStates } from "@/app/UserContext";
 import ChatUserSearch from "../ChatUserSearch";
-import FriendList from "@/app/ChannelLobby/friendList/friendList";
 
 const SmallSeparater = (props: { str: string }): JSX.Element => {
     return (
@@ -85,7 +84,7 @@ export const ChatFriendList = (): JSX.Element => {
             console.log("addFriendToFriendList", newFriend, friendList);
             setFriendList([...friendList, newFriend]);
         }
-        const deleteBlockToBLockList = (blockedFriend: object) => { // delete block from friendlist
+        const deleteBlockToBLockList = (blockedFriend: block) => { // delete block from friendlist
             console.log("deleteBlockToBLockList", blockedFriend);
             setBlockList(blockList.filter((elem) => { elem.id != blockedFriend.id }));
         }

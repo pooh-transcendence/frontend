@@ -11,13 +11,13 @@ const UserInfo = ({
 }: Props): JSX.Element => {
 
     const [userName, setUserName] = useState<string>("loading");
-    const [profileImg, setProfileImg] = useState<string>("https://via.placeholder.com/32x32");
+    const [profileImg, setProfileImg] = useState<string>("pngegg-1@2x.png");
     const { state, actions } = useContext(UserContext);
     useEffect(() => {
         console.log(state.chatTargetUser);
         api_get(`/user/${state.chatTargetUser}`).then((res) => {
             setUserName(res.data.data.nickname);
-            setProfileImg(res.data.data.avatar ?? "https://via.placeholder.com/32x32");
+            setProfileImg(res.data.data.avatar ?? "pngegg-1@2x.png");
         })
     }, []);
 
@@ -90,7 +90,7 @@ const UserInfo = ({
                 </div>
                 {/* title section */}
                 <div className="left-[65px] top-[27px] absolute text-neutral-600 text-base font-normal">{userName}</div>
-                <img className="w-8 h-8 left-[23px] top-[22px] absolute" src={profileImg} />
+                <img className="w-8 h-8 rounded-[70%] left-[23px] top-[22px] absolute" src={profileImg} />
                 <button onClick={infoHandler}>
                     <img className="w-7 h-7 left-[200px] top-[22px] absolute" src="info.svg" />
                 </button>
@@ -123,7 +123,7 @@ const UserInfo = ({
                 </div>
                 {/* title section */}
                 <div className="left-[65px] top-[27px] absolute text-neutral-600 text-base font-normal">{userName}</div>
-                <img className="w-8 h-8 left-[23px] top-[22px] absolute" src={profileImg} />
+                <img className="w-8 h-8 rounded-[70%] left-[23px] top-[22px] absolute" src={profileImg} />
                 <button onClick={infoHandler}>
                     <img className="w-7 h-7 left-[200px] top-[22px] absolute" src="info.svg" />
                 </button>
