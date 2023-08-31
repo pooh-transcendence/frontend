@@ -133,13 +133,6 @@ export default function MainFrame() {
     return (
       <>
         <div className="flex justify-center items-center h-screen bg-gradient-to-bl from-neutral-100 to-slate-50">
-
-          {
-            // <div className="z-10 w-[100px] h-[100px]">
-            //   <GamePlayRoomPages />
-            // </div>
-          }
-
           {
             // check whether this user is registered
             !getAuth() && (
