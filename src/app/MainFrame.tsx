@@ -10,6 +10,7 @@ import ChannelLobby from "./ChannelLobby/page";
 import GameLobby from "./GameLobby/page";
 import MyPageFrame from "./MyPageLobby/page"
 import GamePlayRoomPage from "./gameplay2/page";
+import GamePlayRoomPages from "./gameplay3/page"
 
 function SideButton(props: { type: mainStates }) {
   const { state, actions } = useContext(UserContext);
@@ -129,9 +130,9 @@ export default function MainFrame() {
     // if (sessionStorage.getItem("userContext"))
     return (
       <>
-      <div className="z-40 w-[1400px] h-[1000px]">
-                <GamePlayRoomPage/>
-              </div>
+      {<div className="z-40 w-[1400px] h-[1000px]">
+                <GamePlayRoomPages/>
+              </div>}
         {/* <pre>{JSON.stringify(state.userInfo)}</pre> */}
         <div className="flex-auto gap-5">
           <button onClick={bypassMe}>bypassMe</button>
