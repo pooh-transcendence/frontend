@@ -48,14 +48,18 @@ function UserProfile() {
   }
 
   return (
-    <button onClick={clickHandler} className="Userprofile w-[228px] h-[46px] px-px justify-start items-center gap-2 inline-flex">
-      <img className="w-10 h-10 rounded-[70%]" src={state.userInfo.avatar} />
-      <div className="Nickname w-[178px] h-[46px] text-neutral-600 text-[32px] font-normal">{state.userInfo.nickname}</div>
-      <div className="Line1 w-[228px] h-[0px] left-[-1px] top-[50.94px] absolute border border-neutral-600"></div>
-      <button onClick={logout}>
-        <img className="w-8 h-8" src="keyoff.svg" />
-      </button>
-    </button>
+    <>
+      <div className="w-[228px] h-[46px] flex items-center justify-between">
+        <button onClick={clickHandler} className="Userprofile h-[46px] px-px justify-start items-center gap-2 inline-flex">
+          <img className="w-10 h-10 rounded-[70%]" src={state.userInfo.avatar} />
+          <div className="Nickname w-[154px] h-[46px] text-neutral-600 text-[32px] font-normal">{state.userInfo.nickname}</div>
+        </button>
+        <button onClick={logout} className="flex items-center">
+          <img className="w-6 h-6" src="keyoff.svg" />
+        </button>
+      </div>
+      <div className="Line1 w-[228px] h-[0px] top-[50.94px] absolute border border-neutral-600"></div>
+    </>
   );
 }
 
