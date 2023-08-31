@@ -8,7 +8,7 @@ import RandomButton from "../button/randomButton";
 import VsButton from "../button/vsButton";
 
 import { UserContext, channelInfo } from "@/app/UserContext";
-import { socket } from "@/app/api";
+import { socket, api_post } from "@/app/api";
 
 function MakeGame() {
   const { state, actions } = useContext(UserContext);
@@ -16,6 +16,10 @@ function MakeGame() {
   const [ballSpeed, setBallSpeed] = useState<number>(0);
   const createButtonHandler = () => {
     if (racketSize === 0 || ballSpeed === 0) return;
+    api_post("/oneToOneGame", {
+      ballSpeed: ballSpeed,
+      racketSize: racketSize, 
+    }).then(e => console.log(e)).catch(e => console.log(e));
   }; // todo
 
   // #7649BB
