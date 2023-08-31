@@ -9,6 +9,7 @@ export default function TwoFactor() {
     const { state, actions } = useContext(UserContext);
     const [isWrong, setIsWrong] = useState<boolean>(false);
     const [password, setPassword] = useState<string>("");
+    
     const onChange = (e: any) => { setPassword(e.target.value) };
     const handleOnKeyPress = (e: any) => {
         if (e.key == "Enter") {
@@ -60,14 +61,14 @@ export default function TwoFactor() {
                             width: 100,
                             color: {
                                 dark: '#555555',
-                                light: '#FEFEFE',
+                                light: '#FEFEFE00',
                             },
                         }}
                     />
                     <div className="w-[100px] h-7 relative">
                         <div className="w-[65px] h-[25px] left-[17.50px] top-0 absolute justify-center items-center gap-[5px] inline-flex">
                             <form onKeyDown={handleOnKeyPress}>
-                                <input onChange={onChange} value={password} type="text" maxLength={6} className="w-[100px] outline-none text-center text-neutral-600 text-xl font-normal " />
+                                <input onChange={onChange} value={password} type="text" maxLength={6} className="w-[100px] outline-none text-center text-neutral-600 text-xl font-normal bg-transparent" />
                             </form>
                         </div>
                         {
