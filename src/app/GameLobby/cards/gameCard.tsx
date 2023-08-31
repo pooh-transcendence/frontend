@@ -5,7 +5,7 @@ import { useState, useCallback, useEffect } from "react";
 import { userInfo } from "@/app/UserContext";
 import { api_get } from "@/app/api";
 
-interface GameInfo{
+export interface GameInfo{
     opponentId: string,
     gameId: string,
     gameSettings: string[],

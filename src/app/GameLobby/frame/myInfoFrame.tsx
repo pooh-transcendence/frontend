@@ -1,14 +1,14 @@
 'use client'
 
 import React, { useEffect, useState, useContext, use } from "react";
-import ChannelCards from "../cards/gameCard";
+import GameCard, { GameInfo } from "../cards/gameCard";
 import UserStats from "./userStats";
 
 import RandomButton from "../button/randomButton";
 import VsButton from "../button/vsButton";
 
 import { UserContext, channelInfo } from "@/app/UserContext";
-import { socket, api_post } from "@/app/api";
+import { socket, api_post, api_get } from "@/app/api";
 
 function MakeGame() {
   const { state, actions } = useContext(UserContext);
@@ -16,7 +16,7 @@ function MakeGame() {
   const [ballSpeed, setBallSpeed] = useState<number>(0);
   const createButtonHandler = () => {
     if (racketSize === 0 || ballSpeed === 0) return;
-    api_post("/oneToOneGame", {
+    api_post("/game/oneToOneGame", {
       ballSpeed: ballSpeed,
       racketSize: racketSize, 
     }).then(e => console.log(e)).catch(e => console.log(e));
@@ -102,6 +102,28 @@ function WaitMatch() {
 
 export default function MyInfoFrame() {
   const { state, actions } = useContext(UserContext);
+  const [gameList, setGameList]=useState<GameInfo[]>([]);
+
+  useEffect(() => {
+    api_get("/game/allOneToOneGame").then((res) => {
+      console.log(res);
+    })
+
+    const addOneToOneGame=(targetGame : GameInfo) => {
+      setGameList([...gameList, targetGame])
+    };
+    const deleteOneToOneGame=(targetGame : GameInfo) => {
+      setGameList(gameList.filter((elem) => elem.gameId != targetGame.gameId))
+    };
+
+    socket.on("addOneToOneGame", addOneToOneGame);
+    socket.on("deleteOneToOneGame", deleteOneToOneGame);
+    
+    return () => {
+      socket.off("addOneToOneGame", addOneToOneGame);
+      socket.off("deleteOneToOneGame", deleteOneToOneGame);
+    }
+  }, []);
 
   // const [channelList, setChannelList]=useState<channelInfo[]>([]); 
 
@@ -126,7 +148,14 @@ export default function MyInfoFrame() {
         <div className="absolute h-[65.69%] w-[93.13%] top-[30.46%] right-[3.25%] bottom-[3.85%] left-[3.63%] text-right text-[0.81rem]">
           <div className="absolute h-[90.87%] w-full top-[9.13%] right-[0%] bottom-[0%] left-[0%] rounded-3xs bg-gray shadow-[0px_2px_10px_rgba(0,_0,_0,_0.25)]" />
           <div className="absolute h-[64.09%] w-[93.56%] top-[15.69%] right-[2.68%] bottom-[20.22%] left-[3.76%] flex flex-col items-start justify-start gap-[0.81rem]">
-            <ChannelCards game={{ opponentId: "1", gameId: "asdf", gameSettings: [] }} />
+            
+            {/* <GameCard game={{ opponentId: "1", gameId: "asdf", gameSettings: [] }} /> */}
+            {
+              gameList.map((game, idx) => {
+                return <GameCard key={idx} game={game} />
+              })
+            }
+            
           </div>
           <div className="absolute h-[9.23%] w-[33.15%] top-[0%] right-[60.54%] bottom-[90.77%] left-[6.31%] text-left text-[1.25rem]">
             <div className="absolute h-full w-full top-[0%] left-[0%] inline-block">
