@@ -9,7 +9,6 @@ import TwoFactor from "./TwoFactor/page";
 import ChannelLobby from "./ChannelLobby/page";
 import GameLobby from "./GameLobby/page";
 import MyPageFrame from "./MyPageLobby/page"
-import GamePlayRoomPage from "./gameplay2/page";
 import GamePlayRoomPages from "./gameplay3/page"
 
 function SideButton(props: { type: mainStates }) {
@@ -133,14 +132,7 @@ export default function MainFrame() {
     // if (sessionStorage.getItem("userContext"))
     return (
       <>
-        {/* <div className="flex justify-center items-center h-screen bg-gradient-to-bl from-neutral-100 to-slate-50"> */}
-        <div className="h-screen flex justify-center items-center">
-          {
-            <div className="z-10 w-[100px] h-[100px]">
-              <GamePlayRoomPages />
-            </div>
-          }
-
+        <div className="flex justify-center items-center h-screen bg-gradient-to-bl from-neutral-100 to-slate-50">
           {
             // check whether this user is registered
             !getAuth() && (
@@ -162,7 +154,6 @@ export default function MainFrame() {
                 )
               }
 
-              {/* <div className="flex justify-center items-center w-[1280px] h-[832px] relative gap-[12px]" > */}
               <div className="w-[1280px] h-[832px] absolute">
 
                 {/* userProfile */}

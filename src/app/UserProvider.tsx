@@ -29,6 +29,7 @@ export default function UserProvider({ children }: { children: React.ReactNode }
   const [showMakeGame, setShowMakeGame] = useState<boolean>(false);
   const [showMatching, setShowMatching] = useState<boolean>(false);
   const [showInfo, setShowInfo] = useState<boolean>(false);
+  const [showGame, setShowGame] = useState<boolean>(false); 
 
   const [chatTargetUser, setChatTargetUser] = useState<number>(-1);
   const [infoTargetUser, setInfoTargetUser] = useState<number>(-1);
@@ -65,6 +66,7 @@ export default function UserProvider({ children }: { children: React.ReactNode }
       showMakeGame,
       showMatching,
       showInfo,
+      showGame,
 
       chatTargetUser,
       infoTargetUser,
@@ -90,6 +92,7 @@ export default function UserProvider({ children }: { children: React.ReactNode }
       setShowMakeGame: (newState: boolean) => setShowMakeGame(newState),
       setShowMatching: (newState: boolean) => setShowMatching(newState),
       setShowInfo: (newState: boolean) => setShowInfo(newState),
+      setShowGame: (newState: boolean) => setShowGame(newState),
 
       setChatTargetUser: (newState: number) => setChatTargetUser(newState),
       setInfoTargetUser: (newState: number) => setInfoTargetUser(newState),

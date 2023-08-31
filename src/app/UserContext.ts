@@ -71,6 +71,7 @@ export const UserContext = React.createContext({
     showMakeGame: false,
     showMatching: false,
     showInfo: false,
+    showGame: false,
 
     chatTargetUser: -1,
     infoTargetUser: -1,
@@ -96,6 +97,7 @@ export const UserContext = React.createContext({
     setShowMakeGame: (newState: boolean) => {},
     setShowMatching: (newState: boolean) => {},
     setShowInfo: (newState: boolean) => {},
+    setShowGame: (newState: boolean) => {},
     
     setChatTargetUser: (newState: number) => {},
     setInfoTargetUser: (newState: number) => {},

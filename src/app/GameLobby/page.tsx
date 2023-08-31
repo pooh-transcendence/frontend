@@ -6,10 +6,17 @@ import MyPageButton from "./button/myPageButton";
 
 import MyInfoFrame from "./frame/myInfoFrame";
 import ChatFrame from "./frame/chatFrame";
+import { useContext } from "react";
+import { UserContext } from "../UserContext";
+import GamePlayRoomPages from "../gameplay3/page";
 
 const GameLobby: NextPage = () => {
-
-  return <MyInfoFrame />;
+  const {state, actions}=useContext(UserContext);
+  
+  if(state.showGame)
+    return <GamePlayRoomPages/>;
+  else
+    return <MyInfoFrame />;
   
   return (
     <>
