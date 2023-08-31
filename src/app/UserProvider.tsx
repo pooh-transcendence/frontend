@@ -14,7 +14,7 @@ export interface savedContext {
 
 export default function UserProvider({ children }: { children: React.ReactNode }) {
   const [isConnected, setConnectionState] = useState<boolean>(false);
-  const [userInfo, setUserInfo] = useState<userInfoInterface>({token: "-1", registered: false, nickname: "defaultNick", avatar: "https://via.placeholder.com/32x32", id: -1, winnerGame: [], loserGame: []});
+  const [userInfo, setUserInfo] = useState<userInfoInterface>({token: "-1", registered: false, nickname: "defaultNick", avatar: "pngegg-1@2x.png", id: -1, winnerGame: [], loserGame: []});
   const [chatState, setChatState] = useState(chatStates.friendList);
   const [mainState, setMainState] = useState(mainStates.gameLobby);
   const [friendChattingInfo, setFriendChattingInfo] = useState<friendInfo>({} as friendInfo);

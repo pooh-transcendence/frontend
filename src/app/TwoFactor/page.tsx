@@ -31,7 +31,7 @@ export default function TwoFactor() {
                 const data: userInfo = res.data.data;
                 actions.setUserInfo({
                     nickname: data.nickname,
-                    avatar: data.avatar ?? "https://via.placeholder.com/32x32",
+                    avatar: data.avatar ?? "pngegg-1@2x.png",
                     id: data.id,
                     token: getAuth()!,
                     registered: true,

@@ -62,7 +62,6 @@ type game = GameObject & {
 function GamePlayRoomPages() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { state, actions } = useContext(UserContext);
-
   const [gameUpdateDto, setGameUpdateDto] = useState<any>();
 
   useEffect(() => {
@@ -168,8 +167,8 @@ function GamePlayRoomPages() {
       if (this.canvas.current === null) return null;
       this.context = this.canvas.current.getContext("2d");
 
-      this.canvas.width = 1400;
-      this.canvas.height = 1000;
+      // this.canvas.width = 1400;
+      // this.canvas.height = 1000;
 
       this.player = Ai.new.call(this, "left");
       this.ai = Ai.new.call(this, "right");
@@ -438,10 +437,9 @@ function GamePlayRoomPages() {
 
   return (
     <>
-      <body className="text-center bg-ghostwhite flex justify-center items-center h-screen flex-col fixed w-full">
-        <h1>This is pingpong</h1>
-        <canvas ref={canvasRef} width={1400} height={1000} />
-      </body>
+        {/* <body className="text-center bg-ghostwhite flex justify-center items-center flex-col"> */}
+          <canvas ref={canvasRef} />
+        {/* </body> */}
     </>
   );
 }

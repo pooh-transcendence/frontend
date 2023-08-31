@@ -17,12 +17,12 @@ const ChannelListComponent = ({
     channelName,
     channelOwner,
     channelPeopleCnt,
-    channelProfileImg = "https://via.placeholder.com/28x28",
+    channelProfileImg = "vercel.svg", // channelProfileTest
 }: ChannelListProps): JSX.Element => {
     return (
         <>
             <div className="w-[260px] h-[42px] relative">
-                <img className="w-7 h-7 left-0 top-[4px] absolute" src={channelProfileImg} />
+                <img className="w-7 h-7 left-0 top-[4px] rounded-[70%] absolute" src={channelProfileImg} />
                 <div className="w-[61px] left-[198px] top-0 absolute justify-end items-start inline-flex">
                     <img className="w-4 h-4 relative" src="person.svg" />
                     <div className="text-right text-neutral-600 text-[13px] font-normal">{channelPeopleCnt}</div>
@@ -112,7 +112,7 @@ export const ChatChannelList = (): JSX.Element => {
         }
         return (
             <button key={channel.id+""} onClick={gotoChat}>
-                <ChannelListComponent channelName={channel.channelName} channelOwner={channel.ownerId+""} channelPeopleCnt={channel.userCount ? channel.userCount : channel.channelUser.length} channelProfileImg="https://via.placeholder.com/32x32" />
+                <ChannelListComponent channelName={channel.channelName} channelOwner={channel.ownerId+""} channelPeopleCnt={channel.userCount ? channel.userCount : channel.channelUser.length} channelProfileImg="vercel.svg" /> {/* channel default profile */}
             </button>
         )
     }
