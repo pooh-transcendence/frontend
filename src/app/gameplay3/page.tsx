@@ -8,6 +8,7 @@ import { baseUrl } from "@/app/api";
 import { staticGenerationAsyncStorage } from "next/dist/client/components/static-generation-async-storage";
 import { UserContext } from "../UserContext";
 import { Shippori_Antique } from "next/font/google";
+import { useRecoilStoreID } from "recoil";
 
 interface gameInfo {
   participants: number[];
@@ -26,9 +27,6 @@ interface ball {
     height: number;
     x: number;
     y: number;
-    moveX: number;
-    moveY: number;
-    speed: number;
   };
 }
 
@@ -39,8 +37,6 @@ interface ai {
     x: number;
     y: number;
     score: number;
-    move: number;
-    speed: number;
   };
 }
 
@@ -77,18 +73,10 @@ function GamePlayRoomPages() {
   }, [canvasRef]);
 
   useEffect(() => {
-    //Pong.draw();
-    //console.log("gameUpdateDto in useEffect", gameUpdateDto);
-  }, [gameUpdateDto]);
-
-  useEffect(() => {
     console.log(gameSocket);
 
     const gameUpdateListener = (data: gameInfo) => {
-      //console.log("getGameUpdate");
       Pong.drawData(data);
-      //console.log(data);
-      //setGameUpdateDto(data);
     };
 
     const gameReadyListener = (data: gameInfo) => {
@@ -120,14 +108,7 @@ function GamePlayRoomPages() {
     gameSocket.on("gameReady", gameReadyListener);
     gameSocket.on("gameUpdate", gameUpdateListener);
     document.addEventListener("keydown", function (key) {
-      // Handle the 'Press any key to begin' function and start the game.
-      // if (Pong.running === false) {
-      //   Pong.running = true;
-      //   window.requestAnimationFrame(Pong.loop);
-      // }
-      console.log("HELLO");
-      console.log(state.userInfo.id);
-      // Handle up arrow and w key events
+      // Handle down arrow and s key events
       if (key.keyCode === 38 || key.keyCode === 87)
         gameSocket.emit("updateRacket", {
           userId: 3,
@@ -144,20 +125,9 @@ function GamePlayRoomPages() {
     return () => {
       gameSocket.off("gameReady", gameReadyListener);
       gameSocket.off("joinQueue", joinQueueListener);
-
-      // socket.off("getPaddleSize", getPaddleSizeLisnter);
-      // gameSocket.off("getGameUpdate", getGameUpdateListener);
-      // socket.off("joinQueue", ready);
+      gameSocket.off("gameUpdate", gameUpdateListener);
     };
   }, []);
-
-  const DIRECTION = {
-    IDLE: 0,
-    UP: 1,
-    DOWN: 2,
-    LEFT: 3,
-    RIGHT: 4,
-  };
 
   const rounds = [5];
   const colors = ["#1abc9c", "#2ecc71", "#3498db", "#8c52ff", "#9b59b6"];
@@ -170,9 +140,6 @@ function GamePlayRoomPages() {
         height: 18,
         x: canvasRef.current!.width / 2 - 9,
         y: canvasRef.current!.height / 2 - 9,
-        moveX: DIRECTION.IDLE,
-        moveY: DIRECTION.IDLE,
-        speed: incrementedSpeed || 7,
       };
     },
   };
@@ -187,8 +154,6 @@ function GamePlayRoomPages() {
         x: side === "left" ? 150 : canvasRef.current!.width - 150,
         y: canvasRef.current!.height / 2 - 35,
         score: 0,
-        move: DIRECTION.IDLE,
-        speed: 8,
       };
     },
   };
@@ -205,10 +170,6 @@ function GamePlayRoomPages() {
       // this.canvas.width = 1400;
       // this.canvas.height = 1000;
 
-      // this.canvas.style.width = (this.canvas.width / 2) + 'px';
-      // this.canvas.style.height = (this.canvas.height / 2) + 'px';
-
-      // this.player = Ai.new.call(this, gameData.whoAmI);
       this.player = Ai.new.call(this, "left");
       this.ai = Ai.new.call(this, "right");
       this.ball = Ball.new.call(this);
@@ -220,7 +181,6 @@ function GamePlayRoomPages() {
       this.color = "#8c52ff";
 
       Pong.menu();
-      //Pong.listen();
     },
 
     endGameMenu: function (text: string) {
@@ -245,11 +205,6 @@ function GamePlayRoomPages() {
         Pong.canvas.width / 2,
         Pong.canvas.height / 2 + 15
       );
-
-      //   setTimeout(function () {
-      //     Pong = Object.assign({}, Game);
-      //     Pong.initialize();
-      //   }, 3000);
     },
 
     menu: function () {
@@ -454,36 +409,6 @@ function GamePlayRoomPages() {
         this.canvas.width / 2,
         100
       );
-    },
-    listen: function () {
-      document.addEventListener("keydown", function (key) {
-        // Handle the 'Press any key to begin' function and start the game.
-        // if (Pong.running === false) {
-        //   Pong.running = true;
-        //   window.requestAnimationFrame(Pong.loop);
-        // }
-
-        // Handle up arrow and w key events
-        if (key.keyCode === 38 || key.keyCode === 87)
-          gameSocket.emit("updateRacket", {
-            // userId: state.userInfo.id,
-            userId: 3,
-            direction: 1,
-          });
-
-        // Handle down arrow and s key events
-        if (key.keyCode === 40 || key.keyCode === 83)
-          gameSocket.emit("updateRacket", {
-            // userId: state.userInfo.id,
-            userId: 3,
-            direction: -1,
-          });
-      });
-
-      // Stop the player from moving when there are no keys being pressed.
-      document.addEventListener("keyup", function (key) {
-        Pong.player.move = DIRECTION.IDLE;
-      });
     },
 
     // Reset the ball location, the player turns and set a delay before the next round begins.
