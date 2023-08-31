@@ -1,25 +1,31 @@
+import { UserContext, userInfo } from "@/app/UserContext";
+import { useContext } from "react";
 
+type userInfoCardInterface={
+    id: number,
+    nickname: string,
+    avatar: string | null,
+};
 
+export default function UserInfo({
+    id,
+    nickname,
+    avatar,
+  }: userInfoCardInterface) {
+    const {state, actions}=useContext(UserContext);
+    const userSelecitonHandler=() => {
+        actions.setInfoTargetUser(id);
+    };
 
-export default function UserInfo() {
     return (
-        <>
-        {/* todo */}
-        </>
-        // <div className="relative w-[15.44rem] h-[2.81rem]">
-        //     <div className="absolute top-[0rem] left-[0.06rem] flex flex-row items-center justify-center gap-[0.63rem]">
-        //         <img
-        //             className="relative w-[2rem] h-[2rem] object-cover"
-        //             alt=""
-        //             src="/pngegg-4@2x.png"
-        //         />
-        //         <div className="relative">username1</div>
-        //     </div>
-        //     <img
-        //         className="absolute top-[2rem] left-[0.02rem] w-[15.05rem] h-[0.09rem]"
-        //         alt=""
-        //         src="/line-10.svg"
-        //     />
-        // </div>
+        <div className="MypageUserlistUsercard w-[247px] h-[45px] relative">
+            <button className="text-left" onClick={userSelecitonHandler}>
+                <div className="nicknamenphoto left-[1px] top-0 h-[2rem] relative justify-center items-center gap-2.5 inline-flex">
+                    <img className="Pngegg2 w-8 h-8" src={avatar ? avatar : "pngegg-1@2x.png"} />
+                    <div className="username text-neutral-600 text-base font-normal">{nickname}</div>
+                </div>
+                <img className="top-[2.53rem] left-[0.06rem]" src="info_search_line.svg"/>
+            </button>
+        </div>
     );
 }

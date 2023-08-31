@@ -24,7 +24,7 @@ function SideButton(props: { type: mainStates }) {
 
   if (props.type === state.mainState)
     return (
-      <button onClick={clickhandler} className="bg-[#E1CAFE] w-[70px] h-[70px] relative ">
+      <button onClick={clickhandler} className="bg-[#E1CAFE] rounded-tl-[10px] rounded-bl-[10px] w-[70px] h-[70px] relative ">
         <img src={imgSrc} className="" />
       </button>
     )
@@ -48,14 +48,18 @@ function UserProfile() {
   }
 
   return (
-    <button onClick={clickHandler} className="Userprofile w-[228px] h-[46px] px-px justify-start items-center gap-2 inline-flex">
-      <img className="w-10 h-10 rounded-[70%]" src={state.userInfo.avatar} />
-      <div className="Nickname w-[178px] h-[46px] text-neutral-600 text-[32px] font-normal">{state.userInfo.nickname}</div>
-      <div className="Line1 w-[228px] h-[0px] left-[-1px] top-[50.94px] absolute border border-neutral-600"></div>
-      <button onClick={logout}>
-        <img className="w-8 h-8" src="keyoff.svg" />
-      </button>
-    </button>
+    <>
+      <div className="w-[228px] h-[46px] flex items-center justify-between">
+        <button onClick={clickHandler} className="Userprofile h-[46px] px-px justify-start items-center gap-2 inline-flex">
+          <img className="w-10 h-10 rounded-[70%]" src={state.userInfo.avatar} />
+          <div className="Nickname w-[154px] h-[46px] text-neutral-600 text-[32px] font-normal">{state.userInfo.nickname}</div>
+        </button>
+        <button onClick={logout} className="flex items-center">
+          <img className="w-6 h-6" src="keyoff.svg" />
+        </button>
+      </div>
+      <div className="Line1 w-[228px] h-[0px] top-[50.94px] absolute border border-neutral-600"></div>
+    </>
   );
 }
 
@@ -162,10 +166,10 @@ export default function MainFrame() {
                 </div>
 
                 {/* sidebuttons */}
-                <div className="w-[4.38rem] h-[4.38rem] top-[14.88rem] left-[3.25rem] absolute rounded-tl-[10px] border">
+                <div className="w-[4.38rem] h-[4.38rem] top-[14.88rem] left-[3.25rem] absolute rounded-tl-[10px]">
                   <SideButton type={mainStates.ChannelLobby} />
                 </div>
-                <div className="w-[4.38rem] h-[4.38rem] top-[10.69rem] left-[3.25rem] absolute rounded-tl-[10px] border">
+                <div className="w-[4.38rem] h-[4.38rem] top-[10.69rem] left-[3.25rem] absolute rounded-tl-[10px]">
                   <SideButton type={mainStates.gameLobby} />
                 </div>
 

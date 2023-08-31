@@ -4,7 +4,7 @@ export default function MatchHistory() {
     return (
         <>
         <div className="absolute h-[58.15%] w-[94.4%] top-[38.15%] right-[2.8%] bottom-[3.69%] left-[2.8%] rounded-3xs bg-gray shadow-[0px_2px_10px_rgba(0,_0,_0,_0.25)]" />
-        <div className="absolute top-[calc(50%_-_69px)] left-[calc(50%_-_450px)] h-[22.5rem] overflow-y-auto flex flex-col items-start justify-start gap-[0.63rem]">
+        <div className="absolute scroll-hidden top-[calc(50%_-_69px)] left-[calc(50%_-_450px)] h-[22.5rem] overflow-y-auto flex flex-col items-start justify-start gap-[0.63rem]">
           <MatchCard />
           <MatchCard />
           <MatchCard />

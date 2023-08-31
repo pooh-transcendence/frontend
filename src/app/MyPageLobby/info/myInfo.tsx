@@ -43,6 +43,10 @@ export default function MyInfo() {
     else
       return a.length + '';
   };
+  const onChangeNickNameSubmit = (e: any) => {
+    e.preventDefault();
+    changeNicknameHandler();
+  }
   const onChangeNickname = (e: any) => {
     setNewNickname(e.target.value);
   };
@@ -84,7 +88,7 @@ export default function MyInfo() {
                 <div className="absolute top-[0rem] left-[0rem] rounded-3xs bg-blueviolet w-[25rem] h-[0.44rem] overflow-hidden opacity-[0.2]" />
                 <div className="absolute top-[0rem] left-[0rem] rounded-3xs bg-slateblue w-[25rem] h-[0.44rem] overflow-hidden" style={{ width: getWinRate(state.userInfo.winnerGame || [], state.userInfo.loserGame || []) }} />
               </div>
-              <div className="absolute w-[24.59%] top-[25.81%] left-[0%] leading-[150%] inline-block">
+              <div className="absolute w-[300px] top-[25.81%] left-[0%] leading-[150%] inline-block">
                 winrate {getWinRate(target.winnerGame || [], target.loserGame || [])}
               </div>
             </div>
@@ -127,7 +131,9 @@ export default function MyInfo() {
                   <span ref={textRef} style={{ opacity: 0, position: 'absolute', whiteSpace: 'nowrap' }}>
                     {newNickname || target.nickname}
                   </span>
-                  <input ref={inputRef} onChange={onChangeNickname} type="text" maxLength={12} className="relative placeholder:text-[#555555] bg-transparent" placeholder={target.nickname} />
+                  <form onSubmit={onChangeNickNameSubmit}>
+                    <input ref={inputRef} onChange={onChangeNickname} type="text" maxLength={12} className="relative placeholder:text-[#555555] bg-transparent" placeholder={target.nickname} />
+                  </form>
                   <button onClick={changeNicknameHandler}>
                     <img
                       className="relative w-[1.25rem] h-[1.25rem] overflow-hidden shrink-0"
@@ -187,17 +193,6 @@ export default function MyInfo() {
                               <div className="rounded-[70%] bg-black opacity-10 absolute h-full w-full" />
                               <img src="avatar.svg"/>
                             </button>
-                            &nbsp;
-                            {/* <button onClick={onImageRemoveAll}>Remove all images</button> */}
-                            {/* {imageList.map((image, index) => (
-                              <div key={index} className="image-item">
-                                <img src={image['data_url']} alt="" width="100" />
-                                <div className="image-item__btn-wrapper">
-                                  <button onClick={() => onImageUpdate(index)}>Update</button>
-                                  <button onClick={() => onImageRemove(index)}>Remove</button>
-                                </div>
-                              </div>
-                            ))} */}
                           </div>
                         )}
                       </ImageUploading>
