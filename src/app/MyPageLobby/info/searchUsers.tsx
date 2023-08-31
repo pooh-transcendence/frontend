@@ -44,7 +44,7 @@ export default function SearchUsers() {
                   alt=""
                   src="/search-fill0-wght500-grad0-opsz48-1.svg"
                 />
-                <input onChange={onChange} type="text" placeholder="search users" className="bg-none placeholder:italic outline-none w-[8.88rem] h-[1.19rem] text-neutral-600 font-bold"/>
+                <input onChange={onChange} type="text" placeholder="search users" className="placeholder:italic outline-none w-[8.88rem] h-[1.19rem] text-neutral-600 font-bold bg-transparent"/>
               </div>
             </div>
           </div>
