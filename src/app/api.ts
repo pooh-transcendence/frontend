@@ -46,6 +46,14 @@ export let socket = io(baseUrl+"/channel",
         "authorization": null,
     },
 });
+export let gameSocket=io(baseUrl+"/game",
+{
+    path: "/socket.io", 
+    transports: ['websocket'],
+    auth: {
+        "authorization": null,
+    },
+});
 
 export const updateSocket=() => {
     socket.disconnect();
@@ -58,6 +66,14 @@ export const updateSocket=() => {
             "authorization": auth,
         },
     });
+    gameSocket = io(baseUrl+"/game",
+    {
+        path: "/socket.io", 
+        transports: ['websocket'],
+        auth: {
+            "authorization": auth,
+        },
+    })
 };
 
 export const api_get=(url: string, params: Object | void) => {
