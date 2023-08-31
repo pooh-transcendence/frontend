@@ -35,10 +35,18 @@ export function getUserId():string | null
     return userId;
 }
 
-export const baseUrl="http://localhost:3000";
-//export const baseUrl="http://10.19.233.166:3000";
+// export const baseUrl="http://localhost:3000";
+export const baseUrl="http://10.19.233.166:3000";
 
 export let socket = io(baseUrl+"/channel",
+{
+    path: "/socket.io", 
+    transports: ['websocket'],
+    auth: {
+        "authorization": null,
+    },
+});
+export let gameSocket=io(baseUrl+"/game",
 {
     path: "/socket.io", 
     transports: ['websocket'],
@@ -58,6 +66,14 @@ export const updateSocket=() => {
             "authorization": auth,
         },
     });
+    gameSocket = io(baseUrl+"/game",
+    {
+        path: "/socket.io", 
+        transports: ['websocket'],
+        auth: {
+            "authorization": auth,
+        },
+    })
 };
 
 export const api_get=(url: string, params: Object | void) => {
