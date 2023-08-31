@@ -43,12 +43,19 @@ function UserProfile() {
     actions.setShowInfo(true);
     //console.log(state);
   }
+  const logout = () => {
+    sessionStorage.clear();
+    window.location.reload();
+  }
 
   return (
     <button onClick={clickHandler} className="Userprofile w-[228px] h-[46px] px-px justify-start items-center gap-2 inline-flex">
       <img className="w-10 h-10 rounded-[70%]" src={state.userInfo.avatar} />
       <div className="Nickname w-[178px] h-[46px] text-neutral-600 text-[32px] font-normal">{state.userInfo.nickname}</div>
       <div className="Line1 w-[228px] h-[0px] left-[-1px] top-[50.94px] absolute border border-neutral-600"></div>
+      <button onClick={logout}>
+        <img className="w-8 h-8" src="keyoff.svg" />
+      </button>
     </button>
   );
 }
@@ -71,10 +78,6 @@ export default function MainFrame() {
       });
     });
   };
-  const logout = () => {
-    sessionStorage.clear();
-    window.location.reload();
-  }
 
   useEffect(() => {
     // auth bypass
@@ -130,17 +133,14 @@ export default function MainFrame() {
     // if (sessionStorage.getItem("userContext"))
     return (
       <>
-        {<div className="z-40 w-[1400px] h-[1000px]">
-                <GamePlayRoomPages/>
-              </div>}
-        <pre>{JSON.stringify(state.userInfo)}</pre>
-        <div className="flex-auto gap-5">
-          <button onClick={bypassMe}>bypassMe</button>
-          <br />
-          <button onClick={logout}>logout</button>
-        </div>
         {/* <div className="flex justify-center items-center h-screen bg-gradient-to-bl from-neutral-100 to-slate-50"> */}
         <div className="h-screen flex justify-center items-center">
+          {
+            <div className="z-10 w-[100px] h-[100px]">
+              <GamePlayRoomPages />
+            </div>
+          }
+
           {
             // check whether this user is registered
             !getAuth() && (
