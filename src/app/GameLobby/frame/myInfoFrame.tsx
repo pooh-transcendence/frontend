@@ -1,14 +1,14 @@
 'use client';
 
-import { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext, use } from 'react';
 import GameCard, { GameInfo } from '../cards/gameCard';
 import UserStats from './userStats';
 
 import RandomButton from '../button/randomButton';
 import VsButton from '../button/vsButton';
 
-import { UserContext } from '@/app/UserContext';
-import { api_delete, api_get, api_post, gameSocket } from '@/app/api';
+import { UserContext, channelInfo } from '@/app/UserContext';
+import { gameSocket, api_post, api_get, api_delete } from '@/app/api';
 
 function MakeGame() {
   const { state, actions } = useContext(UserContext);
@@ -208,14 +208,12 @@ export default function MyInfoFrame() {
     });
 
     const addOneToOneGame = (targetGame: GameInfo) => {
-      console.log('allOneToOneGame', targetGame);
+      console.log('addOneToOneGame', targetGame);
       setGameList([...gameList, targetGame]);
     };
     const deleteOneToOneGame = (targetGame: GameInfo) => {
       console.log('deleteOneToOneGame', targetGame);
-      setGameList(
-        gameList.filter((elem) => elem.game_id != targetGame.game_id),
-      );
+      setGameList(gameList.filter((elem) => elem.id != targetGame.id));
     };
 
     console.log('game listener on');
