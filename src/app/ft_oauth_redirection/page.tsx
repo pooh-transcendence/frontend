@@ -29,6 +29,8 @@ export default function Oauth() {
             }).catch((e) => {
                 console.log(e);
             }).then(() => {
+                // logout?
+                sessionStorage.clear();
                 router.push("/");
             });
         }).catch((e) => {

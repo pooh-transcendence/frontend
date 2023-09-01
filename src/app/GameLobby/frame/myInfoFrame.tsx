@@ -8,7 +8,7 @@ import RandomButton from "../button/randomButton";
 import VsButton from "../button/vsButton";
 
 import { UserContext, channelInfo } from "@/app/UserContext";
-import { socket, api_post, api_get } from "@/app/api";
+import { socket, api_post, api_get, api_delete } from "@/app/api";
 
 function MakeGame() {
   const { state, actions } = useContext(UserContext);
@@ -19,7 +19,12 @@ function MakeGame() {
     api_post("/game/oneToOneGame", {
       ballSpeed: ballSpeed,
       racketSize: racketSize, 
-    }).then(e => console.log(e)).catch(e => console.log(e));
+    }).then(res => {
+        console.log(res);
+        actions.setTargetGame(res.data.data.gameId);
+        actions.setShowMakeGame(false);
+        actions.setShowMatching(true);
+      }).catch(e => console.log(e));
   }; // todo
 
   // #7649BB
@@ -78,8 +83,14 @@ function MakeGame() {
 }
 
 function WaitMatch() {
-  const cancelMatchHandler = () => {
+  const {state, actions}=useContext(UserContext);
 
+  const cancelMatchHandler = () => {
+    api_delete(`/game/oneToOneGame/${state.targetGame}`, {}).then(
+      e => {
+        actions.setShowMatching(false);
+      }
+    );
   }; // todo
   return (
     <div className="Waitmatch w-[385px] h-[147px] relative">
@@ -106,16 +117,20 @@ export default function MyInfoFrame() {
 
   useEffect(() => {
     api_get("/game/allOneToOneGame").then((res) => {
-      console.log(res);
+      console.log("/game/allOneToOneGame", res.data.data);
+      setGameList(res.data.data);
     })
 
     const addOneToOneGame=(targetGame : GameInfo) => {
-      setGameList([...gameList, targetGame])
+      console.log("allOneToOneGame", targetGame);
+      setGameList([...gameList, targetGame]);
     };
     const deleteOneToOneGame=(targetGame : GameInfo) => {
-      setGameList(gameList.filter((elem) => elem.gameId != targetGame.gameId))
+      console.log("deleteOneToOneGame", targetGame);
+      setGameList(gameList.filter((elem) => elem.game_id != targetGame.game_id));
     };
 
+    console.log("game listener on");
     socket.on("addOneToOneGame", addOneToOneGame);
     socket.on("deleteOneToOneGame", deleteOneToOneGame);
     
@@ -124,20 +139,6 @@ export default function MyInfoFrame() {
       socket.off("deleteOneToOneGame", deleteOneToOneGame);
     }
   }, []);
-
-  // const [channelList, setChannelList]=useState<channelInfo[]>([]); 
-
-  // useEffect(() => {
-  //   socket.emit("visibleChannel");
-  //   socket.on("visibleChannel", (channels: channelInfo[]) => {
-  //     setChannelList(channels);
-  //     // console.log("visible channels", channels);
-  //   });
-
-  //   return () => {
-  //     socket.off("visibleChannel");
-  //   }
-  // }, []);
 
   return (
     <>
