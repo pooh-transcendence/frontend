@@ -209,11 +209,17 @@ export default function MyInfoFrame() {
 
     const addOneToOneGame = (targetGame: GameInfo) => {
       console.log('addOneToOneGame', targetGame);
-      setGameList([...gameList, targetGame]);
+      console.log('gameList1', gameList); // TODO: gameList에 게임 하나만 들어있음
+      if (targetGame.userId !== state.userInfo?.id) {
+        console.log('setGameList');
+        setGameList([...gameList, targetGame]);
+      }
+      console.log('gameList2', gameList);
     };
+
     const deleteOneToOneGame = (targetGame: GameInfo) => {
       console.log('deleteOneToOneGame', targetGame);
-      setGameList(gameList.filter((elem) => elem.id != targetGame.id));
+      setGameList(gameList.filter((elem) => elem.id !== targetGame.id));
     };
 
     console.log('game listener on');
