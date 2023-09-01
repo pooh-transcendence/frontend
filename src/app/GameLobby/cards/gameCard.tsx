@@ -6,16 +6,18 @@ import { userInfo } from "@/app/UserContext";
 import { api_get } from "@/app/api";
 
 export interface GameInfo{
-    opponentId: string,
-    gameId: string,
-    gameSettings: string[],
+    winnerId: number,
+    game_id: number,
+    game_gameType: string,
+    game_racketSize: number,
+    game_ballSpeed: number,
 }
 
 export default function GameCard({game}: {game: GameInfo}):JSX.Element {
     const [opponent, setOpponent]=useState<userInfo>();
 
     useEffect(() => {
-        api_get(`/user/${game.opponentId}`).then((res) => {
+        api_get(`/user/${game.winnerId}`).then((res) => {
             setOpponent(res.data.data);
         });
     }, []);
@@ -31,7 +33,7 @@ export default function GameCard({game}: {game: GameInfo}):JSX.Element {
       };
 
     const gameEnterHandler=() => {
-        console.log("enter to ", game.gameId);
+        console.log("enter to ", game.game_id);
     }
 
     return (
@@ -48,7 +50,7 @@ export default function GameCard({game}: {game: GameInfo}):JSX.Element {
                 src="/pngegg-4@2x.png"
             />
             <div className="absolute top-[0.94rem] left-[30.94rem] inline-block w-[9.31rem] h-[1.31rem]">
-                3 balls, speed high {/*TODO*/}
+                [game settings(todo) {game.game_ballSpeed} {game.game_racketSize}]
             </div>
             <div className="absolute top-[0.06rem] left-[3.19rem] flex flex-row flex-wrap items-end justify-center gap-[0.75rem] text-left text-[1.5rem]">
                 <div className="relative">{opponent ? opponent.nickname : "loading"}</div>
