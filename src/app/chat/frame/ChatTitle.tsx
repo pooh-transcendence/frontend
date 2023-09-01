@@ -64,6 +64,7 @@ export const ChatTitle = ({
                     <div className="w-[1.4375rem] h-[1.4375rem] left-[1rem] top-[1.0625rem] absolute">
                         <img className="w-[1.4375rem] h-[1.4375rem] left-0 top-0 absolute" src="forum.svg" />
                     </div>
+                    <div className="w-[18.75rem] h-[3.125rem] left-0 top-0 absolute rounded-[10px] rounded-b-none border-neutral-600 border-[3px] border-b-0" />
                 </div>
             )}
             {type == "friendChat" && (
@@ -76,6 +77,7 @@ export const ChatTitle = ({
                     <button onClick={chatBackHandler} className="z-10 w-[1.4375rem] h-[1.4375rem] left-[1rem] top-[1.0625rem] absolute">
                         <img className="w-[1.4375rem] h-[1.4375rem] left-0 top-0 absolute" src="backButton.svg" />
                     </button>
+                    <div className="w-[18.75rem] h-[3.125rem] left-0 top-0 absolute rounded-[10px] rounded-b-none border-neutral-600 border-[3px] border-b-0" />
                     {/* <img className="w-7 h-7 left-[16.125rem] top-[0.875rem] absolute justify-center items-center inline-flex" src="settings.svg" /> */}
                 </div>
             )}
@@ -86,12 +88,12 @@ export const ChatTitle = ({
                     <div className="w-[1.4375rem] h-[1.4375rem] left-[1rem] top-[1.0625rem] absolute">
                         <img className="w-[1.4375rem] h-[1.4375rem] left-0 top-0 absolute" src="group.svg" />
                     </div>
-                    <button onClick={addFriendHandler} className="z-10">
+                    <div className="w-[18.75rem] h-[3.125rem] left-0 top-0 absolute rounded-[10px] rounded-b-none border-neutral-600 border-[3px] border-b-0" />
+                    <button onClick={addFriendHandler} className="z-20">
                         <img className="w-7 h-7 left-[16.125rem] top-[0.875rem] absolute justify-center items-center inline-flex" src="group_add.svg" />
                     </button>
                 </div>
             )}
-            <div className="w-[18.75rem] h-[3.125rem] left-0 top-0 absolute rounded-[10px] rounded-b-none border-neutral-600 border-[3px] border-b-0" />
         </section>
     )
 };
