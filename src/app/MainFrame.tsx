@@ -10,6 +10,7 @@ import ChannelLobby from "./ChannelLobby/page";
 import GameLobby from "./GameLobby/page";
 import MyPageFrame from "./MyPageLobby/page"
 import GamePlayRoomPages from "./gameplay3/page"
+import GameFrame from "./gameFrame"
 
 function SideButton(props: { type: mainStates }) {
   const { state, actions } = useContext(UserContext);
@@ -147,6 +148,9 @@ export default function MainFrame() {
           {
             (getAuth()) &&
             <>
+              {/* <button className="z-30" onClick={() => actions.setShowGame(true)}>
+                canvas test
+              </button> */}
               {
                 state.showInfo && (
                   <div className="z-20 flex justify-center items-center">
@@ -186,6 +190,11 @@ export default function MainFrame() {
                 <div className="w-[300px] h-[650px] absolute top-[8.13rem] left-[58.19rem]">
                   <Chat />
                 </div>
+                {/* {
+                  state.showGame && (
+                    <GameFrame />
+                  )
+                } */}
               </div>
             </>
           }
