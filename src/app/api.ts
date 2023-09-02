@@ -29,8 +29,9 @@ export function getUserId(): string | null {
   return userId;
 }
 
-export const baseUrl = 'http://localhost:3000';
-//export const baseUrl="http://10.19.233.166:3000";
+// export const baseUrl="http://localhost:3000";
+// export const baseUrl = "http://10.19.221.159:3000"; // yubchoi
+export const baseUrl = 'http://10.19.233.166:3000'; // joowpark
 
 export let socket = io(baseUrl + '/channel', {
   path: '/socket.io',
@@ -81,6 +82,13 @@ export const api_post = (url: string, body: object) => {
 
 export const api_patch = (url: string, body: object) => {
   return axios.patch(baseUrl + url, body, {
+    headers: { Authorization: `Bearer ${auth!}` },
+  });
+};
+
+export const api_delete = (url: string, body: object) => {
+  return axios.delete(baseUrl + url, {
+    data: body,
     headers: { Authorization: `Bearer ${auth!}` },
   });
 };
