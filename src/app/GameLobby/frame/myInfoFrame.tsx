@@ -204,9 +204,11 @@ export default function MyInfoFrame() {
   useEffect(() => {
     api_get('/game/allOneToOneGame').then((res) => {
       console.log('/game/allOneToOneGame', res.data.data);
-      setGameList(res.data.data);
+      setGameList([...gameList, res.data.data]);
     });
+  }, []);
 
+  useEffect(() => {
     const addOneToOneGame = (targetGame: GameInfo) => {
       console.log('addOneToOneGame', targetGame, gameList);
       setGameList([...gameList, targetGame]);
@@ -224,7 +226,7 @@ export default function MyInfoFrame() {
       gameSocket.off('addOneToOneGame', addOneToOneGame);
       gameSocket.off('deleteOneToOneGame', deleteOneToOneGame);
     };
-  }, []);
+  }, [gameList]);
 
   return (
     <>
