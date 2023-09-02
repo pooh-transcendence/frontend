@@ -176,15 +176,16 @@ export default function MainFrame() {
           }
           {getAuth() && (
             <>
-              {/* {
-                <div>
-                  <GamePlayRoomPages />
-                </div>
-              } */}
-              {state.showInfo && (
-                <div className="z-20 flex justify-center items-center">
-                  <div className="z-30 w-[62.5rem] h-[40.63rem]">
-                    <MyPageFrame />
+              {/* <button className="z-30" onClick={() => actions.setShowGame(true)}>
+                canvas test
+              </button> */}
+              {
+                state.showInfo && (
+                  <div className="z-20 flex justify-center items-center">
+                    <div className="z-30 w-[62.5rem] h-[40.63rem]">
+                      <MyPageFrame />
+                    </div>
+                    <div className="z-10 absolute top-0 left-0 w-[100vw] h-[100vh] bg-black opacity-20 backdrop-blur-xl" />
                   </div>
                   <div className="z-10 absolute top-0 left-0 w-[100vw] h-[100vh] bg-black opacity-20 backdrop-blur-xl" />
                 </div>
@@ -215,6 +216,11 @@ export default function MainFrame() {
                 <div className="w-[300px] h-[650px] absolute top-[8.13rem] left-[58.19rem]">
                   <Chat />
                 </div>
+                {/* {
+                  state.showGame && (
+                    <GameFrame />
+                  )
+                } */}
               </div>
             </>
           )}

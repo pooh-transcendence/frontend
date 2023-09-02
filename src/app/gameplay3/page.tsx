@@ -178,7 +178,7 @@ function GamePlayRoomPages() {
       this.running = this.over = false;
       this.turn = this.ai;
       this.timer = this.round = 0;
-      this.color = '#8c52ff';
+      this.color = "#8c52ff00"; // background color
 
       Pong.menu();
     },
@@ -197,7 +197,7 @@ function GamePlayRoomPages() {
       );
 
       // Change the canvas color;
-      Pong.context.fillStyle = '#ffffff';
+      Pong.context.fillStyle = "#9747ff";
 
       // Draw the end game menu text ('Game Over' and 'Winner')
       Pong.context.fillText(
@@ -224,7 +224,7 @@ function GamePlayRoomPages() {
       );
 
       // Change the canvas color;
-      this.context.fillStyle = '#ffffff';
+      this.context.fillStyle = "#9747ff";
 
       // Draw the 'press any key to begin' text
       this.context.fillText(
@@ -246,7 +246,7 @@ function GamePlayRoomPages() {
       this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
       // Set the fill style to white (For the paddles and the ball)
-      this.context.fillStyle = '#ffffff';
+      this.context.fillStyle = '#9747ff';
 
       // Draw the Player
       this.context.fillRect(
@@ -265,21 +265,23 @@ function GamePlayRoomPages() {
       );
 
       // Draw the Ball
-      //if (Pong._turnDelayIsOver.call(this))
+      // if (Pong._turnDelayIsOver.call(this))
       this.context.fillRect(
         this.ball.x,
         this.ball.y,
         this.ball.y,
         this.ball.width,
-        this.ball.height,
-      );
+        this.ball.height
+      ); // <-- 이거 뭐하는 거임?
+
       // Draw the net (Line in the middle)
       this.context.beginPath();
       this.context.setLineDash([7, 15]);
       this.context.moveTo(this.canvas.width / 2, this.canvas.height - 140);
       this.context.lineTo(this.canvas.width / 2, 140);
       this.context.lineWidth = 10;
-      this.context.strokeStyle = '#ffffff';
+      
+      this.context.strokeStyle = "#9747ff";
       this.context.stroke();
 
       // Set the default canvas font and align it to the center
@@ -332,7 +334,8 @@ function GamePlayRoomPages() {
       this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
       // Set the fill style to white (For the paddles and the ball)
-      this.context.fillStyle = '#ffffff';
+      this.context.fillStyle = "#9747ff";
+
       // Draw the Player
       this.context.fillRect(
         data.racket[0][0], //this.player.x,
@@ -368,7 +371,8 @@ function GamePlayRoomPages() {
       this.context.moveTo(this.canvas.width / 2, this.canvas.height - 140);
       this.context.lineTo(this.canvas.width / 2, 140);
       this.context.lineWidth = 10;
-      this.context.strokeStyle = '#ffffff';
+      this.context.strokeStyle = "#9747ff";
+
       this.context.stroke();
 
       // Set the default canvas font and align it to the center
@@ -437,9 +441,7 @@ function GamePlayRoomPages() {
 
   return (
     <>
-      <body className="text-center bg-ghostwhite flex justify-center items-center flex-col">
-        <canvas ref={canvasRef} width={1400} height={1000} />
-      </body>
+      <canvas ref={canvasRef} width={1400} height={1000} className="w-[700px] h-[500px]"/>
     </>
   );
 }

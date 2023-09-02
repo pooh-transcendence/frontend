@@ -3,18 +3,16 @@
 import type { NextPage } from "next";
 import LeftSideButtons from "./button/leftSideButtons";
 import MyPageButton from "./button/myPageButton";
-
-import MyInfoFrame from "./frame/myInfoFrame";
-import ChatFrame from "./frame/chatFrame";
+import MyInfoFrame from "./frame/GameLobbyFrame";
 import { useContext } from "react";
 import { UserContext } from "../UserContext";
-import GamePlayRoomPages from "../gameplay3/page";
+import GameFrame from "../gameFrame";
 
 const GameLobby: NextPage = () => {
   const {state, actions}=useContext(UserContext);
   
   if(state.showGame)
-    return <GamePlayRoomPages/>;
+    return <GameFrame/>;
   else
     return <MyInfoFrame />;
   
