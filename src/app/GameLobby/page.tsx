@@ -3,7 +3,7 @@
 import type { NextPage } from "next";
 import LeftSideButtons from "./button/leftSideButtons";
 import MyPageButton from "./button/myPageButton";
-import MyInfoFrame from "./frame/myInfoFrame";
+import MyInfoFrame from "./frame/GameLobbyFrame";
 import { useContext } from "react";
 import { UserContext } from "../UserContext";
 import GameFrame from "../gameFrame";

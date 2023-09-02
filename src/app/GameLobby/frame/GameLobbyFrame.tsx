@@ -207,7 +207,7 @@ export default function MyInfoFrame() {
       setGameList([...gameList, res.data.data]);
     });
   }, []);
-
+  
   useEffect(() => {
     const addOneToOneGame = (targetGame: GameInfo) => {
       console.log('addOneToOneGame', targetGame, gameList);
