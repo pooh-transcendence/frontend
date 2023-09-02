@@ -204,25 +204,21 @@ export default function MyInfoFrame() {
   useEffect(() => {
     api_get('/game/allOneToOneGame').then((res) => {
       console.log('/game/allOneToOneGame', res.data.data);
-      setGameList(res.data.data);
+      setGameList([...gameList, res.data.data]);
     });
+  }, []);
 
+  useEffect(() => {
     const addOneToOneGame = (targetGame: GameInfo) => {
-      console.log('addOneToOneGame', targetGame);
-      console.log('gameList1', gameList); // TODO: gameList에 게임 하나만 들어있음
-      if (targetGame.userId !== state.userInfo?.id) {
-        console.log('setGameList');
-        setGameList([...gameList, targetGame]);
-      }
-      console.log('gameList2', gameList);
+      console.log('addOneToOneGame', targetGame, gameList);
+      setGameList([...gameList, targetGame]);
     };
 
     const deleteOneToOneGame = (targetGame: GameInfo) => {
-      console.log('deleteOneToOneGame', targetGame);
+      console.log('deleteOneToOneGame', targetGame, gameList);
       setGameList(gameList.filter((elem) => elem.id !== targetGame.id));
     };
 
-    console.log('game listener on');
     gameSocket.on('addOneToOneGame', addOneToOneGame);
     gameSocket.on('deleteOneToOneGame', deleteOneToOneGame);
 
@@ -230,7 +226,7 @@ export default function MyInfoFrame() {
       gameSocket.off('addOneToOneGame', addOneToOneGame);
       gameSocket.off('deleteOneToOneGame', deleteOneToOneGame);
     };
-  }, []);
+  }, [gameList]);
 
   return (
     <>
@@ -240,8 +236,7 @@ export default function MyInfoFrame() {
         {/* match list section */}
         <div className="absolute h-[65.69%] w-[93.13%] top-[30.46%] right-[3.25%] bottom-[3.85%] left-[3.63%] text-right text-[0.81rem]">
           <div className="absolute h-[90.87%] w-full top-[9.13%] right-[0%] bottom-[0%] left-[0%] rounded-3xs bg-gray shadow-[0px_2px_10px_rgba(0,_0,_0,_0.25)]" />
-          <div className="absolute h-[64.09%] w-[93.56%] top-[15.69%] right-[2.68%] bottom-[20.22%] left-[3.76%] flex flex-col items-start justify-start gap-[0.81rem]">
-            {/* <GameCard game={{ opponentId: "1", gameId: "asdf", gameSettings: [] }} /> */}
+          <div className="absolute overflow-auto scrollbar-hide h-[82%] w-[93.56%] top-[13.69%] right-[2.68%] bottom-[20.22%] left-[3.76%] flex flex-col items-start justify-start gap-[0.81rem]">
             {gameList.map((game, idx) => {
               return <GameCard key={idx} game={game} />;
             })}
