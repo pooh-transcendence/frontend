@@ -40,7 +40,7 @@ export default function GameCard({ game }: { game: GameInfo }): JSX.Element {
     <>
       <div className="relative w-[43.56rem] h-[2.56rem]">
         <img
-          className="relative top-[2.31rem] left-[2.69rem] w-[40.88rem] h-[0.13rem]"
+          className="relative top-[2.31rem] left-[2.69rem]"
           src="/line-2.svg"
         />
         <img
