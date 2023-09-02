@@ -9,6 +9,7 @@ import { staticGenerationAsyncStorage } from "next/dist/client/components/static
 import { UserContext } from "../UserContext";
 import { Shippori_Antique } from "next/font/google";
 import { useRecoilStoreID } from "recoil";
+import { KeyObject } from "crypto";
 
 interface gameInfo {
   participants: number[];
@@ -73,59 +74,60 @@ function GamePlayRoomPages() {
   }, [canvasRef]);
 
   useEffect(() => {
-    console.log(gameSocket);
+    console.log("GameSOcket", gameSocket);
 
     const gameUpdateListener = (data: gameInfo) => {
+      console.log("A");
       Pong.drawData(data);
     };
 
-    const gameReadyListener = (data: gameInfo) => {
-      console.log("gameReady");
-      setGameUpdateDto(data);
-      gameSocket.emit("gameStart");
-      document.addEventListener("keydown", function (key) {
-        // Handle up arrow and w key events
-        if (key.keyCode === 38 || key.keyCode === 87)
-          gameSocket.emit("updateRacket", {
-            userId: state.userInfo.id,
-            direction: 1,
-          });
-
-        // Handle down arrow and s key events
-        if (key.keyCode === 40 || key.keyCode === 83)
-          gameSocket.emit("updateRacket", {
-            userId: state.userInfo.id,
-            direction: -1,
-          });
-      });
-    };
-    const joinQueueListener = (data: any) => {
-      console.log("joinQueue", data);
-    };
-
-    gameSocket.emit("joinQueue");
-    gameSocket.on("joinQueue", joinQueueListener);
-    gameSocket.on("gameReady", gameReadyListener);
-    gameSocket.on("gameUpdate", gameUpdateListener);
-    document.addEventListener("keydown", function (key) {
-      // Handle down arrow and s key events
+    const keyDownHandler = (key: KeyboardEvent) => {
+      // Handle up arrow and w key events
       if (key.keyCode === 38 || key.keyCode === 87)
         gameSocket.emit("updateRacket", {
-          userId: 3,
+          userId: state.userInfo.id,
           direction: 1,
         });
 
       // Handle down arrow and s key events
       if (key.keyCode === 40 || key.keyCode === 83)
         gameSocket.emit("updateRacket", {
-          userId: 3,
+          userId: state.userInfo.id,
           direction: -1,
         });
+    };
+    const gameReadyListener = (data: gameInfo) => {
+      console.log("gameReady");
+      gameSocket.emit("gameStart");
+      document.addEventListener("keydown", keyDownHandler);
+    };
+    const joinQueueListener = (data: any) => {
+      console.log("joinQueue", data);
+    };
+
+    const gameEndListener = (data: any) => {
+      console.log("gameEnd", data);
+      if (data.winner.id === state.userInfo.id)
+        alert(`You Win! with score ${data.winScore} : ${data.loseScore} `);
+      else alert(`You Lose! with score ${data.winScore} : ${data.loseScore}`);
+    };
+
+    gameSocket.emit("joinQueue", (data: any) => {
+      console.log("joinQueu! GOGOG");
     });
+    gameSocket.on("joinQueue", joinQueueListener);
+    gameSocket.on("gameReady", gameReadyListener);
+    gameSocket.on("gameUpdate", gameUpdateListener);
+    gameSocket.on("gameEnd", gameEndListener);
+    gameSocket.on("gameOver", gameEndListener);
+
     return () => {
       gameSocket.off("gameReady", gameReadyListener);
       gameSocket.off("joinQueue", joinQueueListener);
       gameSocket.off("gameUpdate", gameUpdateListener);
+      gameSocket.on("gameEnd", gameEndListener);
+      gameSocket.on("gameOver", gameEndListener);
+      document.removeEventListener("keydown", keyDownHandler);
     };
   }, []);
 
@@ -167,7 +169,7 @@ function GamePlayRoomPages() {
       if (this.canvas.current === null) return null;
       this.context = this.canvas.current.getContext("2d");
 
-      this.canvas.width = 1000;
+      this.canvas.width = 1400;
       this.canvas.height = 1000;
 
       this.player = Ai.new.call(this, "left");
@@ -437,9 +439,9 @@ function GamePlayRoomPages() {
 
   return (
     <>
-        <body className="text-center bg-ghostwhite flex justify-center items-center flex-col">
-          <canvas ref={canvasRef} width={1000} height={1000} />
-        </body>
+      <body className="text-center bg-ghostwhite flex justify-center items-center flex-col">
+        <canvas ref={canvasRef} width={1400} height={1000} />
+      </body>
     </>
   );
 }

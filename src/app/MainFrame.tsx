@@ -1,38 +1,57 @@
-'use client'
-import React, { useContext, useEffect } from "react"
-import Chat from "./chat/page"
+"use client";
+import React, { useContext, useEffect } from "react";
+import Chat from "./chat/page";
 
-import { savedContext } from "./UserProvider"
-import { UserContext, mainStates, targetChannelInfo, userInfo } from "@/app/UserContext"
-import { getAuth, setUserId, getUserId, redirectUri, setAuth, socket, updateSocket, api_get } from '@/app/api';
+import { savedContext } from "./UserProvider";
+import {
+  UserContext,
+  mainStates,
+  targetChannelInfo,
+  userInfo,
+} from "@/app/UserContext";
+import {
+  getAuth,
+  setUserId,
+  getUserId,
+  redirectUri,
+  setAuth,
+  socket,
+  updateSocket,
+  api_get,
+} from "@/app/api";
 import TwoFactor from "./TwoFactor/page";
 import ChannelLobby from "./ChannelLobby/page";
 import GameLobby from "./GameLobby/page";
-import MyPageFrame from "./MyPageLobby/page"
-import GamePlayRoomPages from "./gameplay3/page"
+import MyPageFrame from "./MyPageLobby/page";
+import GamePlayRoomPages from "./gameplay3/page";
 
 function SideButton(props: { type: mainStates }) {
   const { state, actions } = useContext(UserContext);
 
-  const imgSrc = props.type === mainStates.ChannelLobby ? "sidebutton31.svg" : "sidebutton2.svg";
+  const imgSrc =
+    props.type === mainStates.ChannelLobby
+      ? "sidebutton31.svg"
+      : "sidebutton2.svg";
   const clickhandler = () => {
     if (props.type === mainStates.ChannelLobby)
       actions.setMainState(mainStates.ChannelLobby);
-    else
-      actions.setMainState(mainStates.gameLobby);
+    else actions.setMainState(mainStates.gameLobby);
   };
 
   if (props.type === state.mainState)
     return (
-      <button onClick={clickhandler} className="bg-[#E1CAFE] rounded-tl-[10px] rounded-bl-[10px] w-[70px] h-[70px] relative ">
+      <button
+        onClick={clickhandler}
+        className="bg-[#E1CAFE] rounded-tl-[10px] rounded-bl-[10px] w-[70px] h-[70px] relative "
+      >
         <img src={imgSrc} className="" />
       </button>
-    )
+    );
   return (
     <button onClick={clickhandler} className="w-[70px] h-[70px] relative">
       <img src={imgSrc} className="" />
     </button>
-  )
+  );
 }
 
 function UserProfile() {
@@ -41,18 +60,26 @@ function UserProfile() {
     actions.setInfoTargetUser(state.userInfo.id);
     actions.setShowInfo(true);
     //console.log(state);
-  }
+  };
   const logout = () => {
     sessionStorage.clear();
     window.location.reload();
-  }
+  };
 
   return (
     <>
       <div className="w-[228px] h-[46px] flex items-center justify-between">
-        <button onClick={clickHandler} className="Userprofile h-[46px] px-px justify-start items-center gap-2 inline-flex">
-          <img className="w-10 h-10 rounded-[70%]" src={state.userInfo.avatar} />
-          <div className="Nickname w-[154px] h-[46px] text-neutral-600 text-[32px] font-normal">{state.userInfo.nickname}</div>
+        <button
+          onClick={clickHandler}
+          className="Userprofile h-[46px] px-px justify-start items-center gap-2 inline-flex"
+        >
+          <img
+            className="w-10 h-10 rounded-[70%]"
+            src={state.userInfo.avatar}
+          />
+          <div className="Nickname w-[154px] h-[46px] text-neutral-600 text-[32px] font-normal">
+            {state.userInfo.nickname}
+          </div>
         </button>
         <button onClick={logout} className="flex items-center">
           <img className="w-6 h-6" src="keyoff.svg" />
@@ -95,13 +122,20 @@ export default function MainFrame() {
       // restore chat states
       for (const userIds in target.mutedUser) {
         const userId = parseInt(userIds);
-        actions.setMutedUser({ userId, until: target.mutedUser[userIds].until });
+        actions.setMutedUser({
+          userId,
+          until: target.mutedUser[userIds].until,
+        });
         console.log("muted ", userIds, target.mutedUser[userIds]);
       }
       for (const userIds in target.userChat)
-        target.userChat[userIds].map((msg) => { actions.setUserChat(msg); });
+        target.userChat[userIds].map((msg) => {
+          actions.setUserChat(msg);
+        });
       for (const channelIds in target.channelChat)
-        target.channelChat[channelIds].map((msg) => { actions.setChannelChat(msg); });
+        target.channelChat[channelIds].map((msg) => {
+          actions.setChannelChat(msg);
+        });
       // console.log("restore complete", target);
     }
 
@@ -113,23 +147,22 @@ export default function MainFrame() {
     const connectionHandler = () => {
       // console.log("connected", socket);
       actions.setConnectionState(true);
-    }
+    };
     const disconnectionHandler = () => {
       console.log("socket disconnected");
       actions.setConnectionState(false);
-    }
+    };
     if (getAuth()) {
-      socket.on('connect', connectionHandler);
-      socket.on('disconnect', disconnectionHandler);
+      socket.on("connect", connectionHandler);
+      socket.on("disconnect", disconnectionHandler);
     }
 
     return () => {
       if (getAuth()) {
-        socket.off('connect', connectionHandler);
-        socket.off('disconnect', disconnectionHandler);
+        socket.off("connect", connectionHandler);
+        socket.off("disconnect", disconnectionHandler);
       }
-    }
-
+    };
   }, []);
 
   if (getUserId())
@@ -139,27 +172,25 @@ export default function MainFrame() {
         <div className="flex justify-center items-center h-screen bg-gradient-to-bl from-neutral-100 to-slate-50">
           {
             // check whether this user is registered
-            !getAuth() && (
-              <TwoFactor />
-            )
+            !getAuth() && <TwoFactor />
           }
-
-          {
-            (getAuth()) &&
+          {getAuth() && (
             <>
-              {
-                state.showInfo && (
-                  <div className="z-20 flex justify-center items-center">
-                    <div className="z-30 w-[62.5rem] h-[40.63rem]">
-                      <MyPageFrame />
-                    </div>
-                    <div className="z-10 absolute top-0 left-0 w-[100vw] h-[100vh] bg-black opacity-20 backdrop-blur-xl" />
+              {/* {
+                <div>
+                  <GamePlayRoomPages />
+                </div>
+              } */}
+              {state.showInfo && (
+                <div className="z-20 flex justify-center items-center">
+                  <div className="z-30 w-[62.5rem] h-[40.63rem]">
+                    <MyPageFrame />
                   </div>
-                )
-              }
+                  <div className="z-10 absolute top-0 left-0 w-[100vw] h-[100vh] bg-black opacity-20 backdrop-blur-xl" />
+                </div>
+              )}
 
               <div className="w-[1280px] h-[832px] absolute">
-
                 {/* userProfile */}
                 <div className="top-[3.13rem] left-[60.38rem] absolute w-[14.25rem] h-[2.875rem]">
                   <UserProfile />
@@ -174,13 +205,11 @@ export default function MainFrame() {
                 </div>
 
                 <div className="absolute w-[800px] h-[650px] top-[8.13rem] left-[7.44rem] z-10 rounded-[10px]">
-                  {
-                    state.mainState === mainStates.gameLobby ? (
-                      <GameLobby />
-                    ) : (
-                      <ChannelLobby />
-                    )
-                  }
+                  {state.mainState === mainStates.gameLobby ? (
+                    <GameLobby />
+                  ) : (
+                    <ChannelLobby />
+                  )}
                 </div>
 
                 <div className="w-[300px] h-[650px] absolute top-[8.13rem] left-[58.19rem]">
@@ -188,10 +217,10 @@ export default function MainFrame() {
                 </div>
               </div>
             </>
-          }
+          )}
         </div>
       </>
-    )
-  else // redirect to oauth uri
-    window ? window.location.replace(redirectUri()) : null;
+    );
+  // redirect to oauth uri
+  else window ? window.location.replace(redirectUri()) : null;
 }
