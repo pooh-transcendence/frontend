@@ -11,11 +11,11 @@ export interface GameInfo {
   gameType: string;
   racketSize: number;
   ballSpeed: number;
-}
+};
 
 export default function GameCard({ game }: { game: GameInfo }): JSX.Element {
   const [opponent, setOpponent] = useState<userInfo>();
-
+  
   useEffect(() => {
     api_get(`/user/${game.userId}`).then((res) => {
       setOpponent(res.data.data);

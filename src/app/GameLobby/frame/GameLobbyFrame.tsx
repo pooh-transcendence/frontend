@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useContext, use } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import GameCard, { GameInfo } from '../cards/gameCard';
 import UserStats from './userStats';
 
@@ -170,7 +170,7 @@ function WaitMatch() {
     api_delete(`/game/oneToOneGame/${state.targetGame}`, {}).then((e) => {
       actions.setShowMatching(false);
     });
-  }; // todo
+  };
   return (
     <div className="Waitmatch w-[385px] h-[147px] relative">
       <div className="Bg w-[385px] h-[147px] left-0 top-0 absolute bg-white rounded-[10px] shadow" />
@@ -197,17 +197,17 @@ function WaitMatch() {
   );
 }
 
-export default function MyInfoFrame() {
-  const { state, actions } = useContext(UserContext);
+function MatchList() {
   const [gameList, setGameList] = useState<GameInfo[]>([]);
 
   useEffect(() => {
+    console.log("gamelobbyframe loaded");
     api_get('/game/allOneToOneGame').then((res) => {
       console.log('/game/allOneToOneGame', res.data.data);
-      setGameList([...gameList, res.data.data]);
+      setGameList([...gameList, ...res.data.data]);
     });
   }, []);
-  
+
   useEffect(() => {
     const addOneToOneGame = (targetGame: GameInfo) => {
       console.log('addOneToOneGame', targetGame, gameList);
@@ -230,17 +230,26 @@ export default function MyInfoFrame() {
 
   return (
     <>
+      <div className="matchList absolute overflow-auto scrollbar-hide h-[82%] w-[93.56%] top-[13.69%] right-[2.68%] bottom-[20.22%] left-[3.76%] flex flex-col items-start justify-start gap-[0.81rem]">
+        {gameList.map((elem, idx) => {
+          return <GameCard key={idx} game={elem} />;
+        })}
+      </div>
+    </>
+  )
+}
+export default function GameLobbyFrame() {
+  const { state, actions } = useContext(UserContext);
+
+  return (
+    <>
       <div className="absolute w-[50rem] h-[40.63rem] text-[0.75rem] text-[#555555]">
         <div className="absolute h-full w-full top-[0%] right-[0%] bottom-[0%] left-[0%] rounded-3xs box-border border-[3px] border-solid border-dimgray" />
 
         {/* match list section */}
         <div className="absolute h-[65.69%] w-[93.13%] top-[30.46%] right-[3.25%] bottom-[3.85%] left-[3.63%] text-right text-[0.81rem]">
           <div className="absolute h-[90.87%] w-full top-[9.13%] right-[0%] bottom-[0%] left-[0%] rounded-3xs bg-gray shadow-[0px_2px_10px_rgba(0,_0,_0,_0.25)]" />
-          <div className="absolute overflow-auto scrollbar-hide h-[82%] w-[93.56%] top-[13.69%] right-[2.68%] bottom-[20.22%] left-[3.76%] flex flex-col items-start justify-start gap-[0.81rem]">
-            {gameList.map((game, idx) => {
-              return <GameCard key={idx} game={game} />;
-            })}
-          </div>
+          <MatchList />
           <div className="absolute h-[9.23%] w-[33.15%] top-[0%] right-[60.54%] bottom-[90.77%] left-[6.31%] text-left text-[1.25rem]">
             <div className="absolute h-full w-full top-[0%] left-[0%] inline-block">
               match list
@@ -268,12 +277,8 @@ export default function MyInfoFrame() {
           </div>
         </div>
 
-        {/* <button onClick={() => {}} className="text-left"> */}
         <VsButton />
-        {/* </button> */}
-        {/* <button onClick={() => {}} className="text-left"> */}
         <RandomButton />
-        {/* </button> */}
       </div>
 
       {state.showMakeGame && (
