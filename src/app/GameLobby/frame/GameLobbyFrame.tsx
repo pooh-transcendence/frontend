@@ -169,15 +169,17 @@ function MakeGame() {
 function WaitMatch() {
   const { state, actions } = useContext(UserContext);
 
+  useEffect(() => {
+    socket.once("gameReady", (elem) => {
+      console.log("gameReady", elem);
+      actions.setShowGame(true);
+      actions.setMainState(mainStates.gameLobby);
+    });
+  }, []);
+  
   const cancelMatchHandler = () => {
     if(state.targetGame == -1) // random matching
-    {
-      socket.once("gameReady", (elem) => {
-        actions.setShowGame(true);
-        actions.setMainState(mainStates.gameLobby);
-      });
       socket.emit("leaveQueue");
-    }
     else 
       api_delete(`/game/oneToOneGame/${state.targetGame}`, {}).then((e) => {
         actions.setShowMatching(false);
