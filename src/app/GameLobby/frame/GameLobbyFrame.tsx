@@ -1,14 +1,14 @@
 'use client';
 
 import React, { useEffect, useState, useContext } from 'react';
-import GameCard, { GameInfo } from '../cards/gameCard';
+import GameCard, { GameWaitingInfo } from '../cards/gameCard';
 import UserStats from './userStats';
 
 import RandomButton from '../button/randomButton';
 import VsButton from '../button/vsButton';
 
-import { UserContext, channelInfo } from '@/app/UserContext';
-import { gameSocket, api_post, api_get, api_delete } from '@/app/api';
+import { UserContext, channelInfo, mainStates } from '@/app/UserContext';
+import { gameSocket, api_post, api_get, api_delete, socket } from '@/app/api';
 
 function MakeGame() {
   const { state, actions } = useContext(UserContext);
@@ -20,7 +20,7 @@ function MakeGame() {
     api_post('/game/oneToOneGame', {
       ballSpeed: ballSpeed,
       racketSize: racketSize,
-      targetNickName: state.targetGameInvite,
+      targetUserId: state.targetGameInvite,
     })
       .then((res) => {
         console.log(res);
@@ -169,10 +169,38 @@ function MakeGame() {
 function WaitMatch() {
   const { state, actions } = useContext(UserContext);
 
-  const cancelMatchHandler = () => {
-    api_delete(`/game/oneToOneGame/${state.targetGame}`, {}).then((e) => {
+  useEffect(() => {
+    console.log("gameReady handler on");
+    const gameReadyHandler=(elem: any) => {
+        console.log("gameReady", elem);
+        actions.setShowGame(true);
+        actions.setMainState(mainStates.gameLobby);
+        actions.setShowMatching(false);
+    };
+    gameSocket.once("gameReady", gameReadyHandler);
+
+    const leaveQueueHandler=(elem: any) => {
       actions.setShowMatching(false);
-    });
+    };
+    gameSocket.once("leaveQueue", leaveQueueHandler);
+
+    return () => {
+      gameSocket.off("gameReady", gameReadyHandler);
+      gameSocket.off("leaveQueue", leaveQueueHandler);
+    }
+  }, []);
+
+  const cancelMatchHandler = () => {
+    if(state.targetGame == -1) // random matching
+    {
+      console.log("leaveQueue socket emitted");
+      gameSocket.emit("leaveQueue");
+
+    }
+    else 
+      api_delete(`/game/oneToOneGame/${state.targetGame}`, {}).then((e) => {
+        actions.setShowMatching(false);
+      });
   };
   return (
     <div className="Waitmatch w-[385px] h-[147px] relative">
@@ -214,7 +242,7 @@ function WaitMatch() {
 
 function MatchList() {
   const { state, actions } = useContext(UserContext);
-  const [gameList, setGameList] = useState<GameInfo[]>([]);
+  const [gameList, setGameList] = useState<GameWaitingInfo[]>([]);
 
   useEffect(() => {
     console.log("gamelobbyframe loaded");
@@ -225,12 +253,12 @@ function MatchList() {
   }, []);
 
   useEffect(() => {
-    const addOneToOneGame = (targetGame: GameInfo) => {
+    const addOneToOneGame = (targetGame: GameWaitingInfo) => {
       console.log('addOneToOneGame', targetGame, gameList);
       setGameList([...gameList, targetGame]);
     };
 
-    const deleteOneToOneGame = (targetGame: GameInfo) => {
+    const deleteOneToOneGame = (targetGame: GameWaitingInfo) => {
       console.log('deleteOneToOneGame', targetGame, gameList);
       setGameList(gameList.filter((elem) => elem.id !== targetGame.id));
     };

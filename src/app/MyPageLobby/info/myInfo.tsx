@@ -4,22 +4,21 @@ import { UserContext, userInfo } from "@/app/UserContext";
 import { api_get, api_patch, api_post } from "@/app/api";
 import ImageUploading from 'react-images-uploading';
 
-export default function MyInfo() {
+export default function MyInfo({target} : {target: userInfo}) {
   const { state, actions } = useContext(UserContext);
-  const [target, setTarget] = useState<userInfo>({} as userInfo);
   const [newNickname, setNewNickname] = useState<string | null>(null);
   const [avatarHover, setAvatarHover] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const [images, setImages] = useState([]);
 
-  useEffect(() => {
-    api_get(`/user/${state.infoTargetUser}`).then((data) => {
-      setTarget(data.data.data);
-      console.log(`/user/${state.infoTargetUser}`, data.data.data);
-      setNewNickname(data.data.data.nickname);
-    })
-  }, [state.infoTargetUser]);
+  // useEffect(() => {
+  //   api_get(`/user/${state.infoTargetUser}`).then((data) => {
+  //     setTarget(data.data.data);
+  //     console.log(`/user/${state.infoTargetUser}`, data.data.data);
+  //     setNewNickname(data.data.data.nickname);
+  //   })
+  // }, [state.infoTargetUser]);
 
   useEffect(() => {
     if (textRef.current && inputRef.current) {
@@ -50,7 +49,7 @@ export default function MyInfo() {
   const onChangeNickname = (e: any) => {
     setNewNickname(e.target.value);
   };
-  const onChangeImage = (imageList, addUpdateIndex) => {
+  const onChangeImage = (imageList: any, addUpdateIndex: any) => {
     // data for submit
     console.log(imageList, addUpdateIndex);
     setImages(imageList);
