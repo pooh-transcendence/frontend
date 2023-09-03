@@ -13,21 +13,31 @@ interface UserListCompProps {
 
 export const UserListComponent = ({
   userId,
-  nick = "testNickasdf",
+  nick,
   type,
-  profileImg = "pngegg-1@2x.png",
+  profileImg,
 }: UserListCompProps): JSX.Element => {
 
   const { state, actions } = useContext(UserContext);
 
   const addFriendHandler = () => {
     socket.emit("createFriend", { "followingUserId": Number(userId) });
-  }
+  };
   const selectHandler = () => {
     actions.setChannelChattingInfo({ ...state.channelChattingInfo, inviteSelectedList: [...state.channelChattingInfo.inviteSelectedList, userId] });
-  }
+  };
   const unselectHandler = () => {
     actions.setChannelChattingInfo({ ...state.channelChattingInfo, inviteSelectedList: state.channelChattingInfo.inviteSelectedList.filter((elem) => elem != userId) });
+  };
+  const gameInviteHandler = (e: any) => {
+    actions.setShowMakeGame(true);
+    actions.setTargetGameInvite(userId); // todo 
+    e.stopPropagation();
+  };
+  const userInfoHandler = (e: any) => {
+    actions.setShowInfo(true);
+    actions.setInfoTargetUser(userId);
+    e.stopPropagation();
   }
 
   return (
@@ -73,13 +83,18 @@ export const UserListComponent = ({
       )}
       {type === "OFFLINE" && (
         <div className="w-[260px] h-[45px] relative">
-          <img className="w-5 h-5 left-[241px] top-[8px] absolute" src="info.svg" />
+          <img className="top-[41px] relative" src="listComp_line_260px.svg" />
           <div className="left-[1px] top-0 absolute justify-center items-center gap-2.5 inline-flex">
             <img className="w-8 h-8 rounded-[70%]" src={profileImg ? profileImg : "pngegg-1@2x.png"} />
             <div className="text-neutral-600 text-base font-normal">{nick}</div>
             <img className="w-3.5 h-3.5 relative" src="wifi_off.svg" />
+            <button onClick={gameInviteHandler} className="z-30"> {/* 1vs1 invite button */}
+              <img className="w-5 h-5 left-[216px] top-[8px] absolute" src="mark_as_unread.svg" />
+            </button>
           </div>
-          <img className="top-[41px] relative" src="listComp_line_260px.svg" />
+          <button onClick={userInfoHandler}>
+            <img className="w-5 h-5 left-[241px] top-[8px] absolute" src="info.svg" />
+          </button>
         </div>
       )}
       {(type === "ONLINE" || type === "ONCHAT") && (
@@ -90,8 +105,12 @@ export const UserListComponent = ({
             <div className="text-neutral-600 text-base font-normal">{nick}</div>
             <img className="w-3.5 h-3.5 relative" src="wifi_on.svg" />
           </div>
-          <img className="w-5 h-5 left-[216px] top-[8px] absolute" src="mark_as_unread.svg" />
-          <img className="w-5 h-5 left-[241px] top-[8px] absolute" src="info.svg" />
+          <button onClick={gameInviteHandler}> {/* 1vs1 invite button */}
+            <img className="w-5 h-5 left-[216px] top-[8px] absolute" src="mark_as_unread.svg" />
+          </button>
+          <button onClick={userInfoHandler}>
+            <img className="w-5 h-5 left-[241px] top-[8px] absolute" src="info.svg" />
+          </button>
         </div>
       )}
       {type === "GAMING" && (
@@ -102,7 +121,9 @@ export const UserListComponent = ({
             <div className="text-neutral-600 text-base font-normal">{nick}</div>
             <img className="w-3.5 h-3.5 relative" src="gaming.svg" />
           </div>
-          <img className="w-5 h-5 left-[241px] top-[8px] absolute" src="info.svg" />
+          <button onClick={userInfoHandler}>
+            <img className="w-5 h-5 left-[241px] top-[8px] absolute" src="info.svg" />
+          </button>
         </div>
       )}
       {type === "list_block" && (

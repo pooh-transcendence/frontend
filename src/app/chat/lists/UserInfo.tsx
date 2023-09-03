@@ -21,7 +21,10 @@ const UserInfo = ({
         })
     }, []);
 
-    const gameHandler = () => { };
+    const gameInviteHandler = () => {
+        actions.setShowMakeGame(true);
+        actions.setTargetGameInvite(state.chatTargetUser); // todo
+      };
     const followHandler = () => {
         socket.emit("createFriend", {
             followingUserId: state.chatTargetUser
@@ -71,7 +74,7 @@ const UserInfo = ({
                 </div>
                 {/* default buttons */}
                 <div className="left-[37px] top-[69px] absolute justify-start items-start gap-[23px] inline-flex italic">
-                    <button onClick={gameHandler} className="flex-col justify-start items-center inline-flex">
+                    <button onClick={gameInviteHandler} className="flex-col justify-start items-center inline-flex">
                         <img className="w-8 h-8 relative" src="mark_as_unread.svg" />
                         <div className="text-neutral-600 text-[13px] font-bold italic">1 vs 1</div>
                     </button>
@@ -104,7 +107,7 @@ const UserInfo = ({
             <div className="w-[276px] h-[138px] bg-[#FEFEFE] relative">
                 {/* default buttons */}
                 <div className="left-[37px] top-[69px] absolute justify-start items-start gap-[23px] inline-flex italic">
-                    <button onClick={gameHandler} className="flex-col justify-start items-center inline-flex">
+                    <button onClick={gameInviteHandler} className="flex-col justify-start items-center inline-flex">
                         <img className="w-8 h-8 relative" src="mark_as_unread.svg" />
                         <div className="text-neutral-600 text-[13px] font-bold italic">1 vs 1</div>
                     </button>

@@ -16,15 +16,18 @@ function MakeGame() {
   const [ballSpeed, setBallSpeed] = useState<number>(0);
   const createButtonHandler = () => {
     if (racketSize === 0 || ballSpeed === 0) return;
+    console.log("gameCreation with ", ballSpeed, racketSize, state.targetGameInvite);
     api_post('/game/oneToOneGame', {
       ballSpeed: ballSpeed,
       racketSize: racketSize,
+      targetNickName: state.targetGameInvite,
     })
       .then((res) => {
         console.log(res);
         actions.setTargetGame(res.data.data.gameId);
         actions.setShowMakeGame(false);
         actions.setShowMatching(true);
+        actions.setTargetGameInvite(null);
       })
       .catch((e) => console.log(e));
   }; // todo
@@ -210,6 +213,7 @@ function WaitMatch() {
 }
 
 function MatchList() {
+  const { state, actions } = useContext(UserContext);
   const [gameList, setGameList] = useState<GameInfo[]>([]);
 
   useEffect(() => {
@@ -244,7 +248,8 @@ function MatchList() {
     <>
       <div className="matchList absolute overflow-auto scrollbar-hide h-[82%] w-[93.56%] top-[13.69%] right-[2.68%] bottom-[20.22%] left-[3.76%] flex flex-col items-start justify-start gap-[0.81rem]">
         {gameList.map((elem, idx) => {
-          return <GameCard key={idx} game={elem} />;
+          // if(state.userInfo.id != elem.userId)
+            return <GameCard key={idx} game={elem} />;
         })}
       </div>
     </>
