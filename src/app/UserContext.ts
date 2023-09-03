@@ -32,6 +32,26 @@ export interface channelInfo
     userCount: number;
 };
 
+export interface gameInfo
+{
+  id: number;
+  
+  winner: userInfo;
+  loser: userInfo;
+
+  winScore: number;
+  loseScore: number;
+
+  ballSpeed: number;
+  racketSize: number;
+
+  createdAt: string;
+  deletedAt: string;
+  updatedAt: string;
+
+  gameType: "1vs1 PUBLIC" | "1vs1 PRIVATE" | "LADDER"; // todo
+};
+
 export interface userInfo
 {
   nickname: string;
@@ -39,8 +59,8 @@ export interface userInfo
   id: number;
   token: string; // this value is our backend's token 
   registered: boolean; // this value would be true after two-factor auth
-  winnerGame: Object[];
-  loserGame: Object[];
+  winnerGame: gameInfo[];
+  loserGame: gameInfo[];
 };
 
 export interface targetChannelInfo {

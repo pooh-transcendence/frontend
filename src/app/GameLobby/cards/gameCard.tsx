@@ -1,21 +1,12 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
-import { userInfo } from '@/app/UserContext';
+import { gameInfo, userInfo } from '@/app/UserContext';
 import { api_get } from '@/app/api';
 
-export interface GameInfo {
-  userId: number;
-  id: number;
-  gameType: string;
-  racketSize: number;
-  ballSpeed: number;
-};
-
-export function getGameSettingString(game : GameInfo)
+export function getGameSettingString(game : gameInfo | GameWaitingInfo)
 {
-  console.log("getGameSettingString", game);
   let res="";
   res+="racket ";
   switch (game.racketSize) {
@@ -44,7 +35,15 @@ export function getGameSettingString(game : GameInfo)
   return res;
 }
 
-export default function GameCard({ game }: { game: GameInfo }): JSX.Element {
+export interface GameWaitingInfo {
+  userId: number;
+  id: number;
+  gameType: string;
+  racketSize: number;
+  ballSpeed: number;
+};
+
+export default function GameCard({ game }: { game: GameWaitingInfo }): JSX.Element {
   const [opponent, setOpponent] = useState<userInfo>();
   
   useEffect(() => {
