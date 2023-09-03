@@ -20,7 +20,7 @@ function MakeGame() {
     api_post('/game/oneToOneGame', {
       ballSpeed: ballSpeed,
       racketSize: racketSize,
-      targetNickName: state.targetGameInvite,
+      targetUserId: state.targetGameInvite,
     })
       .then((res) => {
         console.log(res);
