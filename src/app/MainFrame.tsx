@@ -186,10 +186,9 @@ export default function MainFrame() {
                       <MyPageFrame />
                     </div>
                     <div className="z-10 absolute top-0 left-0 w-[100vw] h-[100vh] bg-black opacity-20 backdrop-blur-xl" />
+                    <div className="z-10 absolute top-0 left-0 w-[100vw] h-[100vh] bg-black opacity-20 backdrop-blur-xl" />
                   </div>
-                  <div className="z-10 absolute top-0 left-0 w-[100vw] h-[100vh] bg-black opacity-20 backdrop-blur-xl" />
-                </div>
-              )}
+                )}
 
               <div className="w-[1280px] h-[832px] absolute">
                 {/* userProfile */}
