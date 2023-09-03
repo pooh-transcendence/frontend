@@ -16,15 +16,18 @@ function MakeGame() {
   const [ballSpeed, setBallSpeed] = useState<number>(0);
   const createButtonHandler = () => {
     if (racketSize === 0 || ballSpeed === 0) return;
+    console.log("gameCreation with ", ballSpeed, racketSize, state.targetGameInvite);
     api_post('/game/oneToOneGame', {
       ballSpeed: ballSpeed,
       racketSize: racketSize,
+      targetNickName: state.targetGameInvite,
     })
       .then((res) => {
         console.log(res);
         actions.setTargetGame(res.data.data.gameId);
         actions.setShowMakeGame(false);
         actions.setShowMatching(true);
+        actions.setTargetGameInvite(null);
       })
       .catch((e) => console.log(e));
   }; // todo
@@ -181,16 +184,28 @@ function WaitMatch() {
         />
       </button>
       <div className="Matching w-[121px] h-8 left-[132px] top-[35px] absolute">
-        <div className="Matching w-[121px] h-8 left-0 top-0 absolute text-right">
-          <span className="text-neutral-600 text-2xl font-bold">ma</span>
-          <span className="text-purple-500 text-2xl font-bold">tch</span>
-          <span className="text-neutral-600 text-2xl font-bold">ing...</span>
+        <div
+          className="Matching w-[121px] h-8 left-0 top-0 absolute text-center text-neutral-600 font-bold"
+          style={{
+            background: `linear-gradient(
+              to right,
+              #9747FF 30%,
+              #555555 50%
+            )`,
+            WebkitBackgroundClip: "text",
+            backgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            textFillColor: "transparent",
+            backgroundSize: "500% auto",
+            animation: "textShine 1s ease-in-out infinite alternate",
+          }}
+        >
+          matching...
         </div>
       </div>
       <div className="Loadingprogress w-[41px] h-[41px] left-[172px] top-[73px] absolute">
         <div className=" w-10 h-10 left-[0.90px] top-[0.90px] absolute">
-          <div className=" w-10 h-10 left-0 top-0 absolute bg-purple-700 rounded-full" />
-          <div className="Ellipse1 w-1.5 h-1.5 left-[17.20px] top-[34px] absolute bg-purple-700 rounded-full" />
+          <img src="loading_spinner.png" className='animate-spin' />
         </div>
       </div>
     </div>
@@ -198,6 +213,7 @@ function WaitMatch() {
 }
 
 function MatchList() {
+  const { state, actions } = useContext(UserContext);
   const [gameList, setGameList] = useState<GameInfo[]>([]);
 
   useEffect(() => {
@@ -232,7 +248,8 @@ function MatchList() {
     <>
       <div className="matchList absolute overflow-auto scrollbar-hide h-[82%] w-[93.56%] top-[13.69%] right-[2.68%] bottom-[20.22%] left-[3.76%] flex flex-col items-start justify-start gap-[0.81rem]">
         {gameList.map((elem, idx) => {
-          return <GameCard key={idx} game={elem} />;
+          // if(state.userInfo.id != elem.userId)
+            return <GameCard key={idx} game={elem} />;
         })}
       </div>
     </>
