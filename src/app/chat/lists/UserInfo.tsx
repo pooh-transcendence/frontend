@@ -39,7 +39,11 @@ const UserInfo = ({
     const blockHandler=() => {
         socket.emit("createBlock", {"blockUserId": Number(state.chatTargetUser) 
     }, (ack: any) => {console.log(ack)})};
-    const infoHandler = () => { console.log("info button", state.chatTargetUser) };
+    const infoHandler = () => { 
+        actions.setInfoTargetUser(state.chatTargetUser);
+        actions.setShowInfo(true);
+        actions.setShowChatUserInfo(false);
+    };
     const banHandler = () => {
         console.log("ban", state.chatTargetUser, state.channelChattingInfo.id);
         socket.emit("updateChannelUser", { userId: Number(state.chatTargetUser), channelId: Number(state.channelChattingInfo.id), isBanned: true });
@@ -104,7 +108,7 @@ const UserInfo = ({
         );
     else // if(type == "default")
         return (
-            <div className="w-[276px] h-[138px] bg-[#FEFEFE] relative">
+            <div className="w-[276px] h-[138px] rounded-[10px] bg-[#FEFEFE] relative">
                 {/* default buttons */}
                 <div className="left-[37px] top-[69px] absolute justify-start items-start gap-[23px] inline-flex italic">
                     <button onClick={gameInviteHandler} className="flex-col justify-start items-center inline-flex">
