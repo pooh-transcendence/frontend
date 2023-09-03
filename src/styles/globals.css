@@ -2,12 +2,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 body {
-    @apply leading-[normal] m-0;
+  @apply leading-[normal] m-0;
+}
+
+*,
+::before,
+::after {
+  border-width: 0;
+}
+
+@keyframes textShine {
+  0% {
+    background-position: 0% 50%;
   }
-  *,
-  ::before,
-  ::after {
-    border-width: 0;
+
+  100% {
+    background-position: 100% 50%;
   }
-  
+}
