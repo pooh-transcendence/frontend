@@ -7,7 +7,7 @@ export default function RandomButton() {
     const {state, actions}=useContext(UserContext);
 
     const randomMatchingHandler=() => {
-        console.log("randomMatchingHandler");
+        console.log("randomMatchingHandler", gameSocket);
         actions.setShowMatching(true);
         gameSocket.emit("joinQueue");
     }
