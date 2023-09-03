@@ -13,6 +13,37 @@ export interface GameInfo {
   ballSpeed: number;
 };
 
+export function getGameSettingString(game : GameInfo)
+{
+  console.log("getGameSettingString", game);
+  let res="";
+  res+="racket ";
+  switch (game.racketSize) {
+    case 1:
+      res+="small / ";
+      break;
+    case 2:
+      res+="medium / ";
+      break;
+    case 3:
+      res+="large / ";
+      break;
+  }
+  res+="speed ";
+  switch (game.ballSpeed) {
+    case 1:
+      res+="low";
+      break;
+    case 2:
+      res+="moderate";
+      break;
+    case 3:
+      res+="high";
+      break;
+  }
+  return res;
+}
+
 export default function GameCard({ game }: { game: GameInfo }): JSX.Element {
   const [opponent, setOpponent] = useState<userInfo>();
   
@@ -47,8 +78,8 @@ export default function GameCard({ game }: { game: GameInfo }): JSX.Element {
           className="relative rounded-[70%] h-[78.05%] w-[4.59%] top-[0%] right-[95.41%] bottom-[21.95%] left-[0%] max-w-full overflow-hidden max-h-full object-cover"
           src={opponent?.avatar ? opponent.avatar : "/pngegg-4@2x.png"}
         />
-        <div className="absolute top-[0.94rem] left-[30.94rem] inline-block w-[9.31rem] h-[1.31rem]">
-          [game settings(todo) {game.ballSpeed} {game.racketSize}]
+        <div className="absolute top-[0.94rem] left-[20.94rem] text-right inline-block w-[20rem] h-[1.31rem]">
+          {getGameSettingString(game)}
         </div>
         <div className="absolute top-[0.06rem] left-[3.19rem] flex flex-row flex-wrap items-end justify-center gap-[0.75rem] text-left text-[1.5rem]">
           <div className="relative">
