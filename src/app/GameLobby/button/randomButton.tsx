@@ -1,6 +1,6 @@
 'use cilent'
 import { UserContext } from "@/app/UserContext";
-import { socket } from "@/app/api";
+import { gameSocket } from "@/app/api";
 import { useContext } from "react";
 
 export default function RandomButton() {
@@ -9,7 +9,7 @@ export default function RandomButton() {
     const randomMatchingHandler=() => {
         console.log("randomMatchingHandler");
         actions.setShowMatching(true);
-        socket.emit("joinQueue");
+        gameSocket.emit("joinQueue");
     }
 
     return (

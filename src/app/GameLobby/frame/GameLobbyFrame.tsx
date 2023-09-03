@@ -170,16 +170,33 @@ function WaitMatch() {
   const { state, actions } = useContext(UserContext);
 
   useEffect(() => {
-    socket.once("gameReady", (elem) => {
-      console.log("gameReady", elem);
-      actions.setShowGame(true);
-      actions.setMainState(mainStates.gameLobby);
-    });
+    console.log("gameReady handler on");
+    const gameReadyHandler=(elem: any) => {
+        console.log("gameReady", elem);
+        actions.setShowGame(true);
+        actions.setMainState(mainStates.gameLobby);
+        actions.setShowMatching(false);
+    };
+    gameSocket.once("gameReady", gameReadyHandler);
+
+    const leaveQueueHandler=(elem: any) => {
+      actions.setShowMatching(false);
+    };
+    gameSocket.once("leaveQueue", leaveQueueHandler);
+
+    return () => {
+      gameSocket.off("gameReady", gameReadyHandler);
+      gameSocket.off("leaveQueue", leaveQueueHandler);
+    }
   }, []);
-  
+
   const cancelMatchHandler = () => {
     if(state.targetGame == -1) // random matching
-      socket.emit("leaveQueue");
+    {
+      console.log("leaveQueue socket emitted");
+      gameSocket.emit("leaveQueue");
+
+    }
     else 
       api_delete(`/game/oneToOneGame/${state.targetGame}`, {}).then((e) => {
         actions.setShowMatching(false);
