@@ -364,7 +364,7 @@ function GamePlayRoomPages() {
       );
 
       // Change the font size for the center score value
-      this.context.font = '40px Courier';
+      this.context.font = '40px Inria Sans';
 
       // Draw the current round number
       this.context.fillText(
@@ -456,7 +456,7 @@ function GamePlayRoomPages() {
       );
 
       // Change the font size for the center score value
-      this.context.font = '40px Courier';
+      this.context.font = '40px Inria Sans';
 
       // Draw the current round number
       this.context.fillText(
