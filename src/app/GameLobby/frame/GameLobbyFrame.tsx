@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState, useContext } from 'react';
-import GameCard, { GameWaitingInfo } from '../cards/gameCard';
-import UserStats from './userStats';
+import React, { useEffect, useState, useContext } from "react";
+import GameCard, { GameWaitingInfo } from "../cards/gameCard";
+import UserStats from "./userStats";
 
-import RandomButton from '../button/randomButton';
-import VsButton from '../button/vsButton';
+import RandomButton from "../button/randomButton";
+import VsButton from "../button/vsButton";
 
-import { UserContext, channelInfo, mainStates } from '@/app/UserContext';
-import { gameSocket, api_post, api_get, api_delete, socket } from '@/app/api';
+import { UserContext, channelInfo, mainStates } from "@/app/UserContext";
+import { gameSocket, api_post, api_get, api_delete, socket } from "@/app/api";
 
 function MakeGame() {
   const { state, actions } = useContext(UserContext);
@@ -16,8 +16,13 @@ function MakeGame() {
   const [ballSpeed, setBallSpeed] = useState<number>(0);
   const createButtonHandler = () => {
     if (racketSize === 0 || ballSpeed === 0) return;
-    console.log("gameCreation with ", ballSpeed, racketSize, state.targetGameInvite);
-    api_post('/game/oneToOneGame', {
+    console.log(
+      "gameCreation with ",
+      ballSpeed,
+      racketSize,
+      state.targetGameInvite
+    );
+    api_post("/game/oneToOneGame", {
       ballSpeed: ballSpeed,
       racketSize: racketSize,
       targetUserId: state.targetGameInvite,
@@ -45,7 +50,7 @@ function MakeGame() {
           className="text-left w-[60.50px] h-6 relative"
         >
           <img
-            src={ballSpeed === 1 ? 'checkmarks1.svg' : 'checkmarks0.svg'}
+            src={ballSpeed === 1 ? "checkmarks1.svg" : "checkmarks0.svg"}
             className="w-6 h-6 left-[0.50px] top-0 absolute flex-col justify-center items-center gap-2.5 inline-flex"
           />
           <div className="Low w-9 h-[19px] left-[24.50px] top-[1px] absolute text-neutral-600 text-lg font-bold">
@@ -60,7 +65,7 @@ function MakeGame() {
           className="text-left w-[108.25px] h-6 relative"
         >
           <img
-            src={ballSpeed === 2 ? 'checkmarks1.svg' : 'checkmarks0.svg'}
+            src={ballSpeed === 2 ? "checkmarks1.svg" : "checkmarks0.svg"}
             className="w-6 h-6 left-[0.25px] top-0 absolute flex-col justify-center items-center gap-2.5 inline-flex"
           />
           <div className="Moderate w-[84px] h-[19px] left-[24.25px] top-[1px] absolute text-neutral-600 text-lg font-bold">
@@ -75,7 +80,7 @@ function MakeGame() {
           className="text-left w-[109.88px] h-6 relative"
         >
           <img
-            src={ballSpeed === 3 ? 'checkmarks1.svg' : 'checkmarks0.svg'}
+            src={ballSpeed === 3 ? "checkmarks1.svg" : "checkmarks0.svg"}
             className="w-6 h-6 left-[0.88px] top-0 absolute flex-col justify-center items-center gap-2.5 inline-flex"
           />
           <div className="High w-[85px] h-[19px] left-[24.88px] top-[1px] absolute text-neutral-600 text-lg font-bold">
@@ -97,7 +102,7 @@ function MakeGame() {
             className=" w-[68px] h-6 relative"
           >
             <img
-              src={racketSize === 1 ? 'checkmarks1.svg' : 'checkmarks0.svg'}
+              src={racketSize === 1 ? "checkmarks1.svg" : "checkmarks0.svg"}
               className="w-6 h-6 left-0 top-0 absolute flex-col justify-center items-center gap-2.5 inline-flex"
             />
             <div className="Small w-11 h-[19px] left-[24px] top-[1px] absolute text-neutral-600 text-lg font-bold">
@@ -111,7 +116,7 @@ function MakeGame() {
             className=" w-[91.50px] h-6 relative"
           >
             <img
-              src={racketSize === 2 ? 'checkmarks1.svg' : 'checkmarks0.svg'}
+              src={racketSize === 2 ? "checkmarks1.svg" : "checkmarks0.svg"}
               className="w-6 h-6 left-0 top-0 absolute flex-col justify-center items-center gap-2.5 inline-flex"
             />
             <div className="Medium w-[67px] h-[19px] left-[24.50px] top-[1px] absolute text-neutral-600 text-lg font-bold">
@@ -125,7 +130,7 @@ function MakeGame() {
             className=" w-[65.75px] h-6 relative"
           >
             <img
-              src={racketSize === 3 ? 'checkmarks1.svg' : 'checkmarks0.svg'}
+              src={racketSize === 3 ? "checkmarks1.svg" : "checkmarks0.svg"}
               className="w-6 h-6 left-0 top-0 absolute flex-col justify-center items-center gap-2.5 inline-flex"
             />
             <div className="Large w-[41px] h-[19px] left-[24.75px] top-[1px] absolute text-neutral-600 text-lg font-bold">
@@ -171,36 +176,36 @@ function WaitMatch() {
 
   useEffect(() => {
     console.log("gameReady handler on");
-    const gameReadyHandler=(elem: any) => {
-        console.log("gameReady", elem);
-        actions.setShowGame(true);
-        actions.setMainState(mainStates.gameLobby);
-        actions.setShowMatching(false);
+    const gameReadyHandler = (elem: any) => {
+      console.log("gameReady", elem);
+      actions.setShowGame(true);
+      actions.setMainState(mainStates.gameLobby);
+      actions.setShowMatching(false);
     };
     gameSocket.once("gameReady", gameReadyHandler);
 
-    const leaveQueueHandler=(elem: any) => {
+    const leaveQueueHandler = (elem: any) => {
       actions.setShowMatching(false);
+      gameSocket.emit("leaveQueue");
     };
     gameSocket.once("leaveQueue", leaveQueueHandler);
 
     return () => {
       gameSocket.off("gameReady", gameReadyHandler);
       gameSocket.off("leaveQueue", leaveQueueHandler);
-    }
+    };
   }, []);
 
   const cancelMatchHandler = () => {
-    if(state.targetGame == -1) // random matching
-    {
+    if (state.targetGame == -1) {
+      // random matching
       console.log("leaveQueue socket emitted");
       gameSocket.emit("leaveQueue");
-
-    }
-    else 
+    } else
       api_delete(`/game/oneToOneGame/${state.targetGame}`, {}).then((e) => {
         actions.setShowMatching(false);
       });
+    actions.setTargetGame(-1);
   };
   return (
     <div className="Waitmatch w-[385px] h-[147px] relative">
@@ -233,7 +238,7 @@ function WaitMatch() {
       </div>
       <div className="Loadingprogress w-[41px] h-[41px] left-[172px] top-[73px] absolute">
         <div className=" w-10 h-10 left-[0.90px] top-[0.90px] absolute">
-          <img src="loading_spinner.png" className='animate-spin' />
+          <img src="loading_spinner.png" className="animate-spin" />
         </div>
       </div>
     </div>
@@ -246,29 +251,29 @@ function MatchList() {
 
   useEffect(() => {
     console.log("gamelobbyframe loaded");
-    api_get('/game/allOneToOneGame').then((res) => {
-      console.log('/game/allOneToOneGame', res.data.data);
+    api_get("/game/allOneToOneGame").then((res) => {
+      console.log("/game/allOneToOneGame", res.data.data);
       setGameList([...gameList, ...res.data.data]);
     });
   }, []);
 
   useEffect(() => {
     const addOneToOneGame = (targetGame: GameWaitingInfo) => {
-      console.log('addOneToOneGame', targetGame, gameList);
+      console.log("addOneToOneGame", targetGame, gameList);
       setGameList([...gameList, targetGame]);
     };
 
     const deleteOneToOneGame = (targetGame: GameWaitingInfo) => {
-      console.log('deleteOneToOneGame', targetGame, gameList);
+      console.log("deleteOneToOneGame", targetGame, gameList);
       setGameList(gameList.filter((elem) => elem.id !== targetGame.id));
     };
 
-    gameSocket.on('addOneToOneGame', addOneToOneGame);
-    gameSocket.on('deleteOneToOneGame', deleteOneToOneGame);
+    gameSocket.on("addOneToOneGame", addOneToOneGame);
+    gameSocket.on("deleteOneToOneGame", deleteOneToOneGame);
 
     return () => {
-      gameSocket.off('addOneToOneGame', addOneToOneGame);
-      gameSocket.off('deleteOneToOneGame', deleteOneToOneGame);
+      gameSocket.off("addOneToOneGame", addOneToOneGame);
+      gameSocket.off("deleteOneToOneGame", deleteOneToOneGame);
     };
   }, [gameList]);
 
@@ -277,11 +282,11 @@ function MatchList() {
       <div className="matchList absolute overflow-auto scrollbar-hide h-[82%] w-[93.56%] top-[13.69%] right-[2.68%] bottom-[20.22%] left-[3.76%] flex flex-col items-start justify-start gap-[0.81rem]">
         {gameList.map((elem, idx) => {
           // if(state.userInfo.id != elem.userId)
-            return <GameCard key={idx} game={elem} />;
+          return <GameCard key={idx} game={elem} />;
         })}
       </div>
     </>
-  )
+  );
 }
 export default function GameLobbyFrame() {
   const { state, actions } = useContext(UserContext);
