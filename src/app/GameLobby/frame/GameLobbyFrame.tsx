@@ -177,7 +177,6 @@ function WaitMatch() {
   useEffect(() => {
     console.log("gameReady handler on");
     const gameReadyHandler = (elem: any) => {
-      console.log("gameReady", elem);
       actions.setShowGame(true);
       actions.setMainState(mainStates.gameLobby);
       actions.setShowMatching(false);
@@ -281,8 +280,8 @@ function MatchList() {
     <>
       <div className="matchList absolute overflow-auto scrollbar-hide h-[82%] w-[93.56%] top-[13.69%] right-[2.68%] bottom-[20.22%] left-[3.76%] flex flex-col items-start justify-start gap-[0.81rem]">
         {gameList.map((elem, idx) => {
-          // if(state.userInfo.id != elem.userId)
-          return <GameCard key={idx} game={elem} />;
+          if(state.userInfo.id != elem.userId)
+            return <GameCard key={idx} game={elem} />;
         })}
       </div>
     </>

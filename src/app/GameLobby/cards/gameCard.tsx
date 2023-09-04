@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 
-import { gameInfo, userInfo } from '@/app/UserContext';
-import { api_get } from '@/app/api';
+import { UserContext, gameInfo, userInfo } from '@/app/UserContext';
+import { api_get, gameSocket } from '@/app/api';
+import { mainStates } from '@/app/UserContext';
 
 export function getGameSettingString(game : gameInfo | GameWaitingInfo)
 {
@@ -45,6 +46,7 @@ export interface GameWaitingInfo {
 
 export default function GameCard({ game }: { game: GameWaitingInfo }): JSX.Element {
   const [opponent, setOpponent] = useState<userInfo>();
+  const {state, actions} = useContext(UserContext);
   
   useEffect(() => {
     api_get(`/user/${game.userId}`).then((res) => {
@@ -64,6 +66,9 @@ export default function GameCard({ game }: { game: GameWaitingInfo }): JSX.Eleme
 
   const gameEnterHandler = () => {
     console.log('enter to ', game.id);
+    actions.setShowGame(true);
+    actions.setMainState(mainStates.gameLobby);
+    gameSocket.emit("startOneToOneGame", { gameId: game.id });
   };
 
   return (

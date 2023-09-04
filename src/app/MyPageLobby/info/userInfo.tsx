@@ -21,7 +21,7 @@ export default function UserInfo({
         <div className="MypageUserlistUsercard w-[247px] h-[45px] relative">
             <button className="text-left" onClick={userSelecitonHandler}>
                 <div className="nicknamenphoto left-[1px] top-0 h-[2rem] relative justify-center items-center gap-2.5 inline-flex">
-                    <img className="Pngegg2 w-8 h-8" src={avatar ? avatar : "pngegg-1@2x.png"} />
+                    <img className="Pngegg2 w-8 h-8 rounded-[70%]" src={avatar ? avatar : "pngegg-1@2x.png"} />
                     <div className="username text-neutral-600 text-base font-normal">{nickname}</div>
                 </div>
                 <img className="top-[2.53rem] left-[0.06rem]" src="info_search_line.svg"/>
