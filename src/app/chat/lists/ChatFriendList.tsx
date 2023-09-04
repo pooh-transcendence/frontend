@@ -88,11 +88,6 @@ export const ChatFriendList = (): JSX.Element => {
             console.log("deleteBlockToBlockList", blockedFriend);
             setBlockList(blockList.filter((elem) => { elem.id != blockedFriend.id }));
         }
-        const createBlockToBlockList = (blockedFriend: block) => {
-            console.log("createBlockToBlockList", blockedFriend);
-            setBlockList([...blockList, blockedFriend]);
-            // setFriendList(friendList.map((elem) => )) // delete
-        }
         const changeFriendState = (changedFriend: friend) => {
             setFriendList(friendList.map((elem) => {
                 if (elem.id == changedFriend.id) {
@@ -107,13 +102,11 @@ export const ChatFriendList = (): JSX.Element => {
         // only for rerendering
         socket.on("addFriendToFriendList", addFriendToFriendList);
         socket.on("deleteBlockToBlockList", deleteBlockToBlockList);
-        socket.on("createBlockToBlockList", createBlockToBlockList);
         socket.on("changeFriendState", changeFriendState);
 
         return () => {
             socket.off("addFriendToFriendList", addFriendToFriendList);
             socket.off("deleteBlockToBlockList", deleteBlockToBlockList);
-            socket.off("createBlockToBlockList", createBlockToBlockList);
             socket.off("changeFriendState", changeFriendState);
         };
 
