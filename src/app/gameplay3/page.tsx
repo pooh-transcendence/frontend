@@ -145,7 +145,7 @@ function GamePlayRoomPages() {
         });
     };
     const gameReadyListener = (data: gameInfo) => {
-      console.log('gameReady');
+      console.log('gameReady', data);
       gameSocket.emit('gameStart');
       document.addEventListener('keydown', keyDownHandler);
     };
@@ -166,14 +166,12 @@ function GamePlayRoomPages() {
     gameSocket.on('gameReady', gameReadyListener);
     gameSocket.on('gameUpdate', gameUpdateListener);
     gameSocket.on('gameEnd', gameEndListener);
-    gameSocket.on('gameOver', gameEndListener);
 
     return () => {
       gameSocket.off('gameReady', gameReadyListener);
       gameSocket.off('joinQueue', joinQueueListener);
       gameSocket.off('gameUpdate', gameUpdateListener);
       gameSocket.on('gameEnd', gameEndListener);
-      gameSocket.on('gameOver', gameEndListener);
       document.removeEventListener('keydown', keyDownHandler);
     };
   }, []);
