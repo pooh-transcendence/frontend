@@ -177,7 +177,6 @@ function WaitMatch() {
   useEffect(() => {
     console.log("gameReady handler on");
     const gameReadyHandler = (elem: any) => {
-      console.log("gameReady", elem);
       actions.setShowGame(true);
       actions.setMainState(mainStates.gameLobby);
       actions.setShowMatching(false);
