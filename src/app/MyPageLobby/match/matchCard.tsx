@@ -16,7 +16,7 @@ export default function MatchCard({ game, relativeWinRate, leftUserId }: { game:
           <div className="User2 w-[220px] left-[331px] top-0 relative justify-start items-center gap-2.5 inline-flex">
             <img className="avatar2 w-8 h-8" src={right.avatar ? right.avatar : "/pngegg-4@2x.png"} />
             <div className="Frame96 justify-center items-end gap-2.5 flex">
-              <div className="Username2 text-neutral-600 text-[28px] font-normal">{right.nickname}</div>
+              <div className="Username2 whitespace-nowrap text-neutral-600 text-[28px] font-normal">{right.nickname}</div>
               <div className="Vs750 text-neutral-600 text-sm font-normal">vs {relativeWinRate}</div>
             </div>
           </div>
