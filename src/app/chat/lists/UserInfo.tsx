@@ -38,7 +38,12 @@ const UserInfo = ({
     };
     const blockHandler=() => {
         socket.emit("createBlock", {"blockUserId": Number(state.chatTargetUser) 
-    }, (ack: any) => {console.log(ack)})};
+    }, (ack: any) => {
+        console.log(ack);
+        actions.setShowChatUserInfo(false);
+        if(state.chatState == chatStates.friendChat)
+            actions.setChatState(chatStates.friendList);
+    })};
     const infoHandler = () => { 
         actions.setInfoTargetUser(state.chatTargetUser);
         actions.setShowInfo(true);
