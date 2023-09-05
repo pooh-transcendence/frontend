@@ -1,15 +1,8 @@
 'use client';
 
 import { useContext, useRef, useState, useEffect } from 'react';
-import { socket, gameSocket } from '@/app/api';
-import { get } from 'http';
-import { io } from 'socket.io-client';
-import { baseUrl } from '@/app/api';
-import { staticGenerationAsyncStorage } from 'next/dist/client/components/static-generation-async-storage';
+import { gameSocket } from '@/app/api';
 import { UserContext, userInfo } from '../UserContext';
-import { Shippori_Antique } from 'next/font/google';
-import { useRecoilStoreID } from 'recoil';
-import { KeyObject } from 'crypto';
 
 interface gameInfo {
   participants: number[];
@@ -71,6 +64,48 @@ interface gameResult {
   // "racketSize": number,
 };
 
+function ReadyForm() {
+  const [ready, setReady] = useState<boolean>(false);
+
+  const readyHandler = () => {
+    setReady(true);
+    gameSocket.emit('gameStart');
+  }
+
+  return (
+    <div className="Property1Default w-[385px] h-[147px] relative">
+      <div className="Bg w-[385px] h-[147px] left-0 top-0 absolute bg-white rounded-[10px] shadow" />
+      {
+        ready == true ? (
+          <div className="Loadingprogress w-[41px] h-[41px] left-[172px] top-[73px] absolute">
+            <div className=" w-10 h-10 left-[0.90px] top-[0.90px] absolute">
+              <img src="loading_spinner.png" className="animate-spin" />
+            </div>
+          </div>
+        ) : (
+          <button onClick={readyHandler} className="Createbutton w-[75px] h-8 left-[158px] top-[81px] absolute">
+            <img src="sweep.svg" className="SweepFill0Wght300Grad0Opsz481 w-8 h-8 left-0 top-0 absolute" />
+            <div className="Ready left-[29px] top-[7px] absolute text-neutral-600 text-base font-bold">ready</div>
+          </button>
+        )
+      }
+      <div className="WaitForReady w-[163px] h-8 left-[111px] top-[35px] absolute text-right text-neutral-600 text-2xl font-bold" style={{
+        background: `linear-gradient(
+        to right,
+        #9747FF 30%,
+        #555555 50%
+      )`,
+        WebkitBackgroundClip: "text",
+        backgroundClip: "text",
+        WebkitTextFillColor: "transparent",
+        textFillColor: "transparent",
+        backgroundSize: "500% auto",
+        animation: "textShine 1s ease-in-out infinite alternate",
+      }} >wait for ready...</div>
+    </div >
+  )
+}
+
 function GameEnd({ game }: { game: gameResult }) {
   const { state, actions } = useContext(UserContext);
 
@@ -111,8 +146,10 @@ function GameEnd({ game }: { game: gameResult }) {
 function GamePlayRoomPages() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { state, actions } = useContext(UserContext);
-  const [gameUpdateDto, setGameUpdateDto] = useState<any>();
   const [gameEnd, setGameEnd] = useState<gameResult | null>(null);
+  const [showArrow, setShowArrow] = useState<boolean>(true);
+  const [showReadyForm, setShowReadyForm] = useState<boolean>(true);
+  const [gameInfo, setGameInfo] = useState<gameInfo>({} as gameInfo);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -146,7 +183,7 @@ function GamePlayRoomPages() {
     };
     const gameReadyListener = (data: gameInfo) => {
       console.log('gameReady', data);
-      gameSocket.emit('gameStart');
+      setGameInfo(data);
       document.addEventListener('keydown', keyDownHandler);
     };
     const joinQueueListener = (data: any) => {
@@ -156,12 +193,7 @@ function GamePlayRoomPages() {
     const gameEndListener = (data: any) => {
       setGameEnd(data);
       console.log("gameEnd", data);
-      // if (data.winner.id === state.userInfo.id)
-      //   alert(`You Win! with score ${data.winScore} : ${data.loseScore} `);
-      // else alert(`You Lose! with score ${data.winScore} : ${data.loseScore}`);
     };
-
-    gameSocket.emit('joinQueue');
     gameSocket.on('joinQueue', joinQueueListener);
     gameSocket.on('gameReady', gameReadyListener);
     gameSocket.on('gameUpdate', gameUpdateListener);
@@ -491,6 +523,16 @@ function GamePlayRoomPages() {
       {
         gameEnd && (
           <GameEnd game={gameEnd} />
+        )
+      }
+      {
+        showReadyForm && (
+          <ReadyForm />
+        )
+      }
+      {
+        showArrow && (
+          
         )
       }
       <canvas ref={canvasRef} width={1400} height={1000} className="w-[800px] h-[571.4px]" />
