@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Chat from "./chat/page";
 
 import { savedContext } from "./UserProvider";
@@ -92,6 +92,7 @@ function UserProfile() {
 
 export default function MainFrame() {
   const { state, actions } = useContext(UserContext);
+  const [duplicatedConnection, setDuplicatedConnection] = useState<boolean>(false);
 
   const bypassMe = () => {
     api_get("/user").then((res) => {
@@ -136,7 +137,16 @@ export default function MainFrame() {
         target.channelChat[channelIds].map((msg) => {
           actions.setChannelChat(msg);
         });
-      // console.log("restore complete", target);
+
+
+      const duplicateSocketHandler = () => {
+        setDuplicatedConnection(true);
+      }
+      socket.on("duplicateSocket", duplicateSocketHandler);
+
+      return () => {
+        socket.off("duplicateSocket", duplicateSocketHandler);
+      }
     }
 
     if (!getAuth()) {
@@ -165,8 +175,13 @@ export default function MainFrame() {
     };
   }, []);
 
+  if (duplicatedConnection)
+    return (
+      <div className="flex justify-center items-center h-screen bg-gradient-to-bl from-neutral-100 to-slate-50">
+        You are trying to access multiple pages simultaneously.
+      </div>
+    );
   if (getUserId())
-    // if (sessionStorage.getItem("userContext"))
     return (
       <>
         <div className="flex justify-center items-center h-screen bg-gradient-to-bl from-neutral-100 to-slate-50">
@@ -186,9 +201,9 @@ export default function MainFrame() {
                       <MyPageFrame />
                     </div>
                     <div className="z-10 absolute top-0 left-0 w-[100vw] h-[100vh] bg-black opacity-20 backdrop-blur-xl" />
-                  <div className="z-10 absolute top-0 left-0 w-[100vw] h-[100vh] bg-black opacity-20 backdrop-blur-xl" />
-                </div>
-              )}
+                    <div className="z-10 absolute top-0 left-0 w-[100vw] h-[100vh] bg-black opacity-20 backdrop-blur-xl" />
+                  </div>
+                )}
 
               <div className="w-[1280px] h-[832px] absolute">
                 {/* userProfile */}

@@ -1,15 +1,8 @@
 'use client';
 
 import { useContext, useRef, useState, useEffect } from 'react';
-import { socket, gameSocket } from '@/app/api';
-import { get } from 'http';
-import { io } from 'socket.io-client';
-import { baseUrl } from '@/app/api';
-import { staticGenerationAsyncStorage } from 'next/dist/client/components/static-generation-async-storage';
+import { gameSocket } from '@/app/api';
 import { UserContext, userInfo } from '../UserContext';
-import { Shippori_Antique } from 'next/font/google';
-import { useRecoilStoreID } from 'recoil';
-import { KeyObject } from 'crypto';
 
 interface gameInfo {
   participants: number[];
@@ -18,7 +11,7 @@ interface gameInfo {
   score: number[];
   ball: number[];
   isGetScore: boolean;
-  whoAmI: string;
+  whoAmI: "left" | "right";
   nickname: string;
 }
 
@@ -76,6 +69,48 @@ interface gameResult {
   loseScore: number;
   ballSpeed: number;
   // "racketSize": number,
+}
+
+function ReadyForm() {
+  const [ready, setReady] = useState<boolean>(false);
+
+  const readyHandler = () => {
+    setReady(true);
+    gameSocket.emit('gameStart');
+  }
+
+  return (
+    <div className="Property1Default w-[385px] h-[147px] relative">
+      <div className="Bg w-[385px] h-[147px] left-0 top-0 absolute bg-white rounded-[10px] shadow" />
+      {
+        ready == true ? (
+          <div className="Loadingprogress w-[41px] h-[41px] left-[172px] top-[73px] absolute">
+            <div className=" w-10 h-10 left-[0.90px] top-[0.90px] absolute">
+              <img src="loading_spinner.png" className="animate-spin" />
+            </div>
+          </div>
+        ) : (
+          <button onClick={readyHandler} className="Createbutton w-[75px] h-8 left-[158px] top-[81px] absolute">
+            <img src="sweep.svg" className="SweepFill0Wght300Grad0Opsz481 w-8 h-8 left-0 top-0 absolute" />
+            <div className="Ready left-[29px] top-[7px] absolute text-neutral-600 text-base font-bold">ready</div>
+          </button>
+        )
+      }
+      <div className="WaitForReady w-[163px] h-8 left-[111px] top-[35px] absolute text-right text-neutral-600 text-2xl font-bold" style={{
+        background: `linear-gradient(
+        to right,
+        #9747FF 30%,
+        #555555 50%
+      )`,
+        WebkitBackgroundClip: "text",
+        backgroundClip: "text",
+        WebkitTextFillColor: "transparent",
+        textFillColor: "transparent",
+        backgroundSize: "500% auto",
+        animation: "textShine 1s ease-in-out infinite alternate",
+      }} >wait for ready...</div>
+    </div >
+  )
 }
 
 function GameEnd({ game }: { game: gameResult }) {
@@ -147,8 +182,10 @@ function GameEnd({ game }: { game: gameResult }) {
 function GamePlayRoomPages() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { state, actions } = useContext(UserContext);
-  const [gameUpdateDto, setGameUpdateDto] = useState<any>();
   const [gameEnd, setGameEnd] = useState<gameResult | null>(null);
+  const [showArrow, setShowArrow] = useState<boolean>(true);
+  const [showReadyForm, setShowReadyForm] = useState<boolean>(true);
+  const [gameInfo, setGameInfo] = useState<gameInfo>({} as gameInfo);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -159,7 +196,7 @@ function GamePlayRoomPages() {
   }, [canvasRef]);
 
   useEffect(() => {
-    console.log('GameSOcket', gameSocket);
+    console.log('gameSocket', gameSocket);
 
     const gameUpdateListener = (data: gameInfo) => {
       Pong.drawData(data);
@@ -182,9 +219,9 @@ function GamePlayRoomPages() {
         });
     };
     const gameReadyListener = (data: gameInfo) => {
+      setGameInfo(data);
       console.log('gameReadyDto', data);
       Pong.initialize(data);
-      gameSocket.emit('gameStart');
       document.addEventListener('keydown', keyDownHandler);
     };
     const joinQueueListener = (data: any) => {
@@ -193,22 +230,28 @@ function GamePlayRoomPages() {
 
     const gameEndListener = (data: any) => {
       setGameEnd(data);
-      console.log('gameEnd', data);
-      // if (data.winner.id === state.userInfo.id)
-      //   alert(`You Win! with score ${data.winScore} : ${data.loseScore} `);
-      // else alert(`You Lose! with score ${data.winScore} : ${data.loseScore}`);
+      console.log("gameEnd", data);
     };
-    //gameSocket.emit('joinQueue');
+
     gameSocket.on('joinQueue', joinQueueListener);
     gameSocket.on('gameReadyDto', gameReadyListener);
     gameSocket.on('gameUpdate', gameUpdateListener);
     gameSocket.on('gameEnd', gameEndListener);
 
+    const gameStartHandler = () => {
+      setShowArrow(true);
+      setTimeout(() => { setShowArrow(false) }, 3000);
+      setShowReadyForm(false);
+    }
+    gameSocket.on("gameStart", gameStartHandler); // detects game is started
+
     return () => {
       gameSocket.off('gameReady', gameReadyListener);
       gameSocket.off('joinQueue', joinQueueListener);
       gameSocket.off('gameUpdate', gameUpdateListener);
-      gameSocket.on('gameEnd', gameEndListener);
+      gameSocket.off('gameEnd', gameEndListener);
+      gameSocket.off("gameStart", gameStartHandler);
+
       document.removeEventListener('keydown', keyDownHandler);
     };
   }, []);
@@ -542,13 +585,26 @@ function GamePlayRoomPages() {
 
   return (
     <>
-      {gameEnd && <GameEnd game={gameEnd} />}
-      <canvas
-        ref={canvasRef}
-        width={1400}
-        height={1000}
-        className="w-[800px] h-[571.4px]"
-      />
+      {
+        gameEnd && (
+          <GameEnd game={gameEnd} />
+        )
+      }
+      {
+        showReadyForm && (
+          <ReadyForm />
+        )
+      }
+      {
+        showArrow && (
+          gameInfo.whoAmI == "left" ? (
+            <img src="arrow.svg" className='w-[100px] h-[100px] top-[200px] left-[200px] bg-[#555555]' />
+          ) : (
+            <img src="arrow.svg" className='w-[100px] h-[100px] top-[200px] right-[200px] bg-[#555555]' />
+          )
+        )
+      }
+      <canvas ref={canvasRef} width={1400} height={1000} className="w-[800px] h-[571.4px]" />
     </>
   );
 }
