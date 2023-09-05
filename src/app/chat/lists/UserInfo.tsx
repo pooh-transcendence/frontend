@@ -19,6 +19,25 @@ const UserInfo = ({
             setUserName(res.data.data.nickname);
             setProfileImg(res.data.data.avatar ?? "pngegg-1@2x.png");
         })
+
+        interface block {
+            id: number;
+            nickname: string;
+            avatar: string;
+        };
+        const createBlockToBlockList = (blockedFriend: block) => {
+            console.log("createBlockToBlockList", blockedFriend);
+            // setFriendList(friendList.map((elem) => )) // delete
+            if(state.chatState==chatStates.friendChat)
+                actions.setChatState(chatStates.friendList);
+            actions.setShowChatUserInfo(false);
+        }
+
+        socket.on("createBlockToBlockList", createBlockToBlockList);
+
+        return () => {
+            socket.off("createBlockToBlockList", createBlockToBlockList);
+        }
     }, []);
 
     const gameInviteHandler = () => {
@@ -38,7 +57,12 @@ const UserInfo = ({
     };
     const blockHandler=() => {
         socket.emit("createBlock", {"blockUserId": Number(state.chatTargetUser) 
-    }, (ack: any) => {console.log(ack)})};
+    }, (ack: any) => {
+        console.log(ack);
+        actions.setShowChatUserInfo(false);
+        if(state.chatState == chatStates.friendChat)
+            actions.setChatState(chatStates.friendList);
+    })};
     const infoHandler = () => { 
         actions.setInfoTargetUser(state.chatTargetUser);
         actions.setShowInfo(true);

@@ -91,17 +91,15 @@ function GameEnd({ game }: { game: gameResult }) {
           }
           <div className="w-[100%] inline-flex items-center justify-center">
             <div className="Frame100 h-[34px] inline-flex items-center justify-center top-[73px] relative">
-              <div className="absolute text-center text-neutral-600 text-[28px] font-bold">{game.winScore} : {game.loseScore}</div>
-              <div className="Frame101 top-[2px] relative gap-[100px] items-center justify-center inline-flex">
-                <div className="P1 justify-start items-start gap-[8px] flex">
-                  <div className="Myname text-right text-neutral-600 text-[24px] font-bold">{game.winner.nickname}</div>
-                  <img className="Pngegg2 w-7 h-7" src={game.winner.avatar ? game.winner.avatar : "/pngegg-4@2x.png"} />
-                </div>
-                <div className="P2 justify-start items-start gap-[8px] flex">
-                  <img className="Pngegg2 w-7 h-7" src={game.loser.avatar ? game.loser.avatar : "/pngegg-4@2x.png"} />
-                  <div className="Yourname text-left text-neutral-600 text-[24px] font-bold">{game.loser.nickname}</div>
-                </div>
-              </div>
+              <div className="absolute text-center text-neutral-600 text-[28px] w-[100px] font-bold">{game.winScore} : {game.loseScore}</div>
+            </div>
+            <div className="P1 justify-start items-start gap-[8px] absolute top-[4.69rem] right-[18.66rem] flex">
+              <div className="Myname text-right text-neutral-600 text-[24px] font-bold">{game.winner.nickname}</div>
+              <img className="Pngegg2 w-7 h-7" src={game.winner.avatar ? game.winner.avatar : "/pngegg-4@2x.png"} />
+            </div>
+            <div className="P2 justify-start items-start absolute left-[18.84rem] top-[4.69rem] gap-[8px] flex">
+              <img className="Pngegg2 w-7 h-7" src={game.loser.avatar ? game.loser.avatar : "/pngegg-4@2x.png"} />
+              <div className="Yourname text-left text-neutral-600 text-[24px] font-bold">{game.loser.nickname}</div>
             </div>
           </div>
         </div>
@@ -147,7 +145,7 @@ function GamePlayRoomPages() {
         });
     };
     const gameReadyListener = (data: gameInfo) => {
-      console.log('gameReady');
+      console.log('gameReady', data);
       gameSocket.emit('gameStart');
       document.addEventListener('keydown', keyDownHandler);
     };
@@ -168,14 +166,12 @@ function GamePlayRoomPages() {
     gameSocket.on('gameReady', gameReadyListener);
     gameSocket.on('gameUpdate', gameUpdateListener);
     gameSocket.on('gameEnd', gameEndListener);
-    gameSocket.on('gameOver', gameEndListener);
 
     return () => {
       gameSocket.off('gameReady', gameReadyListener);
       gameSocket.off('joinQueue', joinQueueListener);
       gameSocket.off('gameUpdate', gameUpdateListener);
       gameSocket.on('gameEnd', gameEndListener);
-      gameSocket.on('gameOver', gameEndListener);
       document.removeEventListener('keydown', keyDownHandler);
     };
   }, []);
@@ -364,7 +360,7 @@ function GamePlayRoomPages() {
       );
 
       // Change the font size for the center score value
-      this.context.font = '40px Courier';
+      this.context.font = '40px Inria Sans';
 
       // Draw the current round number
       this.context.fillText(
@@ -456,7 +452,7 @@ function GamePlayRoomPages() {
       );
 
       // Change the font size for the center score value
-      this.context.font = '40px Courier';
+      this.context.font = '40px Inria Sans';
 
       // Draw the current round number
       this.context.fillText(

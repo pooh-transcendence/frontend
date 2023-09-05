@@ -62,10 +62,13 @@ export default function MyInfo({target} : {target: userInfo}) {
   };
   const changeNicknameHandler = () => {
     console.log("change nickname to ", newNickname);
-    api_patch("/user/nickname", {nickname: newNickname}).then((res) => {
-      // console.log(res); // OK
-      actions.setUserInfo({...state.userInfo, nickname: newNickname!});
-    });
+    if(newNickname && 2 <= newNickname.length && newNickname.length <= 10)
+    {
+      api_patch("/user/nickname", {nickname: newNickname}).then((res) => {
+        // console.log(res); // OK
+        actions.setUserInfo({...state.userInfo, nickname: newNickname!});
+      });
+    }
   }
   // const changeAvatarHandler = () => {
   //   // todo
