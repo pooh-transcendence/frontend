@@ -16,7 +16,10 @@ interface gameInfo {
 }
 
 interface ball {
-  new: (incrementedSpeed?: number) => {
+  new: (
+    incrementedSpeed?: number,
+    paddleSize?: number,
+  ) => {
     width: number;
     height: number;
     x: number;
@@ -25,12 +28,16 @@ interface ball {
 }
 
 interface ai {
-  new: (side: string) => {
+  new: (
+    side: string,
+    whoAmI: boolean,
+  ) => {
     width: number;
     height: number;
     x: number;
     y: number;
     score: number;
+    color: string;
   };
 }
 
@@ -50,19 +57,19 @@ type game = GameObject & {
   round: number;
   color: string;
   gameType: string;
-  initialize: () => void;
+  initialize: (gameReadyDto: any) => void;
 };
 
 interface gameResult {
-  "id": number,
-  "gameType": "LADDER" | "1vs1 PUBLIC" | "1vs1 PRIVATE",
-  "winner": userInfo,
-  "loser": userInfo,
-  "winScore": number,
-  "loseScore": number,
-  "ballSpeed": number,
+  id: number;
+  gameType: 'LADDER' | '1vs1 PUBLIC' | '1vs1 PRIVATE';
+  winner: userInfo;
+  loser: userInfo;
+  winScore: number;
+  loseScore: number;
+  ballSpeed: number;
   // "racketSize": number,
-};
+}
 
 function ReadyForm() {
   const [ready, setReady] = useState<boolean>(false);
@@ -114,34 +121,63 @@ function GameEnd({ game }: { game: gameResult }) {
       <div className="Property1Win w-[500px] h-[180px] absolute">
         <div className="Makegame w-[500px] h-[180px] left-0 top-0 absolute">
           <div className="Bg w-[500px] h-[180px] left-0 top-0 absolute bg-white rounded-[10px] shadow" />
-          <button onClick={() => { actions.setShowGame(false) }}>
-            <img src="sweep.svg" className="SweepFill0Wght300Grad0Opsz481 w-8 h-8 left-[234px] top-[135px] absolute" />
+          <button
+            onClick={() => {
+              actions.setShowGame(false);
+            }}
+          >
+            <img
+              src="sweep.svg"
+              className="SweepFill0Wght300Grad0Opsz481 w-8 h-8 left-[234px] top-[135px] absolute"
+            />
           </button>
-          {
-            game.winner.id == state.userInfo.id ? (
-              <div className="YouWin left-[191px] top-[21px] absolute"><span className="text-neutral-600 text-[32px] font-bold">you </span><span className="text-blue-900 text-[32px] font-bold">win!</span></div>
-            ) : (
-              <div className="YouLose left-[188px] top-[21px] absolute"><span className="text-neutral-600 text-[32px] font-bold">you </span><span className="text-pink-800 text-[32px] font-bold">lose!</span></div>
-            )
-          }
+          {game.winner.id == state.userInfo.id ? (
+            <div className="YouWin left-[191px] top-[21px] absolute">
+              <span className="text-neutral-600 text-[32px] font-bold">
+                you{' '}
+              </span>
+              <span className="text-blue-900 text-[32px] font-bold">win!</span>
+            </div>
+          ) : (
+            <div className="YouLose left-[188px] top-[21px] absolute">
+              <span className="text-neutral-600 text-[32px] font-bold">
+                you{' '}
+              </span>
+              <span className="text-pink-800 text-[32px] font-bold">lose!</span>
+            </div>
+          )}
           <div className="w-[100%] inline-flex items-center justify-center">
             <div className="Frame100 h-[34px] inline-flex items-center justify-center top-[73px] relative">
-              <div className="absolute text-center text-neutral-600 text-[28px] w-[100px] font-bold">{game.winScore} : {game.loseScore}</div>
+              <div className="absolute text-center text-neutral-600 text-[28px] w-[100px] font-bold">
+                {game.winScore} : {game.loseScore}
+              </div>
             </div>
             <div className="P1 justify-start items-start gap-[8px] absolute top-[4.69rem] right-[18.66rem] flex">
-              <div className="Myname text-right text-neutral-600 text-[24px] font-bold">{game.winner.nickname}</div>
-              <img className="Pngegg2 w-7 h-7" src={game.winner.avatar ? game.winner.avatar : "/pngegg-4@2x.png"} />
+              <div className="Myname text-right text-neutral-600 text-[24px] font-bold">
+                {game.winner.nickname}
+              </div>
+              <img
+                className="Pngegg2 w-7 h-7"
+                src={
+                  game.winner.avatar ? game.winner.avatar : '/pngegg-4@2x.png'
+                }
+              />
             </div>
             <div className="P2 justify-start items-start absolute left-[18.84rem] top-[4.69rem] gap-[8px] flex">
-              <img className="Pngegg2 w-7 h-7" src={game.loser.avatar ? game.loser.avatar : "/pngegg-4@2x.png"} />
-              <div className="Yourname text-left text-neutral-600 text-[24px] font-bold">{game.loser.nickname}</div>
+              <img
+                className="Pngegg2 w-7 h-7"
+                src={game.loser.avatar ? game.loser.avatar : '/pngegg-4@2x.png'}
+              />
+              <div className="Yourname text-left text-neutral-600 text-[24px] font-bold">
+                {game.loser.nickname}
+              </div>
             </div>
           </div>
         </div>
       </div>
     </>
-  )
-};
+  );
+}
 
 function GamePlayRoomPages() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -155,7 +191,7 @@ function GamePlayRoomPages() {
     const canvas = canvasRef.current;
     console.log('canvas', canvas);
     if (canvas) {
-      Pong.initialize();
+      Pong.initialize(null);
     }
   }, [canvasRef]);
 
@@ -164,6 +200,7 @@ function GamePlayRoomPages() {
 
     const gameUpdateListener = (data: gameInfo) => {
       Pong.drawData(data);
+      console.log(1);
     };
 
     const keyDownHandler = (key: KeyboardEvent) => {
@@ -182,8 +219,9 @@ function GamePlayRoomPages() {
         });
     };
     const gameReadyListener = (data: gameInfo) => {
-      console.log('gameReady', data);
       setGameInfo(data);
+      console.log('gameReadyDto', data);
+      Pong.initialize(data);
       document.addEventListener('keydown', keyDownHandler);
     };
     const joinQueueListener = (data: any) => {
@@ -194,8 +232,9 @@ function GamePlayRoomPages() {
       setGameEnd(data);
       console.log("gameEnd", data);
     };
+
     gameSocket.on('joinQueue', joinQueueListener);
-    gameSocket.on('gameReady', gameReadyListener);
+    gameSocket.on('gameReadyDto', gameReadyListener);
     gameSocket.on('gameUpdate', gameUpdateListener);
     gameSocket.on('gameEnd', gameEndListener);
 
@@ -233,21 +272,22 @@ function GamePlayRoomPages() {
   };
 
   let Ai: ai = {
-    new: function (side: string) {
+    new: function (side: string, gameReadyDto?: any) {
       // if (canvasRef.current === null) return null;
 
       return {
         width: 18,
-        height: 180,
+        height: gameReadyDto.paddleSize,
         x: side === 'left' ? 150 : canvasRef.current!.width - 150,
         y: canvasRef.current!.height / 2 - 35,
         score: 0,
+        color: gameReadyDto.whoAmI === 'left' ? '#3498db' : '#e74c3c',
       };
     },
   };
 
   const Game: any = {
-    initialize: function (this: game) {
+    initialize: function (this: game, gameReadyDto: any) {
       // if (typeof this === null) return null;
       console.log('initialize');
       this.canvas = canvasRef;
@@ -258,15 +298,21 @@ function GamePlayRoomPages() {
       this.canvas.width = 1400;
       this.canvas.height = 1000;
 
-      this.player = Ai.new.call(this, 'left');
-      this.ai = Ai.new.call(this, 'right');
-      this.ball = Ball.new.call(this);
-
-      this.ai.speed = 5;
+      this.player = new Array(2);
+      if (gameReadyDto) {
+        this.player[0] = Ai.new.call(this, 'left', gameReadyDto);
+        this.player[1] = Ai.new.call(this, 'right', gameReadyDto);
+        this.ball = Ball.new.call(this, gameReadyDto.racketSize);
+      } else {
+        this.player[0] = Ai.new.call(this, 'left', true);
+        this.player[1] = Ai.new.call(this, 'right', false);
+        this.ball = Ball.new.call(this);
+      }
+      // this.ai.speed = 5;
       this.running = this.over = false;
-      this.turn = this.ai;
+      // this.turn = this.ai;
       this.timer = this.round = 0;
-      this.color = "#8c52ff00"; // background color
+      this.color = '#8c52ff00'; // background color
 
       Pong.menu();
     },
@@ -285,7 +331,7 @@ function GamePlayRoomPages() {
       );
 
       // Change the canvas color;
-      Pong.context.fillStyle = "#9747ff";
+      Pong.context.fillStyle = '#9747ff';
 
       // Draw the end game menu text ('Game Over' and 'Winner')
       Pong.context.fillText(
@@ -312,7 +358,7 @@ function GamePlayRoomPages() {
       );
 
       // Change the canvas color;
-      this.context.fillStyle = "#9747ff";
+      this.context.fillStyle = '#9747ff';
 
       // Draw the 'press any key to begin' text
       this.context.fillText(
@@ -337,20 +383,23 @@ function GamePlayRoomPages() {
       this.context.fillStyle = '#9747ff';
 
       // Draw the Player
-      this.context.fillRect(
-        this.player.x,
-        this.player.y,
-        this.player.width,
-        this.player.height,
-      );
+      // this.context.fillRect(
+      //   this.player[0].x,
+      //   this.player[0].y,
+      //   this.player[0].width,
+      //   this.player[0].height,
+      // );
 
+      this.player.forEach((player: any) => {
+        this.context.fillRect(player.x, player.y, player.width, player.height);
+      });
       // Draw the Ai
-      this.context.fillRect(
-        this.ai.x,
-        this.ai.y,
-        this.ai.width,
-        this.ai.height,
-      );
+      // this.context.fillRect(
+      //   this.ai[1].x,
+      //   this.ai[1].y,
+      //   this.ai[1].width,
+      //   this.ai[1].height,
+      // );
 
       // Draw the Ball
       // if (Pong._turnDelayIsOver.call(this))
@@ -359,8 +408,8 @@ function GamePlayRoomPages() {
         this.ball.y,
         this.ball.y,
         this.ball.width,
-        this.ball.height
-      ); // <-- 이거 뭐하는 거임?
+        this.ball.height,
+      );
 
       // Draw the net (Line in the middle)
       this.context.beginPath();
@@ -369,7 +418,7 @@ function GamePlayRoomPages() {
       this.context.lineTo(this.canvas.width / 2, 140);
       this.context.lineWidth = 10;
 
-      this.context.strokeStyle = "#9747ff";
+      this.context.strokeStyle = '#9747ff';
       this.context.stroke();
 
       // Set the default canvas font and align it to the center
@@ -377,19 +426,26 @@ function GamePlayRoomPages() {
       this.context.textAlign = 'center';
 
       // Draw the players score (left)
-      this.context.fillText(
-        this.player.score.toString(),
-        this.canvas.width / 2 - 300,
-        200,
-      );
+      // this.context.fillText(
+      //   this.player.score.toString(),
+      //   this.canvas.width / 2 - 300,
+      //   200,
+      // );
 
-      // Draw the paddles score (right)
-      this.context.fillText(
-        this.ai.score.toString(),
-        this.canvas.width / 2 + 300,
-        200,
-      );
-
+      // // Draw the paddles score (right)
+      // this.context.fillText(
+      //   this.ai.score.toString(),
+      //   this.canvas.width / 2 + 300,
+      //   200,
+      // );
+      this.player.forEach((player: any, index: number) => {
+        const place = index === 0 ? -300 : 300;
+        this.context.fillText(
+          player.score.toString(),
+          this.canvas.width / 2 + index,
+          200,
+        );
+      });
       // Change the font size for the center score text
       this.context.font = '30px Inria Sans';
 
@@ -422,15 +478,15 @@ function GamePlayRoomPages() {
       this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
       // Set the fill style to white (For the paddles and the ball)
-      this.context.fillStyle = "#9747ff";
+      this.context.fillStyle = '#9747ff';
 
       // Draw the Player
       this.context.fillRect(
         data.racket[0][0], //this.player.x,
         //this.player.y,
         data.racket[0][1], //this.player.width,
-        this.player.width,
-        this.player.height,
+        this.player[0].width,
+        this.player[0].height,
       );
 
       // Draw the Counter Player
@@ -439,8 +495,8 @@ function GamePlayRoomPages() {
         // this.ai.y,
         data.racket[1][0],
         data.racket[1][1],
-        this.ai.width,
-        this.ai.height,
+        this.player[1].width,
+        this.player[1].height,
       );
       //console.log(data.racket);
       //console.log(this.ai.x);
@@ -459,7 +515,7 @@ function GamePlayRoomPages() {
       this.context.moveTo(this.canvas.width / 2, this.canvas.height - 140);
       this.context.lineTo(this.canvas.width / 2, 140);
       this.context.lineWidth = 10;
-      this.context.strokeStyle = "#9747ff";
+      this.context.strokeStyle = '#9747ff';
 
       this.context.stroke();
 
@@ -496,11 +552,11 @@ function GamePlayRoomPages() {
       this.context.font = '40px Inria Sans';
 
       // Draw the current round number
-      this.context.fillText(
-        rounds[Pong.round] ? rounds[Pong.round] : rounds[Pong.round - 1],
-        this.canvas.width / 2,
-        100,
-      );
+      // this.context.fillText(
+      //   rounds[Pong.round] ? rounds[Pong.round] : rounds[Pong.round - 1],
+      //   this.canvas.width / 2,
+      //   100,
+      // );
     },
 
     // Reset the ball location, the player turns and set a delay before the next round begins.
