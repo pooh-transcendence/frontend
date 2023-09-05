@@ -186,9 +186,9 @@ function GamePlayRoomPages() {
       gameSocket.emit('gameStart');
       document.addEventListener('keydown', keyDownHandler);
     };
-    const joinQueueListener = (data: any) => {
-      console.log('joinQueue', data);
-    };
+    // const joinQueueListener = (data: any) => {
+    //   console.log('joinQueue', data);
+    // };
 
     const gameEndListener = (data: any) => {
       setGameEnd(data);
@@ -197,16 +197,15 @@ function GamePlayRoomPages() {
       //   alert(`You Win! with score ${data.winScore} : ${data.loseScore} `);
       // else alert(`You Lose! with score ${data.winScore} : ${data.loseScore}`);
     };
-
-    gameSocket.emit('joinQueue');
-    gameSocket.on('joinQueue', joinQueueListener);
+    //gameSocket.emit('joinQueue');
+    // gameSocket.on("joinQueue", joinQueueListener);
     gameSocket.on('gameReady', gameReadyListener);
     gameSocket.on('gameUpdate', gameUpdateListener);
     gameSocket.on('gameEnd', gameEndListener);
 
     return () => {
       gameSocket.off('gameReady', gameReadyListener);
-      gameSocket.off('joinQueue', joinQueueListener);
+      //gameSocket.off('joinQueue', joinQueueListener);
       gameSocket.off('gameUpdate', gameUpdateListener);
       gameSocket.on('gameEnd', gameEndListener);
       document.removeEventListener('keydown', keyDownHandler);
@@ -366,7 +365,7 @@ function GamePlayRoomPages() {
         this.ball.y,
         this.ball.width,
         this.ball.height,
-      ); // <-- 이거 뭐하는 거임?
+      );
 
       // Draw the net (Line in the middle)
       this.context.beginPath();
@@ -509,11 +508,11 @@ function GamePlayRoomPages() {
       this.context.font = '40px Inria Sans';
 
       // Draw the current round number
-      this.context.fillText(
-        rounds[Pong.round] ? rounds[Pong.round] : rounds[Pong.round - 1],
-        this.canvas.width / 2,
-        100,
-      );
+      // this.context.fillText(
+      //   rounds[Pong.round] ? rounds[Pong.round] : rounds[Pong.round - 1],
+      //   this.canvas.width / 2,
+      //   100,
+      // );
     },
 
     // Reset the ball location, the player turns and set a delay before the next round begins.
