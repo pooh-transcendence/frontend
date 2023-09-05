@@ -204,14 +204,14 @@ function GamePlayRoomPages() {
       setTimeout(() => { setShowArrow(false) }, 3000);
       setShowReadyForm(false);
     }
-    gameSocket.on("gameReadyDto", gameStartHandler); // detects game is started
+    gameSocket.on("gameStart", gameStartHandler); // detects game is started
 
     return () => {
       gameSocket.off('gameReady', gameReadyListener);
       gameSocket.off('joinQueue', joinQueueListener);
       gameSocket.off('gameUpdate', gameUpdateListener);
       gameSocket.off('gameEnd', gameEndListener);
-      gameSocket.off("gameReadyDto", gameStartHandler);
+      gameSocket.off("gameStart", gameStartHandler);
 
       document.removeEventListener('keydown', keyDownHandler);
     };
