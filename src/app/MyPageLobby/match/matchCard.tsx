@@ -51,7 +51,7 @@ export default function MatchCard({ game, relativeWinRate, leftUserId }: { game:
               <div className="Vs750 text-neutral-600 text-sm font-normal">vs {relativeWinRate}</div>
             </div>
           </div>
-          <div className=" w-[69px] h-[37px] left-[262px] top-0 absolute text-center text-neutral-600 text-[28px] font-normal">{game.winScore} : {game.loseScore}</div>
+          <div className=" w-[69px] h-[37px] left-[262px] top-0 absolute text-center text-neutral-600 text-[28px] font-normal">{game.loseScore} : {game.winScore}</div>
           <div className="User1 left-0 top-0 absolute justify-end items-center gap-2.5 inline-flex">
             <div className="Username1 w-[220px] h-[37px] text-right text-neutral-600 text-[28px] font-normal">{left.nickname}</div>
             <img className="avatar1 w-8 h-8" src={left.avatar ? left.avatar : "/pngegg-4@2x.png"} />
