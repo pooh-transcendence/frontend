@@ -11,7 +11,7 @@ interface gameInfo {
   score: number[];
   ball: number[];
   isGetScore: boolean;
-  whoAmI: string;
+  whoAmI: "left" | "right";
   nickname: string;
 }
 
@@ -199,11 +199,20 @@ function GamePlayRoomPages() {
     gameSocket.on('gameUpdate', gameUpdateListener);
     gameSocket.on('gameEnd', gameEndListener);
 
+    const gameStartHandler = () => {
+      setShowArrow(true);
+      setTimeout(() => { setShowArrow(false) }, 3000);
+      setShowReadyForm(false);
+    }
+    gameSocket.on("gameStart", gameStartHandler);
+
     return () => {
       gameSocket.off('gameReady', gameReadyListener);
       gameSocket.off('joinQueue', joinQueueListener);
       gameSocket.off('gameUpdate', gameUpdateListener);
-      gameSocket.on('gameEnd', gameEndListener);
+      gameSocket.off('gameEnd', gameEndListener);
+      gameSocket.off("gameStart", gameStartHandler);
+
       document.removeEventListener('keydown', keyDownHandler);
     };
   }, []);
@@ -532,7 +541,11 @@ function GamePlayRoomPages() {
       }
       {
         showArrow && (
-          
+          gameInfo.whoAmI == "left" ? (
+            <img src="arrow.svg" className='w-[100px] h-[100px] top-[200px] left-[200px] bg-[#555555]' />
+          ) : (
+            <img src="arrow.svg" className='w-[100px] h-[100px] top-[200px] right-[200px] bg-[#555555]' />
+          )
         )
       }
       <canvas ref={canvasRef} width={1400} height={1000} className="w-[800px] h-[571.4px]" />
