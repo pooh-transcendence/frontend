@@ -160,7 +160,7 @@ function GamePlayRoomPages() {
   }, [canvasRef]);
 
   useEffect(() => {
-    console.log('GameSOcket', gameSocket);
+    console.log('gameSocket', gameSocket);
 
     const gameUpdateListener = (data: gameInfo) => {
       Pong.drawData(data);
@@ -204,14 +204,14 @@ function GamePlayRoomPages() {
       setTimeout(() => { setShowArrow(false) }, 3000);
       setShowReadyForm(false);
     }
-    gameSocket.on("gameStart", gameStartHandler);
+    gameSocket.on("gameReadyDto", gameStartHandler); // detects game is started
 
     return () => {
       gameSocket.off('gameReady', gameReadyListener);
       gameSocket.off('joinQueue', joinQueueListener);
       gameSocket.off('gameUpdate', gameUpdateListener);
       gameSocket.off('gameEnd', gameEndListener);
-      gameSocket.off("gameStart", gameStartHandler);
+      gameSocket.off("gameReadyDto", gameStartHandler);
 
       document.removeEventListener('keydown', keyDownHandler);
     };
