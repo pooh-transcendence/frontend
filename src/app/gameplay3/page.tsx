@@ -163,6 +163,7 @@ function GamePlayRoomPages() {
 
     const gameUpdateListener = (data: gameInfo) => {
       Pong.drawData(data);
+      console.log(1);
     };
 
     const keyDownHandler = (key: KeyboardEvent) => {
