@@ -181,14 +181,14 @@ function GamePlayRoomPages() {
         });
     };
     const gameReadyListener = (data: gameInfo) => {
-      console.log('gameReady', data);
+      console.log('gameReadyDto', data);
       Pong.initialize(data);
       gameSocket.emit('gameStart');
       document.addEventListener('keydown', keyDownHandler);
     };
-    // const joinQueueListener = (data: any) => {
-    //   console.log('joinQueue', data);
-    // };
+    const joinQueueListener = (data: any) => {
+      console.log('joinQueue', data);
+    };
 
     const gameEndListener = (data: any) => {
       setGameEnd(data);
@@ -198,14 +198,14 @@ function GamePlayRoomPages() {
       // else alert(`You Lose! with score ${data.winScore} : ${data.loseScore}`);
     };
     //gameSocket.emit('joinQueue');
-    // gameSocket.on("joinQueue", joinQueueListener);
-    gameSocket.on('gameReady', gameReadyListener);
+    gameSocket.on('joinQueue', joinQueueListener);
+    gameSocket.on('gameReadyDto', gameReadyListener);
     gameSocket.on('gameUpdate', gameUpdateListener);
     gameSocket.on('gameEnd', gameEndListener);
 
     return () => {
       gameSocket.off('gameReady', gameReadyListener);
-      //gameSocket.off('joinQueue', joinQueueListener);
+      gameSocket.off('joinQueue', joinQueueListener);
       gameSocket.off('gameUpdate', gameUpdateListener);
       gameSocket.on('gameEnd', gameEndListener);
       document.removeEventListener('keydown', keyDownHandler);
