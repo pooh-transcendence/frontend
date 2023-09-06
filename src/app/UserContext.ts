@@ -80,7 +80,7 @@ export const UserContext = React.createContext({
     chatState: chatStates.friendList,
     mainState: mainStates.gameLobby,
     friendChattingInfo: {} as friendInfo,
-    channelChattingInfo: {} as channelInfo,
+    channelChattingInfo: {inviteSelectedList: [] as number[]} as channelInfo,
 
     showChatUserInfo: false,
     showChatSetting: false,

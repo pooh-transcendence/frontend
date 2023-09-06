@@ -25,7 +25,6 @@ const ChatUserSearch = (props: { type: "add_friend" | "invite" }): JSX.Element =
     };
 
     useEffect(() => {
-        // TODO: 더 나은 검색결과를 위해 정렬하는거 조을듯
         if (state.showChatAddFriend)
             socket.emit("allUser", (data: friend[]) => {
                 console.log(data);
@@ -35,8 +34,6 @@ const ChatUserSearch = (props: { type: "add_friend" | "invite" }): JSX.Element =
             });
         else {
             socket.emit("getFriendList", (data: friend[]) => {
-                // setOriginalList(data);
-                // setUserList(data);
                 console.log(data);
             });
             socket.once("getFriendList", (data: friend[]) => {

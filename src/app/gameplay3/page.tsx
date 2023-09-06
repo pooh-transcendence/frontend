@@ -71,59 +71,6 @@ interface gameResult {
   // "racketSize": number,
 }
 
-function ReadyForm() {
-  const [ready, setReady] = useState<boolean>(false);
-
-  const readyHandler = () => {
-    setReady(true);
-    gameSocket.emit("gameStart");
-  };
-
-  return (
-    <div className="Property1Default w-[385px] h-[147px] relative">
-      <div className="Bg w-[385px] h-[147px] left-0 top-0 absolute bg-white rounded-[10px] shadow" />
-      {ready == true ? (
-        <div className="Loadingprogress w-[41px] h-[41px] left-[172px] top-[73px] absolute">
-          <div className=" w-10 h-10 left-[0.90px] top-[0.90px] absolute">
-            <img src="loading_spinner.png" className="animate-spin" />
-          </div>
-        </div>
-      ) : (
-        <button
-          onClick={readyHandler}
-          className="Createbutton w-[75px] h-8 left-[158px] top-[81px] absolute"
-        >
-          <img
-            src="sweep.svg"
-            className="SweepFill0Wght300Grad0Opsz481 w-8 h-8 left-0 top-0 absolute"
-          />
-          <div className="Ready left-[29px] top-[7px] absolute text-neutral-600 text-base font-bold">
-            ready
-          </div>
-        </button>
-      )}
-      <div
-        className="WaitForReady w-[163px] h-8 left-[111px] top-[35px] absolute text-right text-neutral-600 text-2xl font-bold"
-        style={{
-          background: `linear-gradient(
-        to right,
-        #9747FF 30%,
-        #555555 50%
-      )`,
-          WebkitBackgroundClip: "text",
-          backgroundClip: "text",
-          WebkitTextFillColor: "transparent",
-          textFillColor: "transparent",
-          backgroundSize: "500% auto",
-          animation: "textShine 1s ease-in-out infinite alternate",
-        }}
-      >
-        wait for ready...
-      </div>
-    </div>
-  );
-}
-
 function GameEnd({ game }: { game: gameResult }) {
   const { state, actions } = useContext(UserContext);
 
@@ -135,6 +82,7 @@ function GameEnd({ game }: { game: gameResult }) {
           <button
             onClick={() => {
               actions.setShowGame(false);
+              // todo: update lobby game stats
             }}
           >
             <img
@@ -194,24 +142,18 @@ function GamePlayRoomPages() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { state, actions } = useContext(UserContext);
   const [gameEnd, setGameEnd] = useState<gameResult | null>(null);
-  const [showArrow, setShowArrow] = useState<boolean>(true);
-  const [showReadyForm, setShowReadyForm] = useState<boolean>(true);
   const [gameInfo, setGameInfo] = useState<gameInfo>({} as gameInfo);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    console.log("canvas", canvas);
     if (canvas) {
       Pong.initialize(null);
     }
   }, [canvasRef]);
 
   useEffect(() => {
-    console.log("gameSocket", gameSocket);
-
     const gameUpdateListener = (data: gameInfo) => {
       Pong.drawData(data);
-      console.log(1);
     };
 
     const keyDownHandler = (key: KeyboardEvent) => {
@@ -229,12 +171,7 @@ function GamePlayRoomPages() {
           direction: -1,
         });
     };
-    // const gameReadyListener = (data: gameInfo) => {
-    //   setGameInfo(data);
-    //   console.log('gameReadyDto', data);
-    //   Pong.initialize(data);
-    //   document.addEventListener('keydown', keyDownHandler);
-    // };
+
     const joinQueueListener = (data: any) => {
       console.log("joinQueue", data);
     };
@@ -244,26 +181,23 @@ function GamePlayRoomPages() {
       console.log("gameEnd", data);
     };
 
-    gameSocket.on("joinQueue", joinQueueListener);
-    //gameSocket.on('gameReadyDto', gameReadyListener);
-    gameSocket.on("gameUpdate", gameUpdateListener);
-    gameSocket.on("gameEnd", gameEndListener);
+    const gameGiveupEndListener = (data: any) => {
+      actions.setShowGame(false); // back to lobby
+    }
 
     const gameStartHandler = (data: gameInfo) => {
-      setShowArrow(true);
-      setTimeout(() => {
-        setShowArrow(false);
-      }, 3000);
-      setShowReadyForm(false);
+      setGameInfo(data);
       Pong.initialize(data);
       document.addEventListener("keydown", keyDownHandler);
       gameSocket.emit("gameStart");
     };
 
+    gameSocket.on("joinQueue", joinQueueListener); // only for random match
+    gameSocket.on("gameUpdate", gameUpdateListener);
+    gameSocket.on("gameEnd", gameEndListener);
     gameSocket.on("gameStart", gameStartHandler); // detects game is started
 
     return () => {
-      //gameSocket.off("gameReady", gameReadyListener);
       gameSocket.off("joinQueue", joinQueueListener);
       gameSocket.off("gameUpdate", gameUpdateListener);
       gameSocket.off("gameEnd", gameEndListener);
@@ -305,10 +239,8 @@ function GamePlayRoomPages() {
 
   const Game: any = {
     initialize: function (this: game, gameReadyDto: any) {
-      // if (typeof this === null) return null;
       console.log("initialize");
       this.canvas = canvasRef;
-      // console.log(this.canvas);
       if (this.canvas.current === null) return null;
       this.context = this.canvas.current.getContext("2d");
 
@@ -340,12 +272,12 @@ function GamePlayRoomPages() {
       Pong.context.fillStyle = this.color;
 
       // Draw the rectangle behind the 'Press any key to begin' text.
-      Pong.context.fillRect(
-        Pong.canvas.width / 2 - 350,
-        Pong.canvas.height / 2 - 48,
-        700,
-        100
-      );
+      // Pong.context.fillRect(
+      //   Pong.canvas.width / 2 - 350,
+      //   Pong.canvas.height / 2 - 48,
+      //   700,
+      //   100
+      // );
 
       // Change the canvas color;
       Pong.context.fillStyle = "#9747ff";
@@ -367,22 +299,22 @@ function GamePlayRoomPages() {
       this.context.fillStyle = this.color;
 
       // Draw the rectangle behind the 'Press any key to begin' text.
-      this.context.fillRect(
-        this.canvas.width / 2 - 350,
-        this.canvas.height / 2 - 48,
-        700,
-        100
-      );
+      // this.context.fillRect(
+      //   this.canvas.width / 2 - 350,
+      //   this.canvas.height / 2 - 48,
+      //   700,
+      //   100
+      // );
 
       // Change the canvas color;
       this.context.fillStyle = "#9747ff";
 
       // Draw the 'press any key to begin' text
-      this.context.fillText(
-        "Press any key to begin",
-        this.canvas.width / 2,
-        this.canvas.height / 2 + 15
-      );
+      // this.context.fillText(
+      //   "Press any key to begin",
+      //   this.canvas.width / 2,
+      //   this.canvas.height / 2 + 15
+      // );
     },
 
     // Draw the objects to the canvas element
@@ -399,34 +331,18 @@ function GamePlayRoomPages() {
       // Set the fill style to white (For the paddles and the ball)
       this.context.fillStyle = "#9747ff";
 
-      // Draw the Player
-      // this.context.fillRect(
-      //   this.player[0].x,
-      //   this.player[0].y,
-      //   this.player[0].width,
-      //   this.player[0].height,
-      // );
-
       this.player.forEach((player: any) => {
         this.context.fillRect(player.x, player.y, player.width, player.height);
       });
-      // Draw the Ai
-      // this.context.fillRect(
-      //   this.ai[1].x,
-      //   this.ai[1].y,
-      //   this.ai[1].width,
-      //   this.ai[1].height,
-      // );
 
       // Draw the Ball
-      // if (Pong._turnDelayIsOver.call(this))
-      this.context.fillRect(
-        this.ball.x,
-        this.ball.y,
-        this.ball.y,
-        this.ball.width,
-        this.ball.height
-      );
+      // this.context.fillRect(
+      //   this.ball.x,
+      //   this.ball.y,
+      //   this.ball.y,
+      //   this.ball.width,
+      //   this.ball.height
+      // );
 
       // Draw the net (Line in the middle)
       this.context.beginPath();
@@ -442,19 +358,6 @@ function GamePlayRoomPages() {
       this.context.font = "100px Inria Sans";
       this.context.textAlign = "center";
 
-      // Draw the players score (left)
-      // this.context.fillText(
-      //   this.player.score.toString(),
-      //   this.canvas.width / 2 - 300,
-      //   200,
-      // );
-
-      // // Draw the paddles score (right)
-      // this.context.fillText(
-      //   this.ai.score.toString(),
-      //   this.canvas.width / 2 + 300,
-      //   200,
-      // );
       this.player.forEach((player: any, index: number) => {
         const place = index === 0 ? -300 : 300;
         this.context.fillText(
@@ -464,13 +367,13 @@ function GamePlayRoomPages() {
         );
       });
       // Change the font size for the center score text
-      this.context.font = "30px Inria Sans";
+      this.context.font = "100px Inria Sans";
 
       // Draw the winning score (center)
       this.context.fillText(
-        "Round " + (Pong.round + 1),
+        gameInfo.whoAmI == "left" ? "↓                               " : "                               ↓",
         this.canvas.width / 2,
-        35
+        100
       );
 
       // Change the font size for the center score value
@@ -508,15 +411,11 @@ function GamePlayRoomPages() {
 
       // Draw the Counter Player
       this.context.fillRect(
-        // this.ai.x,
-        // this.ai.y,
         data.racket[1][0],
         data.racket[1][1],
         this.player[1].width,
         this.player[1].height
       );
-      //console.log(data.racket);
-      //console.log(this.ai.x);
       // Draw the Ball
       //if (Pong._turnDelayIsOver.call(this))
       this.context.fillRect(
@@ -567,13 +466,6 @@ function GamePlayRoomPages() {
 
       // Change the font size for the center score value
       this.context.font = "40px Inria Sans";
-
-      // Draw the current round number
-      // this.context.fillText(
-      //   rounds[Pong.round] ? rounds[Pong.round] : rounds[Pong.round - 1],
-      //   this.canvas.width / 2,
-      //   100,
-      // );
     },
 
     // Reset the ball location, the player turns and set a delay before the next round begins.
@@ -603,19 +495,6 @@ function GamePlayRoomPages() {
   return (
     <>
       {gameEnd && <GameEnd game={gameEnd} />}
-      {showReadyForm && <ReadyForm />}
-      {showArrow &&
-        (gameInfo.whoAmI == "left" ? (
-          <img
-            src="arrow.svg"
-            className="w-[100px] h-[100px] top-[200px] left-[200px] bg-[#555555]"
-          />
-        ) : (
-          <img
-            src="arrow.svg"
-            className="w-[100px] h-[100px] top-[200px] right-[200px] bg-[#555555]"
-          />
-        ))}
       <canvas
         ref={canvasRef}
         width={1400}

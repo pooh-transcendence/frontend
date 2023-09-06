@@ -88,7 +88,7 @@ export const UserListComponent = ({
             <img className="w-8 h-8 rounded-[70%]" src={profileImg ? profileImg : "pngegg-1@2x.png"} />
             <div className="text-neutral-600 text-base font-normal">{nick}</div>
             <img className="w-3.5 h-3.5 relative" src="wifi_off.svg" />
-            <button onClick={gameInviteHandler} className="z-30"> {/* 1vs1 invite button */}
+            <button onClick={gameInviteHandler} className=""> {/* 1vs1 invite button */}
               <img className="w-5 h-5 left-[216px] top-[8px] absolute" src="mark_as_unread.svg" />
             </button>
           </div>

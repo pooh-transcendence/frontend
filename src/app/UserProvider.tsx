@@ -18,7 +18,7 @@ export default function UserProvider({ children }: { children: React.ReactNode }
   const [chatState, setChatState] = useState(chatStates.friendList);
   const [mainState, setMainState] = useState(mainStates.gameLobby);
   const [friendChattingInfo, setFriendChattingInfo] = useState<friendInfo>({} as friendInfo);
-  const [channelChattingInfo, setChannelChattingInfo] = useState<channelInfo>({} as channelInfo);
+  const [channelChattingInfo, setChannelChattingInfo] = useState<channelInfo>({inviteSelectedList: [] as number[]} as channelInfo);
 
   const [showChatUserInfo, setShowChatUserInfo] = useState<boolean>(false);
   const [showChatSetting, setShowChatSetting] = useState<boolean>(false);

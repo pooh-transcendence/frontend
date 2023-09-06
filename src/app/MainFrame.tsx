@@ -95,22 +95,6 @@ export default function MainFrame() {
   const [duplicatedConnection, setDuplicatedConnection] =
     useState<boolean>(false);
 
-  const bypassMe = () => {
-    api_get("/user").then((res) => {
-      console.log("/user", res);
-      const data: userInfo = res.data.data;
-      actions.setUserInfo({
-        nickname: data.nickname,
-        avatar: data.avatar ?? "pngegg-1@2x.png",
-        id: data.id,
-        token: getAuth()!,
-        registered: true,
-        winnerGame: data.winnerGame,
-        loserGame: data.loserGame,
-      });
-    });
-  };
-
   useEffect(() => {
     // auth bypass
     const loadedContext: string | null = sessionStorage.getItem("userContext");
@@ -192,9 +176,6 @@ export default function MainFrame() {
           }
           {getAuth() && (
             <>
-              {/* <button className="z-30" onClick={() => actions.setShowGame(true)}>
-                canvas test
-              </button> */}
               {state.showInfo && (
                 <div className="z-20 flex justify-center items-center">
                   <div className="z-30 w-[62.5rem] h-[40.63rem]">
@@ -230,11 +211,6 @@ export default function MainFrame() {
                 <div className="w-[300px] h-[650px] absolute top-[8.13rem] left-[58.19rem]">
                   <Chat />
                 </div>
-                {/* {
-                  state.showGame && (
-                    <GameFrame />
-                  )
-                } */}
               </div>
             </>
           )}
