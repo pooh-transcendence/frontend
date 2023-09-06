@@ -29,7 +29,7 @@ export function getUserId(): string | null {
   return userId;
 }
 
-export const baseUrl = "http://localhost:3000";
+export const baseUrl = process.env.BACKEND_IP || "http://localhost:3000";
 //export const baseUrl = "http://10.19.221.159:3000"; // yubchoi
 // export const baseUrl = 'http://10.19.233.166:3000'; // joowpark
 
