@@ -57,6 +57,7 @@ type game = GameObject & {
   round: number;
   color: string;
   gameType: string;
+  whoAmI: string;
   initialize: (gameReadyDto: any) => void;
 };
 
@@ -69,6 +70,58 @@ interface gameResult {
   loseScore: number;
   ballSpeed: number;
   // "racketSize": number,
+}
+function ReadyForm() {
+  const [ready, setReady] = useState<boolean>(false);
+
+  const readyHandler = () => {
+    setReady(true);
+    gameSocket.emit("gameStart");
+  };
+
+  return (
+    <div className="Property1Default w-[385px] h-[147px] relative">
+      <div className="Bg w-[385px] h-[147px] left-0 top-0 absolute bg-white rounded-[10px] shadow" />
+      {ready == true ? (
+        <div className="Loadingprogress w-[41px] h-[41px] left-[172px] top-[73px] absolute">
+          <div className=" w-10 h-10 left-[0.90px] top-[0.90px] absolute">
+            <img src="loading_spinner.png" className="animate-spin" />
+          </div>
+        </div>
+      ) : (
+        <button
+          onClick={readyHandler}
+          className="Createbutton w-[75px] h-8 left-[158px] top-[81px] absolute"
+        >
+          <img
+            src="sweep.svg"
+            className="SweepFill0Wght300Grad0Opsz481 w-8 h-8 left-0 top-0 absolute"
+          />
+          <div className="Ready left-[29px] top-[7px] absolute text-neutral-600 text-base font-bold">
+            ready
+          </div>
+        </button>
+      )}
+      <div
+        className="WaitForReady w-[163px] h-8 left-[111px] top-[35px] absolute text-right text-neutral-600 text-2xl font-bold"
+        style={{
+          background: `linear-gradient(
+        to right,
+        #9747FF 30%,
+        #555555 50%
+      )`,
+          WebkitBackgroundClip: "text",
+          backgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          textFillColor: "transparent",
+          backgroundSize: "500% auto",
+          animation: "textShine 1s ease-in-out infinite alternate",
+        }}
+      >
+        wait for ready...
+      </div>
+    </div>
+  );
 }
 
 function GameEnd({ game }: { game: gameResult }) {
@@ -187,6 +240,7 @@ function GamePlayRoomPages() {
 
     const gameStartHandler = (data: gameInfo) => {
       setGameInfo(data);
+      console.log(data);
       Pong.initialize(data);
       document.addEventListener("keydown", keyDownHandler);
       gameSocket.emit("gameStart");
@@ -251,6 +305,7 @@ function GamePlayRoomPages() {
         this.player[0] = Ai.new.call(this, "left", gameReadyDto);
         this.player[1] = Ai.new.call(this, "right", gameReadyDto);
         this.ball = Ball.new.call(this, gameReadyDto.racketSize);
+        this.whoAmI = gameReadyDto.whoAmI;
       } else {
         this.player[0] = Ai.new.call(this, "left", true);
         this.player[1] = Ai.new.call(this, "right", false);
@@ -258,6 +313,7 @@ function GamePlayRoomPages() {
       }
       // this.ai.speed = 5;
       this.running = this.over = false;
+
       // this.turn = this.ai;
       this.timer = this.round = 0;
       this.color = "#8c52ff00"; // background color
@@ -306,15 +362,6 @@ function GamePlayRoomPages() {
       // Change the font size for the center score text
       this.context.font = "100px Inria Sans";
 
-      // Draw the winning score (center)
-      this.context.fillText(
-        gameInfo.whoAmI == "left"
-          ? "↓                               "
-          : "                               ↓",
-        this.canvas.width / 2,
-        100
-      );
-
       // Change the font size for the center score value
       this.context.font = "40px Inria Sans";
 
@@ -326,7 +373,7 @@ function GamePlayRoomPages() {
       );
     },
 
-    drawData: function (data: gameInfo) {
+    drawData: function (data: gameInfo, whoAmI: string, isGameeady: boolean) {
       //console.log("drawData");
       this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
@@ -398,7 +445,7 @@ function GamePlayRoomPages() {
 
       // Draw the winning score (center)
       this.context.fillText(
-        "Round " + (Pong.round + 1),
+        "Where Am I ? : " + this.whoAmI, //"Round " + (Pong.round + 1),
         this.canvas.width / 2,
         35
       );
