@@ -1,7 +1,7 @@
 "use client";
 
 import { useContext, useRef, useState, useEffect } from "react";
-import { gameSocket } from "@/app/api";
+import { gameSocket, api_get } from "@/app/api";
 import { UserContext, userInfo } from "../UserContext";
 
 interface gameInfo {
@@ -83,6 +83,15 @@ function GameEnd({ game }: { game: gameResult }) {
             onClick={() => {
               actions.setShowGame(false);
               // todo: update lobby game stats
+              api_get("/user").then((res) => {
+                console.log("/user", res);
+                const data: userInfo = res.data.data;
+                actions.setUserInfo({
+                  ...state.userInfo,
+                  winnerGame: data.winnerGame,
+                  loserGame: data.loserGame,
+                });
+              });
             }}
           >
             <img
@@ -187,6 +196,7 @@ function GamePlayRoomPages() {
 
     const gameStartHandler = (data: gameInfo) => {
       setGameInfo(data);
+      console.log("gameStartHandler", data);
       Pong.initialize(data);
       document.addEventListener("keydown", keyDownHandler);
       gameSocket.emit("gameStart");
