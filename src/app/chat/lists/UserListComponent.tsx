@@ -65,7 +65,7 @@ export const UserListComponent = ({
             <div className="text-neutral-600 text-base font-normal">{nick}</div>
           </div>
           <button onClick={selectHandler} className="w-6 h-6 left-[217px] top-[4px] absolute flex-col justify-center items-center gap-2.5 inline-flex">
-            <img className="w-7 h-7 relative" src="Checkmarks0.svg" />
+            <img className="w-7 h-7 relative" src="checkmarks0.svg" />
           </button>
         </div>
       )}
@@ -77,7 +77,7 @@ export const UserListComponent = ({
             <div className="text-neutral-600 text-base font-normal">{nick}</div>
           </div>
           <button onClick={unselectHandler} className="w-6 h-6 left-[217px] top-[4px] absolute flex-col justify-center items-center gap-2.5 inline-flex">
-            <img className="w-7 h-7 relative" src="Checkmarks1.svg" />
+            <img className="w-7 h-7 relative" src="checkmarks1.svg" />
           </button>
         </div>
       )}
