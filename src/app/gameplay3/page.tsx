@@ -183,7 +183,7 @@ function GamePlayRoomPages() {
 
     const gameGiveupEndListener = (data: any) => {
       actions.setShowGame(false); // back to lobby
-    }
+    };
 
     const gameStartHandler = (data: gameInfo) => {
       setGameInfo(data);
@@ -202,7 +202,6 @@ function GamePlayRoomPages() {
       gameSocket.off("gameUpdate", gameUpdateListener);
       gameSocket.off("gameEnd", gameEndListener);
       gameSocket.off("gameStart", gameStartHandler);
-
       document.removeEventListener("keydown", keyDownHandler);
     };
   }, []);
@@ -263,60 +262,8 @@ function GamePlayRoomPages() {
       this.timer = this.round = 0;
       this.color = "#8c52ff00"; // background color
 
-      Pong.menu();
-    },
-
-    endGameMenu: function (text: string) {
-      // Change the canvas font size and color
-      Pong.context.font = "45px Inria Sans";
-      Pong.context.fillStyle = this.color;
-
-      // Draw the rectangle behind the 'Press any key to begin' text.
-      // Pong.context.fillRect(
-      //   Pong.canvas.width / 2 - 350,
-      //   Pong.canvas.height / 2 - 48,
-      //   700,
-      //   100
-      // );
-
-      // Change the canvas color;
-      Pong.context.fillStyle = "#9747ff";
-
-      // Draw the end game menu text ('Game Over' and 'Winner')
-      Pong.context.fillText(
-        text,
-        Pong.canvas.width / 2,
-        Pong.canvas.height / 2 + 15
-      );
-    },
-
-    menu: function () {
-      // Draw all the Pong objects in their current state
       Pong.draw();
-
-      // Change the canvas font size and color
-      this.context.font = "50px Inria Sans";
-      this.context.fillStyle = this.color;
-
-      // Draw the rectangle behind the 'Press any key to begin' text.
-      // this.context.fillRect(
-      //   this.canvas.width / 2 - 350,
-      //   this.canvas.height / 2 - 48,
-      //   700,
-      //   100
-      // );
-
-      // Change the canvas color;
-      this.context.fillStyle = "#9747ff";
-
-      // Draw the 'press any key to begin' text
-      // this.context.fillText(
-      //   "Press any key to begin",
-      //   this.canvas.width / 2,
-      //   this.canvas.height / 2 + 15
-      // );
     },
-
     // Draw the objects to the canvas element
     draw: function () {
       // Clear the Canvas
@@ -335,16 +282,6 @@ function GamePlayRoomPages() {
         this.context.fillRect(player.x, player.y, player.width, player.height);
       });
 
-      // Draw the Ball
-      // this.context.fillRect(
-      //   this.ball.x,
-      //   this.ball.y,
-      //   this.ball.y,
-      //   this.ball.width,
-      //   this.ball.height
-      // );
-
-      // Draw the net (Line in the middle)
       this.context.beginPath();
       this.context.setLineDash([7, 15]);
       this.context.moveTo(this.canvas.width / 2, this.canvas.height - 140);
@@ -371,7 +308,9 @@ function GamePlayRoomPages() {
 
       // Draw the winning score (center)
       this.context.fillText(
-        gameInfo.whoAmI == "left" ? "↓                               " : "                               ↓",
+        gameInfo.whoAmI == "left"
+          ? "↓                               "
+          : "                               ↓",
         this.canvas.width / 2,
         100
       );
@@ -466,27 +405,6 @@ function GamePlayRoomPages() {
 
       // Change the font size for the center score value
       this.context.font = "40px Inria Sans";
-    },
-
-    // Reset the ball location, the player turns and set a delay before the next round begins.
-    _resetTurn: function (victor: any, loser: any) {
-      this.ball = Ball.new.call(this, this.ball.speed);
-      this.turn = loser;
-      this.timer = new Date().getTime();
-
-      victor.score++;
-    },
-
-    // Wait for a delay to have passed after each turn.
-    _turnDelayIsOver: function () {
-      return new Date().getTime() - this.timer >= 1000;
-    },
-
-    // Select a random color as the background of each level/round.
-    _generateRoundColor: function () {
-      var newColor = colors[Math.floor(Math.random() * colors.length)];
-      if (newColor === this.color) return Pong._generateRoundColor();
-      return newColor;
     },
   };
 
