@@ -4,7 +4,7 @@ import React, { useState, useEffect, useContext, useRef } from "react";
 import { ChatTitle } from '@/app/chat/frame/ChatTitle';
 import { ChatBubble } from '@/app/chat/chatting/ChatBubble';
 import { socket } from "@/app/api";
-import { UserContext } from "@/app/UserContext";
+import { UserContext, channelInfo } from "@/app/UserContext";
 import UserInfo from "@/app/chat/lists/UserInfo";
 import RoomSettings from "@/app/chat/chatting/RoomSettings";
 import ChatUserSearch from "@/app/chat/ChatUserSearch";
@@ -34,6 +34,19 @@ export const ChatChannel = ({
         renderMessage();
     }, [state.channelChat]); // 어떻게 해야 보고있는 채팅이 업데이트 될때만 리랜더할 수 있을까?
 
+    useEffect(() => {
+        const changeUserTypeToMod = (changedChannel: channelInfo) => {
+            console.log("changeUserTypeToMod", changedChannel);
+            if(changedChannel.id == state.channelChattingInfo.id)
+                state.channelChattingInfo.userType="MODERATOR";
+        };
+
+        socket.on("changeUserTypeToMod", changeUserTypeToMod);
+
+        return (() => {
+            socket.off("changeUserTypeToMod", changeUserTypeToMod);
+        })
+    })
     const onChange = (e: any) => { setText(e.target.value); }
     const handleOnKeyPress = (e: any) => {
         if (e.key === 'Enter') {
