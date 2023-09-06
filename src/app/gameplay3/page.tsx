@@ -82,7 +82,6 @@ function GameEnd({ game }: { game: gameResult }) {
           <button
             onClick={() => {
               actions.setShowGame(false);
-              // todo: update lobby game stats
               api_get("/user").then((res) => {
                 console.log("/user", res);
                 const data: userInfo = res.data.data;
