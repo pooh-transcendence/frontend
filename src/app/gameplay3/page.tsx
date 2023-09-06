@@ -57,6 +57,7 @@ type game = GameObject & {
   round: number;
   color: string;
   gameType: string;
+  whoAmI: string;
   initialize: (gameReadyDto: any) => void;
 };
 
@@ -69,6 +70,58 @@ interface gameResult {
   loseScore: number;
   ballSpeed: number;
   // "racketSize": number,
+}
+function ReadyForm() {
+  const [ready, setReady] = useState<boolean>(false);
+
+  const readyHandler = () => {
+    setReady(true);
+    gameSocket.emit("gameStart");
+  };
+
+  return (
+    <div className="Property1Default w-[385px] h-[147px] relative">
+      <div className="Bg w-[385px] h-[147px] left-0 top-0 absolute bg-white rounded-[10px] shadow" />
+      {ready == true ? (
+        <div className="Loadingprogress w-[41px] h-[41px] left-[172px] top-[73px] absolute">
+          <div className=" w-10 h-10 left-[0.90px] top-[0.90px] absolute">
+            <img src="loading_spinner.png" className="animate-spin" />
+          </div>
+        </div>
+      ) : (
+        <button
+          onClick={readyHandler}
+          className="Createbutton w-[75px] h-8 left-[158px] top-[81px] absolute"
+        >
+          <img
+            src="sweep.svg"
+            className="SweepFill0Wght300Grad0Opsz481 w-8 h-8 left-0 top-0 absolute"
+          />
+          <div className="Ready left-[29px] top-[7px] absolute text-neutral-600 text-base font-bold">
+            ready
+          </div>
+        </button>
+      )}
+      <div
+        className="WaitForReady w-[163px] h-8 left-[111px] top-[35px] absolute text-right text-neutral-600 text-2xl font-bold"
+        style={{
+          background: `linear-gradient(
+        to right,
+        #9747FF 30%,
+        #555555 50%
+      )`,
+          WebkitBackgroundClip: "text",
+          backgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          textFillColor: "transparent",
+          backgroundSize: "500% auto",
+          animation: "textShine 1s ease-in-out infinite alternate",
+        }}
+      >
+        wait for ready...
+      </div>
+    </div>
+  );
 }
 
 function GameEnd({ game }: { game: gameResult }) {
@@ -191,11 +244,12 @@ function GamePlayRoomPages() {
 
     const gameGiveupEndListener = (data: any) => {
       actions.setShowGame(false); // back to lobby
-    }
+    };
 
     const gameStartHandler = (data: gameInfo) => {
       setGameInfo(data);
       console.log("gameStartHandler", data);
+      console.log(data);
       Pong.initialize(data);
       document.addEventListener("keydown", keyDownHandler);
       gameSocket.emit("gameStart");
@@ -211,7 +265,6 @@ function GamePlayRoomPages() {
       gameSocket.off("gameUpdate", gameUpdateListener);
       gameSocket.off("gameEnd", gameEndListener);
       gameSocket.off("gameStart", gameStartHandler);
-
       document.removeEventListener("keydown", keyDownHandler);
     };
   }, []);
@@ -261,6 +314,7 @@ function GamePlayRoomPages() {
         this.player[0] = Ai.new.call(this, "left", gameReadyDto);
         this.player[1] = Ai.new.call(this, "right", gameReadyDto);
         this.ball = Ball.new.call(this, gameReadyDto.racketSize);
+        this.whoAmI = gameReadyDto.whoAmI;
       } else {
         this.player[0] = Ai.new.call(this, "left", true);
         this.player[1] = Ai.new.call(this, "right", false);
@@ -268,64 +322,13 @@ function GamePlayRoomPages() {
       }
       // this.ai.speed = 5;
       this.running = this.over = false;
+
       // this.turn = this.ai;
       this.timer = this.round = 0;
       this.color = "#8c52ff00"; // background color
 
-      Pong.menu();
-    },
-
-    endGameMenu: function (text: string) {
-      // Change the canvas font size and color
-      Pong.context.font = "45px Inria Sans";
-      Pong.context.fillStyle = this.color;
-
-      // Draw the rectangle behind the 'Press any key to begin' text.
-      // Pong.context.fillRect(
-      //   Pong.canvas.width / 2 - 350,
-      //   Pong.canvas.height / 2 - 48,
-      //   700,
-      //   100
-      // );
-
-      // Change the canvas color;
-      Pong.context.fillStyle = "#9747ff";
-
-      // Draw the end game menu text ('Game Over' and 'Winner')
-      Pong.context.fillText(
-        text,
-        Pong.canvas.width / 2,
-        Pong.canvas.height / 2 + 15
-      );
-    },
-
-    menu: function () {
-      // Draw all the Pong objects in their current state
       Pong.draw();
-
-      // Change the canvas font size and color
-      this.context.font = "50px Inria Sans";
-      this.context.fillStyle = this.color;
-
-      // Draw the rectangle behind the 'Press any key to begin' text.
-      // this.context.fillRect(
-      //   this.canvas.width / 2 - 350,
-      //   this.canvas.height / 2 - 48,
-      //   700,
-      //   100
-      // );
-
-      // Change the canvas color;
-      this.context.fillStyle = "#9747ff";
-
-      // Draw the 'press any key to begin' text
-      // this.context.fillText(
-      //   "Press any key to begin",
-      //   this.canvas.width / 2,
-      //   this.canvas.height / 2 + 15
-      // );
     },
-
     // Draw the objects to the canvas element
     draw: function () {
       // Clear the Canvas
@@ -344,16 +347,6 @@ function GamePlayRoomPages() {
         this.context.fillRect(player.x, player.y, player.width, player.height);
       });
 
-      // Draw the Ball
-      // this.context.fillRect(
-      //   this.ball.x,
-      //   this.ball.y,
-      //   this.ball.y,
-      //   this.ball.width,
-      //   this.ball.height
-      // );
-
-      // Draw the net (Line in the middle)
       this.context.beginPath();
       this.context.setLineDash([7, 15]);
       this.context.moveTo(this.canvas.width / 2, this.canvas.height - 140);
@@ -378,13 +371,6 @@ function GamePlayRoomPages() {
       // Change the font size for the center score text
       this.context.font = "100px Inria Sans";
 
-      // Draw the winning score (center)
-      this.context.fillText(
-        gameInfo.whoAmI == "left" ? "↓                               " : "                               ↓",
-        this.canvas.width / 2,
-        100
-      );
-
       // Change the font size for the center score value
       this.context.font = "40px Inria Sans";
 
@@ -396,7 +382,7 @@ function GamePlayRoomPages() {
       );
     },
 
-    drawData: function (data: gameInfo) {
+    drawData: function (data: gameInfo, whoAmI: string, isGameeady: boolean) {
       //console.log("drawData");
       this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
@@ -468,34 +454,13 @@ function GamePlayRoomPages() {
 
       // Draw the winning score (center)
       this.context.fillText(
-        "Round " + (Pong.round + 1),
+        "Where Am I ? : " + this.whoAmI, //"Round " + (Pong.round + 1),
         this.canvas.width / 2,
         35
       );
 
       // Change the font size for the center score value
       this.context.font = "40px Inria Sans";
-    },
-
-    // Reset the ball location, the player turns and set a delay before the next round begins.
-    _resetTurn: function (victor: any, loser: any) {
-      this.ball = Ball.new.call(this, this.ball.speed);
-      this.turn = loser;
-      this.timer = new Date().getTime();
-
-      victor.score++;
-    },
-
-    // Wait for a delay to have passed after each turn.
-    _turnDelayIsOver: function () {
-      return new Date().getTime() - this.timer >= 1000;
-    },
-
-    // Select a random color as the background of each level/round.
-    _generateRoundColor: function () {
-      var newColor = colors[Math.floor(Math.random() * colors.length)];
-      if (newColor === this.color) return Pong._generateRoundColor();
-      return newColor;
     },
   };
 
