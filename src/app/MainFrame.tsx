@@ -162,6 +162,7 @@ export default function MainFrame() {
       console.log("socket disconnected");
       actions.setConnectionState(false);
     };
+
     if (getAuth()) {
       socket.on("connect", connectionHandler);
       socket.on("disconnect", disconnectionHandler);
