@@ -35,7 +35,7 @@ export default function UserProvider({ children }: { children: React.ReactNode }
   const [infoTargetUser, setInfoTargetUser] = useState<number>(-1);
   const [targetChannel, setTargetChannel] = useState<targetChannelInfo>({} as targetChannelInfo);
   const [targetGame, setTargetGame] = useState<number>(-1);
-  const [targetGameInvite, setTargetGameInvite] = useState<string | null>(null);
+  const [targetGameInvite, setTargetGameInvite] = useState<number | null>(null);
   const [mutedUser, setMutedUser] = useState<Record<number, { until: number }>>({});
   const [userChat, setUserChat] = useState<Record<number, { userId: number, nickname: string, message: string }[]>>({});
   const [channelChat, setChannelChat] = useState<Record<number, { channelId: number, userId: number, nickname: string, message: string }[]>>({});
@@ -102,7 +102,7 @@ export default function UserProvider({ children }: { children: React.ReactNode }
       setInfoTargetUser: (newState: number) => setInfoTargetUser(newState),
       setTargetChannel: (newState: targetChannelInfo) => setTargetChannel(newState),
       setTargetGame: (newState: number) => setTargetGame(newState),
-      setTargetGameInvite: (newState: string | null) => setTargetGameInvite(newState),
+      setTargetGameInvite: (newState: number | null) => setTargetGameInvite(newState),
       setMutedUser: (newState: { userId: number, until: number }) => setMutedUser({ ...mutedUser, [newState.userId]: { until: newState.until } }),
       setUserChat: (newState: { userId: number, nickname: string, message: string }) => setUserChat(prevUserChat => {
         const newChat = { ...prevUserChat };

@@ -2,7 +2,7 @@
 
 import { socket } from "@/app/api";
 import React, { useContext } from "react";
-import { UserContext } from "@/app/UserContext";
+import { UserContext, mainStates } from "@/app/UserContext";
 
 interface UserListCompProps {
   userId: number,
@@ -31,7 +31,8 @@ export const UserListComponent = ({
   };
   const gameInviteHandler = (e: any) => {
     actions.setShowMakeGame(true);
-    actions.setTargetGameInvite(userId); // todo 
+    actions.setMainState(mainStates.gameLobby);
+    actions.setTargetGameInvite(userId);
     e.stopPropagation();
   };
   const userInfoHandler = (e: any) => {
