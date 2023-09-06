@@ -92,7 +92,8 @@ function UserProfile() {
 
 export default function MainFrame() {
   const { state, actions } = useContext(UserContext);
-  const [duplicatedConnection, setDuplicatedConnection] = useState<boolean>(false);
+  const [duplicatedConnection, setDuplicatedConnection] =
+    useState<boolean>(false);
 
   const bypassMe = () => {
     api_get("/user").then((res) => {
@@ -138,15 +139,14 @@ export default function MainFrame() {
           actions.setChannelChat(msg);
         });
 
-
       const duplicateSocketHandler = () => {
         setDuplicatedConnection(true);
-      }
+      };
       socket.on("duplicateSocket", duplicateSocketHandler);
 
       return () => {
         socket.off("duplicateSocket", duplicateSocketHandler);
-      }
+      };
     }
 
     if (!getAuth()) {
@@ -162,6 +162,7 @@ export default function MainFrame() {
       console.log("socket disconnected");
       actions.setConnectionState(false);
     };
+
     if (getAuth()) {
       socket.on("connect", connectionHandler);
       socket.on("disconnect", disconnectionHandler);
@@ -194,16 +195,15 @@ export default function MainFrame() {
               {/* <button className="z-30" onClick={() => actions.setShowGame(true)}>
                 canvas test
               </button> */}
-              {
-                state.showInfo && (
-                  <div className="z-20 flex justify-center items-center">
-                    <div className="z-30 w-[62.5rem] h-[40.63rem]">
-                      <MyPageFrame />
-                    </div>
-                    <div className="z-10 absolute top-0 left-0 w-[100vw] h-[100vh] bg-black opacity-20 backdrop-blur-xl" />
-                    <div className="z-10 absolute top-0 left-0 w-[100vw] h-[100vh] bg-black opacity-20 backdrop-blur-xl" />
+              {state.showInfo && (
+                <div className="z-20 flex justify-center items-center">
+                  <div className="z-30 w-[62.5rem] h-[40.63rem]">
+                    <MyPageFrame />
                   </div>
-                )}
+                  <div className="z-10 absolute top-0 left-0 w-[100vw] h-[100vh] bg-black opacity-20 backdrop-blur-xl" />
+                  <div className="z-10 absolute top-0 left-0 w-[100vw] h-[100vh] bg-black opacity-20 backdrop-blur-xl" />
+                </div>
+              )}
 
               <div className="w-[1280px] h-[832px] absolute">
                 {/* userProfile */}
