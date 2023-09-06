@@ -50,9 +50,11 @@ const UserInfo = ({
         })
     };
     const muteHandler = () => {
+        console.log("muted ", state.chatTargetUser, "nowTime", new Date().getTime(), "until", new Date().getTime() + 1000 * 30);
+        
         actions.setMutedUser({
             userId: state.chatTargetUser,
-            until: new Date().getTime() + 1000 * 10, // 10초간 음소거
+            until: new Date().getTime() + 1000 * 30, // 10초간 음소거
         })
     };
     const blockHandler=() => {
