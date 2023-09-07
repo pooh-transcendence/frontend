@@ -4,9 +4,10 @@ import React, { useEffect } from "react";
 import { useContext } from "react";
 import { useSearchParams } from "next/navigation";
 import { UserContext, userInfo } from "../UserContext";
-import { api_get, api_post, setUserId } from "../api";
+import { api_get, api_post, setAuth, setUserId, updateSocket } from "../api";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { savedContext } from "../UserProvider";
 
 export default function Oauth() {
     const params = useSearchParams();
@@ -25,6 +26,7 @@ export default function Oauth() {
             await api_post("/auth/signIn", { ftToken: res.data.access_token }).then(async (res) => {
                 console.log("internal token res", res);
                 setUserId(res.data.data.userId);
+                actions.setUserInfo({ ...state.userInfo, id: res.data.data.userId });
                 sessionStorage.setItem("qrCodeURL", res.data.data.qrCodeURL);
             }).catch((e) => {
                 console.log(e);
@@ -44,8 +46,10 @@ export default function Oauth() {
     }, []);
 
     return (
-        <>
-            oauth loginingingingingingingingni......
-        </>
+            <div className="flex justify-center items-center h-screen bg-gradient-to-bl  text-[20px] from-neutral-100 to-slate-50">
+            <p className="animate-pulse">
+                please wait
+            </p>
+        </div>
     )
 }

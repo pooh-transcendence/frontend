@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { UserContext, chatStates, mainStates, friendInfo, channelInfo, userInfo as userInfoInterface, targetChannelInfo } from './UserContext';
 import { getAuth } from './api';
 
+import { setAuth, setUserId, updateSocket } from './api';
 export interface savedContext {
   userInfo: userInfoInterface,
   authToken: string,
@@ -14,11 +15,11 @@ export interface savedContext {
 
 export default function UserProvider({ children }: { children: React.ReactNode }) {
   const [isConnected, setConnectionState] = useState<boolean>(false);
-  const [userInfo, setUserInfo] = useState<userInfoInterface>({token: "-1", registered: false, nickname: "defaultNick", avatar: "pngegg-1@2x.png", id: -1, winnerGame: [], loserGame: []});
+  const [userInfo, setUserInfo] = useState<userInfoInterface>({ token: null, registered: false, nickname: "defaultNick", avatar: "pngegg-1@2x.png", id: -1, winnerGame: [], loserGame: [] });
   const [chatState, setChatState] = useState(chatStates.friendList);
   const [mainState, setMainState] = useState(mainStates.gameLobby);
   const [friendChattingInfo, setFriendChattingInfo] = useState<friendInfo>({} as friendInfo);
-  const [channelChattingInfo, setChannelChattingInfo] = useState<channelInfo>({inviteSelectedList: [] as number[]} as channelInfo);
+  const [channelChattingInfo, setChannelChattingInfo] = useState<channelInfo>({ inviteSelectedList: [] as number[] } as channelInfo);
 
   const [showChatUserInfo, setShowChatUserInfo] = useState<boolean>(false);
   const [showChatSetting, setShowChatSetting] = useState<boolean>(false);
@@ -29,7 +30,7 @@ export default function UserProvider({ children }: { children: React.ReactNode }
   const [showMakeGame, setShowMakeGame] = useState<boolean>(false);
   const [showMatching, setShowMatching] = useState<boolean>(false);
   const [showInfo, setShowInfo] = useState<boolean>(false);
-  const [showGame, setShowGame] = useState<boolean>(false); 
+  const [showGame, setShowGame] = useState<boolean>(false);
 
   const [chatTargetUser, setChatTargetUser] = useState<number>(-1);
   const [infoTargetUser, setInfoTargetUser] = useState<number>(-1);
@@ -41,14 +42,46 @@ export default function UserProvider({ children }: { children: React.ReactNode }
   const [channelChat, setChannelChat] = useState<Record<number, { channelId: number, userId: number, nickname: string, message: string }[]>>({});
 
   useEffect(() => {
-    sessionStorage.setItem("userContext", JSON.stringify({
-      userInfo: userInfo,
-      authToken: getAuth(),
-      mutedUser: mutedUser,
-      userChat: userChat,
-      channelChat: channelChat,
-    }));
-  });
+    if (sessionStorage.getItem("userContext")) {
+      console.log("restoring", sessionStorage.getItem("userContext"));
+      const target: savedContext = JSON.parse(sessionStorage.getItem("userContext")!);
+      // restore auth
+      setAuth(target.authToken);
+      setUserId(target.userInfo.id);
+      userContextValue.actions.setUserInfo(target.userInfo);
+      updateSocket();
+
+      // restore chat states
+      for (const userIds in target.mutedUser) {
+        const userId = parseInt(userIds);
+        userContextValue.actions.setMutedUser({
+          userId,
+          until: target.mutedUser[userIds].until,
+        });
+        console.log("muted ", userIds, target.mutedUser[userIds]);
+      }
+      for (const userIds in target.userChat)
+        target.userChat[userIds].map((msg) => {
+          userContextValue.actions.setUserChat(msg);
+        });
+      for (const channelIds in target.channelChat)
+        target.channelChat[channelIds].map((msg) => {
+          userContextValue.actions.setChannelChat(msg);
+        });
+    }
+  }, []);
+  useEffect(() => {
+    if (userInfo.id != -1) {
+      console.log("saved userContext");
+      sessionStorage.setItem("userContext", JSON.stringify({
+        userInfo: userInfo,
+        authToken: getAuth(),
+        mutedUser: mutedUser,
+        userChat: userChat,
+        channelChat: channelChat,
+      }));
+    }
+  }, [userInfo, mutedUser, userChat, channelChat]);
 
   const userContextValue = {
     state: {
@@ -61,7 +94,7 @@ export default function UserProvider({ children }: { children: React.ReactNode }
 
       showChatUserInfo,
       showChatSetting,
-      showChatInvite, 
+      showChatInvite,
       showChatAddFriend,
       showChannelPassword,
       showCreateChannel,
@@ -118,7 +151,7 @@ export default function UserProvider({ children }: { children: React.ReactNode }
       }),
     },
   };
-  
+
   return (
     <UserContext.Provider value={userContextValue}>
       {children}

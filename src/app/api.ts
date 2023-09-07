@@ -21,18 +21,18 @@ export function getRefToken(): string | null {
   return refToken;
 }
 
-let userId: string | null = null;
-export function setUserId(newToken: string | null) {
+let userId: number | null = null;
+export function setUserId(newToken: number | null) {
   userId = newToken;
 }
-export function getUserId(): string | null {
+export function getUserId(): number | null {
   return userId;
 }
 
 export const baseUrl = "http://localhost:3000";
 //export const baseUrl = "http://10.19.221.159:3000"; // yubchoi
 // export const baseUrl = 'http://10.19.233.166:3000'; // joowpark
-// export const baseUrl = "http://10.19.205.73:3000";
+// export const baseUrl = "http://10.18.235.159:3000";
 
 export let socket = io(baseUrl + "/channel", {
   path: "/socket.io",
@@ -50,7 +50,8 @@ export let gameSocket = io(baseUrl + "/game", {
 });
 
 export const updateSocket = () => {
-  socket.disconnect();
+  // socket.disconnect();
+  // gameSocket.disconnect();
 
   socket = io(baseUrl + "/channel", {
     path: "/socket.io",
@@ -66,6 +67,8 @@ export const updateSocket = () => {
       authorization: auth,
     },
   });
+
+  console.log(socket, gameSocket);
 };
 
 export const api_get = (url: string, params: Object | void) => {
