@@ -96,9 +96,9 @@ export default function MainFrame() {
     useState<boolean>(false);
 
   useEffect(() => {
-    // auth bypass
     const loadedContext: string | null = sessionStorage.getItem("userContext");
     if (loadedContext) {
+      console.log("restoring", loadedContext);
       const target: savedContext = JSON.parse(loadedContext);
       // restore auth
       setAuth(target.authToken);
@@ -123,23 +123,14 @@ export default function MainFrame() {
           actions.setChannelChat(msg);
         });
 
-      const duplicateSocketHandler = () => {
-        setDuplicatedConnection(true);
-      };
-      socket.on("duplicateSocket", duplicateSocketHandler);
-
-      return () => {
-        socket.off("duplicateSocket", duplicateSocketHandler);
-      };
-    }
-
-    if (!getAuth()) {
-      // setAuth("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsIm5pY2tuYW1lIjoidGVzdDYiLCJmdElkIjoiYWRzZmFzc2Rkc2RmIiwiaWF0IjoxNjkyMDA2OTU5LCJleHAiOjE2OTQ1OTg5NTl9.7z3DFG0O6bGPaQb5Wu99bBGoyIiqjW9Y5NYBSqSPGVw");
-      // updateSocket();
-    }
+      }
+      
+    const duplicateSocketHandler = () => {
+      setDuplicatedConnection(true);
+    };
+    socket.on("duplicateSocket", duplicateSocketHandler);
 
     const connectionHandler = () => {
-      // console.log("connected", socket);
       actions.setConnectionState(true);
     };
     const disconnectionHandler = () => {
@@ -155,8 +146,9 @@ export default function MainFrame() {
     return () => {
       if (getAuth()) {
         socket.off("connect", connectionHandler);
-        socket.off("disconnect", disconnectionHandler);
+        socket.off("disconnect", disconnectionHandler); 
       }
+      socket.off("duplicateSocket", duplicateSocketHandler);
     };
   }, []);
 
@@ -218,5 +210,6 @@ export default function MainFrame() {
       </>
     );
   // redirect to oauth uri
-  else window ? window.location.replace(redirectUri()) : null;
+  else if(!sessionStorage.getItem("userContext"))
+    window ? window.location.replace(redirectUri()) : null;
 }
