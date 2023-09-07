@@ -1,24 +1,16 @@
 import { useContext, useEffect, useState, useRef } from "react";
 import SearchUsers from "./searchUsers";
 import { UserContext, userInfo } from "@/app/UserContext";
-import { api_get, api_patch, api_post } from "@/app/api";
+import { api_get, api_patch, api_post_formData } from "@/app/api";
 import ImageUploading from 'react-images-uploading';
 
-export default function MyInfo({target} : {target: userInfo}) {
+export default function MyInfo({ target }: { target: userInfo }) {
   const { state, actions } = useContext(UserContext);
   const [newNickname, setNewNickname] = useState<string | null>(null);
   const [avatarHover, setAvatarHover] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const [images, setImages] = useState([]);
-
-  // useEffect(() => {
-  //   api_get(`/user/${state.infoTargetUser}`).then((data) => {
-  //     setTarget(data.data.data);
-  //     console.log(`/user/${state.infoTargetUser}`, data.data.data);
-  //     setNewNickname(data.data.data.nickname);
-  //   })
-  // }, [state.infoTargetUser]);
 
   useEffect(() => {
     if (textRef.current && inputRef.current) {
@@ -51,22 +43,23 @@ export default function MyInfo({target} : {target: userInfo}) {
   };
   const onChangeImage = (imageList: any, addUpdateIndex: any) => {
     // data for submit
-    console.log(imageList, addUpdateIndex);
     setImages(imageList);
-    api_post("/user/avatarUpload", {
-      file: imageList[addUpdateIndex].data_url
-    }).then((res) => {
-      actions.setUserInfo({...state.userInfo, avatar: imageList[addUpdateIndex].data_url});
+    const formData = new FormData();
+    formData.append('image', imageList[addUpdateIndex].file);
+    console.log("uploading file", formData, imageList[addUpdateIndex].file);
+    api_post_formData("/user/avatarUpload", formData).then((res) => {
+      api_get("/user").then((res) => {
+        actions.setUserInfo({...state.userInfo, avatar: res.data.data.avatar});
+      });
       console.log("onChangeImage", res);
-    });
+    }).catch((e) => console.log(e));
   };
   const changeNicknameHandler = () => {
     console.log("change nickname to ", newNickname);
-    if(newNickname && 2 <= newNickname.length && newNickname.length <= 10)
-    {
-      api_patch("/user/nickname", {nickname: newNickname}).then((res) => {
+    if (newNickname && 2 <= newNickname.length && newNickname.length <= 10) {
+      api_patch("/user/nickname", { nickname: newNickname }).then((res) => {
         // console.log(res); // OK
-        actions.setUserInfo({...state.userInfo, nickname: newNickname!});
+        actions.setUserInfo({ ...state.userInfo, nickname: newNickname! });
       });
     }
   }
@@ -169,35 +162,27 @@ export default function MyInfo({target} : {target: userInfo}) {
               >
                 {
                   avatarHover && (
-                      <ImageUploading
-                        multiple
-                        value={images}
-                        onChange={onChangeImage}
-                        maxNumber={42}
-                        dataURLKey="data_url"
-                      >
-                        {({
-                          imageList,
-                          onImageUpload,
-                          onImageRemoveAll,
-                          onImageUpdate,
-                          onImageRemove,
-                          isDragging,
-                          dragProps,
-                        }) => (
-                          // write your building UI
-                          <div className="upload__image-wrapper">
-                            <button
-                              style={isDragging ? { color: 'red' } : undefined}
-                              onClick={onImageUpload}
-                              {...dragProps}
-                            >
-                              <div className="rounded-[70%] bg-black opacity-10 absolute h-full w-full" />
-                              <img src="avatar.svg"/>
-                            </button>
-                          </div>
-                        )}
-                      </ImageUploading>
+                    <ImageUploading
+                      multiple
+                      value={images}
+                      onChange={onChangeImage}
+                      maxNumber={420}
+                    >
+                      {({
+                        imageList,
+                        onImageUpload,
+                      }) => (
+                        // write your building UI
+                        <div className="upload__image-wrapper">
+                          <button
+                            onClick={onImageUpload}
+                          >
+                            <div className="rounded-[70%] bg-black opacity-10 absolute h-full w-full" />
+                            <img src="avatar.svg" />
+                          </button>
+                        </div>
+                      )}
+                    </ImageUploading>
                   )
                 }
               </div>

@@ -32,6 +32,7 @@ export function getUserId(): string | null {
 export const baseUrl = process.env.BACKEND_IP || "http://localhost:3000";
 //export const baseUrl = "http://10.19.221.159:3000"; // yubchoi
 // export const baseUrl = 'http://10.19.233.166:3000'; // joowpark
+// export const baseUrl = "http://10.19.205.73:3000";
 
 export let socket = io(baseUrl + "/channel", {
   path: "/socket.io",
@@ -77,6 +78,15 @@ export const api_get = (url: string, params: Object | void) => {
 export const api_post = (url: string, body: object) => {
   return axios.post(baseUrl + url, body, {
     headers: { Authorization: `Bearer ${auth!}` },
+  });
+};
+
+export const api_post_formData = (url: string, body: object) => {
+  return axios.post(baseUrl + url, body, {
+    headers: {
+      Authorization: `Bearer ${auth!}`,
+      'Content-Type': 'multipart/form-data',
+    },
   });
 };
 

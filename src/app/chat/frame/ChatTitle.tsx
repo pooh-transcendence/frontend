@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useContext } from "react";
-import { UserContext, chatStates } from '@/app/UserContext';
+import { UserContext, channelInfo, chatStates } from '@/app/UserContext';
 
 interface Props {
     title: string,
@@ -24,6 +24,7 @@ export const ChatTitle = ({
     const channelBackHandler = () => {
         console.log("back to channellist");
         actions.setChatState(chatStates.channelList);
+        actions.setChannelChattingInfo({} as channelInfo);
     };
     const channelSettingHandler = () => {
         actions.setShowChatSetting(true);
