@@ -23,7 +23,7 @@ export default function ChannelListComponent({ channel }: { channel: targetChann
           alt=""
           src="/line-2.svg"
         />
-      <img className="channelImg w-8 h-8 left-0 top-0 absolute" src="https://via.placeholder.com/32x32" />
+      <img className="channelImg w-8 h-8 left-0 top-0 absolute" src="/pngegg-4@2x.png" />
       <div className="Owner w-[149px] h-[21px] left-[495px] top-[15px] absolute text-right text-neutral-600 text-[13px] font-normal">
         {channel.ownerNickname}
       </div>
