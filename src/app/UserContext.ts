@@ -57,7 +57,7 @@ export interface userInfo
   nickname: string;
   avatar: string;
   id: number;
-  token: string; // this value is our backend's token 
+  token: string | null; // this value is our backend's token 
   registered: boolean; // this value would be true after two-factor auth
   winnerGame: gameInfo[];
   loserGame: gameInfo[];

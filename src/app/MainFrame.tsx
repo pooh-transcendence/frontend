@@ -1,29 +1,22 @@
 "use client";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import Chat from "./chat/page";
 
-import { savedContext } from "./UserProvider";
 import {
   UserContext,
   mainStates,
-  targetChannelInfo,
-  userInfo,
 } from "@/app/UserContext";
 import {
   getAuth,
-  setUserId,
   getUserId,
   redirectUri,
-  setAuth,
   socket,
-  updateSocket,
-  api_get,
+  gameSocket,
 } from "@/app/api";
 import TwoFactor from "./TwoFactor/page";
 import ChannelLobby from "./ChannelLobby/page";
 import GameLobby from "./GameLobby/page";
 import MyPageFrame from "./MyPageLobby/page";
-import GamePlayRoomPages from "./gameplay3/page";
 
 function SideButton(props: { type: mainStates }) {
   const { state, actions } = useContext(UserContext);
@@ -92,124 +85,94 @@ function UserProfile() {
 
 export default function MainFrame() {
   const { state, actions } = useContext(UserContext);
-  const [duplicatedConnection, setDuplicatedConnection] =
-    useState<boolean>(false);
 
   useEffect(() => {
     const loadedContext: string | null = sessionStorage.getItem("userContext");
-    if (loadedContext) {
-      console.log("restoring", loadedContext);
-      const target: savedContext = JSON.parse(loadedContext);
-      // restore auth
-      setAuth(target.authToken);
-      updateSocket();
-      actions.setUserInfo(target.userInfo);
-
-      // restore chat states
-      for (const userIds in target.mutedUser) {
-        const userId = parseInt(userIds);
-        actions.setMutedUser({
-          userId,
-          until: target.mutedUser[userIds].until,
-        });
-        console.log("muted ", userIds, target.mutedUser[userIds]);
-      }
-      for (const userIds in target.userChat)
-        target.userChat[userIds].map((msg) => {
-          actions.setUserChat(msg);
-        });
-      for (const channelIds in target.channelChat)
-        target.channelChat[channelIds].map((msg) => {
-          actions.setChannelChat(msg);
-        });
-
-      }
-      
-    const duplicateSocketHandler = () => {
-      setDuplicatedConnection(true);
-    };
-    socket.on("duplicateSocket", duplicateSocketHandler);
 
     const connectionHandler = () => {
+      console.log("socket connected", socket);
       actions.setConnectionState(true);
     };
     const disconnectionHandler = () => {
-      console.log("socket disconnected");
+      console.log("socket disconnected", socket);
       actions.setConnectionState(false);
     };
 
-    if (getAuth()) {
-      socket.on("connect", connectionHandler);
-      socket.on("disconnect", disconnectionHandler);
-    }
+    // if (getAuth()) {
+    socket.on("connect", connectionHandler);
+    socket.on("disconnect", disconnectionHandler);
+    // }
 
     return () => {
-      if (getAuth()) {
-        socket.off("connect", connectionHandler);
-        socket.off("disconnect", disconnectionHandler); 
-      }
-      socket.off("duplicateSocket", duplicateSocketHandler);
+      // if (getAuth()) {
+      socket.off("connect", connectionHandler);
+      socket.off("disconnect", disconnectionHandler);
+      // }
     };
-  }, []);
+  }, [socket, gameSocket]);
 
-  if (duplicatedConnection)
-    return (
-      <div className="flex justify-center items-center h-screen bg-gradient-to-bl from-neutral-100 to-slate-50">
-        You are trying to access multiple pages simultaneously.
-      </div>
-    );
-  if (getUserId())
-    return (
-      <>
+  if (getUserId()) {
+    if (state.userInfo.id != -1 && socket.disconnected) {
+      return (
         <div className="flex justify-center items-center h-screen bg-gradient-to-bl from-neutral-100 to-slate-50">
-          {
-            // check whether this user is registered
-            !getAuth() && <TwoFactor />
-          }
-          {getAuth() && (
-            <>
-              {state.showInfo && (
-                <div className="z-20 flex justify-center items-center">
-                  <div className="z-30 w-[62.5rem] h-[40.63rem]">
-                    <MyPageFrame />
-                  </div>
-                  <div className="z-10 absolute top-0 left-0 w-[100vw] h-[100vh] bg-black opacity-20 backdrop-blur-xl" />
-                  <div className="z-10 absolute top-0 left-0 w-[100vw] h-[100vh] bg-black opacity-20 backdrop-blur-xl" />
-                </div>
-              )}
-
-              <div className="w-[1280px] h-[832px] absolute">
-                {/* userProfile */}
-                <div className="top-[3.13rem] left-[60.38rem] absolute w-[14.25rem] h-[2.875rem]">
-                  <UserProfile />
-                </div>
-
-                {/* sidebuttons */}
-                <div className="w-[4.38rem] h-[4.38rem] top-[14.88rem] left-[3.25rem] absolute rounded-tl-[10px]">
-                  <SideButton type={mainStates.ChannelLobby} />
-                </div>
-                <div className="w-[4.38rem] h-[4.38rem] top-[10.69rem] left-[3.25rem] absolute rounded-tl-[10px]">
-                  <SideButton type={mainStates.gameLobby} />
-                </div>
-
-                <div className="absolute w-[800px] h-[650px] top-[8.13rem] left-[7.44rem] z-10 rounded-[10px]">
-                  {state.mainState === mainStates.gameLobby ? (
-                    <GameLobby />
-                  ) : (
-                    <ChannelLobby />
-                  )}
-                </div>
-
-                <div className="w-[300px] h-[650px] absolute top-[8.13rem] left-[58.19rem]">
-                  <Chat />
-                </div>
-              </div>
-            </>
-          )}
+          You are trying to access multiple pages simultaneously.
         </div>
-      </>
-    );
-  // redirect to oauth uri
-  else if(!sessionStorage.getItem("userContext"))
+      );
+    }
+    else {
+      return (
+        <>
+          <div className="flex justify-center items-center h-screen bg-gradient-to-bl from-neutral-100 to-slate-50">
+            {
+              // check whether this user is registered
+              !getAuth() && <TwoFactor />
+            }
+            {getAuth() && (
+              <>
+                {state.showInfo && (
+                  <div className="z-20 flex justify-center items-center">
+                    <div className="z-30 w-[62.5rem] h-[40.63rem]">
+                      <MyPageFrame />
+                    </div>
+                    <div className="z-10 absolute top-0 left-0 w-[100vw] h-[100vh] bg-black opacity-20 backdrop-blur-xl" />
+                    <div className="z-10 absolute top-0 left-0 w-[100vw] h-[100vh] bg-black opacity-20 backdrop-blur-xl" />
+                  </div>
+                )}
+
+                <div className="w-[1280px] h-[832px] absolute">
+                  {/* userProfile */}
+                  <div className="top-[3.13rem] left-[60.38rem] absolute w-[14.25rem] h-[2.875rem]">
+                    <UserProfile />
+                  </div>
+
+                  {/* sidebuttons */}
+                  <div className="w-[4.38rem] h-[4.38rem] top-[14.88rem] left-[3.25rem] absolute rounded-tl-[10px]">
+                    <SideButton type={mainStates.ChannelLobby} />
+                  </div>
+                  <div className="w-[4.38rem] h-[4.38rem] top-[10.69rem] left-[3.25rem] absolute rounded-tl-[10px]">
+                    <SideButton type={mainStates.gameLobby} />
+                  </div>
+
+                  <div className="absolute w-[800px] h-[650px] top-[8.13rem] left-[7.44rem] z-10 rounded-[10px]">
+                    {state.mainState === mainStates.gameLobby ? (
+                      <GameLobby />
+                    ) : (
+                      <ChannelLobby />
+                    )}
+                  </div>
+
+                  <div className="w-[300px] h-[650px] absolute top-[8.13rem] left-[58.19rem]">
+                    <Chat />
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+        </>
+      );
+    }
+  }
+  else if (!sessionStorage.getItem("userContext")) // cannot get user information
     window ? window.location.replace(redirectUri()) : null;
+
 }
