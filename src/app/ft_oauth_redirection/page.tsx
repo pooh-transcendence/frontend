@@ -7,7 +7,6 @@ import { UserContext, userInfo } from "../UserContext";
 import { api_get, api_post, setAuth, setUserId, updateSocket } from "../api";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import { savedContext } from "../UserProvider";
 
 export default function Oauth() {
     const params = useSearchParams();
@@ -30,9 +29,9 @@ export default function Oauth() {
                 sessionStorage.setItem("qrCodeURL", res.data.data.qrCodeURL);
             }).catch((e) => {
                 console.log(e);
-            }).then(() => {
                 // logout?
                 sessionStorage.clear();
+            }).then(() => {
                 router.push("/");
             });
         }).catch((e) => {
