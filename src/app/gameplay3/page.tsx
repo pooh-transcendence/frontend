@@ -11,7 +11,7 @@ interface gameInfo {
   score: number[];
   ball: number[];
   isGetScore: boolean;
-  whoAmI: 'left' | 'right';
+  whoAmI: 'left' | 'right' | '';
   nickname: string;
 }
 
@@ -316,7 +316,9 @@ function GamePlayRoomPages() {
         this.player[0] = Ai.new.call(this, 'left', true);
         this.player[1] = Ai.new.call(this, 'right', false);
         this.ball = Ball.new.call(this);
+        this.whoAmI = '';
       }
+
       // this.ai.speed = 5;
       this.running = this.over = false;
 
@@ -357,14 +359,14 @@ function GamePlayRoomPages() {
       this.context.font = '100px Inria Sans';
       this.context.textAlign = 'center';
 
-      this.player.forEach((player: any, index: number) => {
-        const place = index === 0 ? -300 : 300;
-        this.context.fillText(
-          player.score.toString(),
-          this.canvas.width / 2 + index,
-          200,
-        );
-      });
+      // this.player.forEach((player: any, index: number) => {
+      //   const place = index === 0 ? -300 : 300;
+      //   this.context.fillText(
+      //     player.score.toString(),
+      //     this.canvas.width / 2 + index,
+      //     200,
+      //   );
+      // });
 
       // Change the font size for the center score text
       this.context.font = '100px Inria Sans';
@@ -372,17 +374,11 @@ function GamePlayRoomPages() {
       // Change the font size for the center score value
       this.context.font = '40px Inria Sans';
 
-      // Draw the current round number
-      this.context.fillText(
-        rounds[Pong.round] ? rounds[Pong.round] : rounds[Pong.round - 1],
-        this.canvas.width / 2,
-        100,
-      );
-      if (this.whoAmI) {
+      if (this.whoAmI.length > 0) {
         this.context.fillText(
-          'Where Am I ? : ' + this.whoAmI, //"Round " + (Pong.round + 1),
+          '당신은  ' + this.whoAmI, //"Round " + (Pong.round + 1),
           this.canvas.width / 2,
-          35,
+          150,
         );
       }
     },

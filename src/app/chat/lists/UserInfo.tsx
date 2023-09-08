@@ -47,19 +47,19 @@ const UserInfo = ({ type }: Props): JSX.Element => {
     });
   };
   const muteHandler = () => {
-    //console.log("muted ", state.chatTargetUser, "nowTime", new Date().getTime(), "until", new Date().getTime() + 1000 * 30);
+    console.log(
+      'muted ',
+      state.chatTargetUser,
+      'nowTime',
+      new Date().getTime(),
+      'until',
+      new Date().getTime() + 1000 * 30,
+    );
     const target = state.chatTargetUser;
     actions.setMutedUser({
       userId: state.chatTargetUser,
-      until: 1, //new Date().getTime() + 1000 * 30, // 10초간 음소거
+      until: new Date().getTime() + 1000 * 30, // 10초간 음소거
     });
-    // 10초 후에 음소거 해제 -> until : 0으로 바꾸어야 함
-    setTimeout(() => {
-      actions.setMutedUser({
-        userId: target,
-        until: 0,
-      });
-    }, 1000 * 10);
   };
 
   const blockHandler = () => {
