@@ -190,9 +190,11 @@ export default function UserProvider({
       setTargetGameInvite: (newState: number | null) =>
         setTargetGameInvite(newState),
       setMutedUser: (newState: { userId: number; until: number }) =>
-        setMutedUser({
-          ...mutedUser,
-          [newState.userId]: { until: newState.until },
+        setMutedUser((prevMutedUser) => {
+          if (prevMutedUser.hasOwnProperty(newState.userId))
+            prevMutedUser[newState.userId].until = newState.until;
+          else prevMutedUser[newState.userId] = { until: newState.until };
+          return prevMutedUser;
         }),
       setUserChat: (newState: {
         userId: number;

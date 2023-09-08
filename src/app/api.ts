@@ -29,10 +29,7 @@ export function getUserId(): number | null {
   return userId;
 }
 
-export const baseUrl = 'http://localhost:3000';
-//export const baseUrl = "http://10.19.221.159:3000"; // yubchoi
-// export const baseUrl = 'http://10.19.233.166:3000'; // joowpark
-//export const baseUrl = 'http://10.18.230.161:3000';
+export const baseUrl = process.env.BACKEND_IP || 'http://localhost:3000';
 
 export let socket = io(baseUrl + '/channel', {
   path: '/socket.io',

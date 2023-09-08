@@ -47,14 +47,6 @@ const UserInfo = ({ type }: Props): JSX.Element => {
     });
   };
   const muteHandler = () => {
-    console.log(
-      'muted ',
-      state.chatTargetUser,
-      'nowTime',
-      new Date().getTime(),
-      'until',
-      new Date().getTime() + 1000 * 30,
-    );
     const target = state.chatTargetUser;
     actions.setMutedUser({
       userId: state.chatTargetUser,
