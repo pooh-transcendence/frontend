@@ -1,12 +1,12 @@
-'use client'
+'use client';
 
-import React, { useContext, useEffect } from 'react'
-import { ChatChannel } from './chatting/ChatChannel'
-import { ChatFriendList } from './lists/ChatFriendList'
-import { ChatChannelList } from './lists/ChatChannelList'
-import { ChatFriend } from './chatting/ChatFriend'
-import { UserContext, chatStates } from '../UserContext'
-import { socket, api_get } from '@/app/api'
+import React, { useContext, useEffect } from 'react';
+import { ChatChannel } from './chatting/ChatChannel';
+import { ChatFriendList } from './lists/ChatFriendList';
+import { ChatChannelList } from './lists/ChatChannelList';
+import { ChatFriend } from './chatting/ChatFriend';
+import { UserContext, chatStates } from '../UserContext';
+import { socket, api_get } from '@/app/api';
 
 export default function Chat() {
   const { state, actions } = useContext(UserContext);
@@ -14,37 +14,43 @@ export default function Chat() {
   useEffect(() => {
     const userMessageListener = (data: any) => {
       const renderTime = new Date().getTime();
-      console.log("received", data);
-      if (!state.mutedUser[data[0].userId] || state.mutedUser[data[0].userId].until < renderTime) {
-        console.log("added", data);
+      console.log('received', data);
+      console.log(state.mutedUser);
+      if (
+        !state.mutedUser[data[0].userId] ||
+        state.mutedUser[data[0].userId].until < renderTime
+      ) {
         actions.setUserChat({
           userId: data[0].userId,
           nickname: data[0].nickname,
-          message: data[0].message
+          message: data[0].message,
         });
       }
     };
 
     const channelMessageListener = (data: any) => {
-      console.log("channelMessageListener", data);
+      console.log('channelMessageListener', data);
       const renderTime = new Date().getTime();
-      if (!state.mutedUser[data[0].userId] || state.mutedUser[data[0].userId].until < renderTime) {
-        console.log("added", data);
+      if (
+        !state.mutedUser[data[0].userId] ||
+        state.mutedUser[data[0].userId]?.until < renderTime
+      ) {
+        console.log('added', data);
         actions.setChannelChat({
           channelId: data[0].channelId,
           userId: data[0].userId,
           nickname: data[0].nickname,
-          message: data[0].message
+          message: data[0].message,
         });
       }
     };
 
-    socket.on("userMessage", userMessageListener);
-    socket.on("channelMessage", channelMessageListener);
+    socket.on('userMessage', userMessageListener);
+    socket.on('channelMessage', channelMessageListener);
 
     return () => {
-      socket.off("userMessage", userMessageListener);
-      socket.off("channelMessage", channelMessageListener);
+      socket.off('userMessage', userMessageListener);
+      socket.off('channelMessage', channelMessageListener);
     };
   }, []);
 
@@ -58,6 +64,6 @@ export default function Chat() {
     case chatStates.friendList:
       return <ChatFriendList />;
     default:
-      throw Error("unexpected chatReducer.state " + state.chatState);
+      throw Error('unexpected chatReducer.state ' + state.chatState);
   }
 }

@@ -1,41 +1,38 @@
 import React from 'react';
 
 export enum chatStates {
-    friendList,
-    channelList,
-    friendChat,
-    channelChat,
-};
+  friendList,
+  channelList,
+  friendChat,
+  channelChat,
+}
 
 export enum mainStates {
-    gameLobby,
-    ChannelLobby,
-};
+  gameLobby,
+  ChannelLobby,
+}
 
-export interface friendInfo
-{
-    id: number;
-    nickname: string;
-    avatar: string;
-    userState: "ONLINE" | "OFFLINE" | "GAMING";
-};
-
-export interface channelInfo
-{
-    id: number;
-    channelType: "PRIVATE" | "PROTECTED" | "PUBLIC";
-    channelName: string;
-    ownerId: number;
-    channelUser: Object[];
-    userType: "DEFAULT" | "MODERATOR" | "OWNER";
-    inviteSelectedList: number[];
-    userCount: number;
-};
-
-export interface gameInfo
-{
+export interface friendInfo {
   id: number;
-  
+  nickname: string;
+  avatar: string;
+  userState: 'ONLINE' | 'OFFLINE' | 'GAMING';
+}
+
+export interface channelInfo {
+  id: number;
+  channelType: 'PRIVATE' | 'PROTECTED' | 'PUBLIC';
+  channelName: string;
+  ownerId: number;
+  channelUser: Object[];
+  userType: 'DEFAULT' | 'MODERATOR' | 'OWNER';
+  inviteSelectedList: number[];
+  userCount: number;
+}
+
+export interface gameInfo {
+  id: number;
+
   winner: userInfo;
   loser: userInfo;
 
@@ -49,29 +46,28 @@ export interface gameInfo
   deletedAt: string;
   updatedAt: string;
 
-  gameType: "1vs1 PUBLIC" | "1vs1 PRIVATE" | "LADDER"; // todo
-};
+  gameType: '1vs1 PUBLIC' | '1vs1 PRIVATE' | 'LADDER'; // todo
+}
 
-export interface userInfo
-{
+export interface userInfo {
   nickname: string;
   avatar: string;
   id: number;
-  token: string | null; // this value is our backend's token 
+  token: string | null; // this value is our backend's token
   registered: boolean; // this value would be true after two-factor auth
   winnerGame: gameInfo[];
   loserGame: gameInfo[];
-};
+}
 
 export interface targetChannelInfo {
-  id: number,
-  channelType: "PRIVATE" | "PROTECTED" | "PUBLIC",
-  ownerNickname: string,
-  channelName: string,
-  ownerId: number,
-  userCount: number,
-  channelUser: object[],
-};
+  id: number;
+  channelType: 'PRIVATE' | 'PROTECTED' | 'PUBLIC';
+  ownerNickname: string;
+  channelName: string;
+  ownerId: number;
+  userCount: number;
+  channelUser: object[];
+}
 
 export const UserContext = React.createContext({
   state: {
@@ -80,7 +76,7 @@ export const UserContext = React.createContext({
     chatState: chatStates.friendList,
     mainState: mainStates.gameLobby,
     friendChattingInfo: {} as friendInfo,
-    channelChattingInfo: {inviteSelectedList: [] as number[]} as channelInfo,
+    channelChattingInfo: { inviteSelectedList: [] as number[] } as channelInfo,
 
     showChatUserInfo: false,
     showChatSetting: false,
@@ -99,8 +95,14 @@ export const UserContext = React.createContext({
     targetGame: -1,
     targetGameInvite: null,
     mutedUser: {} as Record<number, { until: number }>,
-    userChat: {} as Record<number, { userId: number, nickname: string, message: string }[]>,
-    channelChat: {} as Record<number, { channelId: number, userId: number, nickname: string, message: string }[]>,
+    userChat: {} as Record<
+      number,
+      { userId: number; nickname: string; message: string }[]
+    >,
+    channelChat: {} as Record<
+      number,
+      { channelId: number; userId: number; nickname: string; message: string }[]
+    >,
   },
   actions: {
     setConnectionState: (newState: boolean) => {},
@@ -109,7 +111,7 @@ export const UserContext = React.createContext({
     setMainState: (newState: mainStates) => {},
     setFriendChattingInfo: (newState: friendInfo) => {},
     setChannelChattingInfo: (newState: channelInfo) => {},
-    
+
     setShowChatUserInfo: (newState: boolean) => {},
     setShowChatSetting: (newState: boolean) => {},
     setShowChatInvite: (newState: boolean) => {},
@@ -120,14 +122,23 @@ export const UserContext = React.createContext({
     setShowMatching: (newState: boolean) => {},
     setShowInfo: (newState: boolean) => {},
     setShowGame: (newState: boolean) => {},
-    
+
     setChatTargetUser: (newState: number) => {},
     setInfoTargetUser: (newState: number) => {},
     setTargetChannel: (newState: targetChannelInfo) => {},
     setTargetGame: (newState: number) => {},
     setTargetGameInvite: (newState: number | null) => {},
-    setMutedUser: (newState: {userId: number, until: number}) => {},
-    setUserChat: (newState: {userId: number, nickname: string, message: string}) => {},
-    setChannelChat: (newState: {channelId: number, userId: number, nickname: string, message: string}) => {},
+    setMutedUser: (newState: { userId: number; until: number }) => {},
+    setUserChat: (newState: {
+      userId: number;
+      nickname: string;
+      message: string;
+    }) => {},
+    setChannelChat: (newState: {
+      channelId: number;
+      userId: number;
+      nickname: string;
+      message: string;
+    }) => {},
   },
 });
