@@ -15,12 +15,13 @@ export default function Oauth() {
     const router = useRouter();
 
     const postFtOauth = (codeRes: any) => {
+        console.log("codeRes", codeRes);
         axios.post("https://api.intra.42.fr/oauth/token", {
             "grant_type": "authorization_code",
             "client_id": process.env.FT_CLIENT_ID,
             "client_secret": process.env.FT_CLIENT_SECRET,
             "code": codeRes,
-            "redirect_uri": "http://localhost:6002/ft_oauth_redirection",
+            "redirect_uri": process.env.FRONTEND_IP + "/ft_oauth_redirection",
         }).then(async (res) => {
             console.log("oauth res", res);
             await api_post("/auth/signIn", { ftToken: res.data.access_token }).then(async (res) => {

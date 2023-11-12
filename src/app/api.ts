@@ -2,7 +2,11 @@ import { io } from 'socket.io-client';
 import axios from 'axios';
 
 export const redirectUri = () => {
-  return `https://api.intra.42.fr/oauth/authorize?client_id=${process.env.FT_CLIENT_ID}&redirect_uri=http%3A%2F%2Flocalhost%3A6002%2Fft_oauth_redirection&response_type=code`;
+  return (
+    process.env.REDIRECT_URL ||
+    'https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-a2c38797979939f1a4da47d3fc33383b156e4789cbe713b94b800d6e615c3753&redirect_uri=http%3A%2F%2F13.59.201.111%2Fft_oauth_redirection&response_type=code' ||
+    'FUCK'
+  );
 };
 
 let auth: string | null = null;
@@ -29,7 +33,7 @@ export function getUserId(): number | null {
   return userId;
 }
 
-export const baseUrl = process.env.BACKEND_IP || 'http://localhost:3000';
+export const baseUrl = ''; // process.env.BACKEND_IP || 'http://localhost:3000';
 
 export let socket = io(baseUrl + '/channel', {
   path: '/socket.io',

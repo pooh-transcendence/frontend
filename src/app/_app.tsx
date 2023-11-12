@@ -10,11 +10,12 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <React.Fragment>
       <main className={inria.className}>
-        <Head>
+        <Head><base herf = '/'>
           <meta
             name="viewport"
             content="minimum-scale=1, initial-scale=1, width=device-width"
             />
+		</base>
         </Head>
         <Component {...pageProps} />
       </main>

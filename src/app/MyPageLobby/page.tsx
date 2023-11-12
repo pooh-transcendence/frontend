@@ -1,3 +1,5 @@
+'use client';
+
 import type { NextPage } from "next";
 
 import MatchHistory from "./match/matchHistory";

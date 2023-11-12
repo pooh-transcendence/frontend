@@ -1,30 +1,21 @@
-"use client";
-import React, { useContext, useEffect } from "react";
-import Chat from "./chat/page";
+'use client';
+import React, { useContext, useEffect } from 'react';
+import Chat from './chat/page';
 
-import {
-  UserContext,
-  mainStates,
-} from "@/app/UserContext";
-import {
-  getAuth,
-  getUserId,
-  redirectUri,
-  socket,
-  gameSocket,
-} from "@/app/api";
-import TwoFactor from "./TwoFactor/page";
-import ChannelLobby from "./ChannelLobby/page";
-import GameLobby from "./GameLobby/page";
-import MyPageFrame from "./MyPageLobby/page";
+import { UserContext, mainStates } from '@/app/UserContext';
+import { getAuth, getUserId, redirectUri, socket, gameSocket } from '@/app/api';
+import TwoFactor from './TwoFactor/page';
+import ChannelLobby from './ChannelLobby/page';
+import GameLobby from './GameLobby/page';
+import MyPageFrame from './MyPageLobby/page';
 
 function SideButton(props: { type: mainStates }) {
   const { state, actions } = useContext(UserContext);
 
   const imgSrc =
     props.type === mainStates.ChannelLobby
-      ? "sidebutton31.svg"
-      : "sidebutton2.svg";
+      ? 'sidebutton31.svg'
+      : 'sidebutton2.svg';
   const clickhandler = () => {
     if (props.type === mainStates.ChannelLobby)
       actions.setMainState(mainStates.ChannelLobby);
@@ -87,26 +78,26 @@ export default function MainFrame() {
   const { state, actions } = useContext(UserContext);
 
   useEffect(() => {
-    const loadedContext: string | null = sessionStorage.getItem("userContext");
+    const loadedContext: string | null = sessionStorage.getItem('userContext');
 
     const connectionHandler = () => {
-      console.log("socket connected", socket);
+      console.log('socket connected', socket);
       actions.setConnectionState(true);
     };
     const disconnectionHandler = () => {
-      console.log("socket disconnected", socket);
+      console.log('socket disconnected', socket);
       actions.setConnectionState(false);
     };
 
     // if (getAuth()) {
-    socket.on("connect", connectionHandler);
-    socket.on("disconnect", disconnectionHandler);
+    socket.on('connect', connectionHandler);
+    socket.on('disconnect', disconnectionHandler);
     // }
 
     return () => {
       // if (getAuth()) {
-      socket.off("connect", connectionHandler);
-      socket.off("disconnect", disconnectionHandler);
+      socket.off('connect', connectionHandler);
+      socket.off('disconnect', disconnectionHandler);
       // }
     };
   }, [socket, gameSocket]);
@@ -118,8 +109,7 @@ export default function MainFrame() {
           You are trying to access multiple pages simultaneously.
         </div>
       );
-    }
-    else {
+    } else {
       return (
         <>
           <div className="flex justify-center items-center h-screen bg-gradient-to-bl from-neutral-100 to-slate-50">
@@ -171,8 +161,6 @@ export default function MainFrame() {
         </>
       );
     }
-  }
-  else if (!sessionStorage.getItem("userContext")) // cannot get user information
+  } else if (!(sessionStorage.getItem("userContext"))) // cannot get user information
     window ? window.location.replace(redirectUri()) : null;
-
 }

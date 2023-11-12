@@ -1,3 +1,3 @@
 'use client'
 
-export {default as GamePlayRoomPage } from './GamePlayRoom';
+// export {default as GamePlayRoomPage } from './GamePlayRoom';
